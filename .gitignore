@@ -1,0 +1,4 @@
+config/
+debug/
+*.sublime-project
+*.sublime-workspace
