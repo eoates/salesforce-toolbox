@@ -1,0 +1,21 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="fixed" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="showSpinner" type="Boolean" default="false" />
+	<!-- /attributes -->
+
+	<!-- component -->
+	<div class="slds-is-relative">
+		<div class="{!'slds-spinner_container' + if(v.fixed, ' slds-is-fixed', '') + if(v.showSpinner, '', ' slds-hide')}">
+			<div role="status" class="slds-spinner slds-spinner_medium">
+				<span class="slds-assistive-text">Loading</span>
+				<div class="slds-spinner__dot-a"></div>
+				<div class="slds-spinner__dot-b"></div>
+			</div>
+		</div>
+
+		<div class="{!v.class}">{!v.body}</div>
+	</div>
+	<!-- /component -->
+</aura:component>
