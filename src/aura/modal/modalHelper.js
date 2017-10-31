@@ -1,7 +1,27 @@
 ({
+	animations: [ 'fade-in-open', 'slide-up-open', 'slide-up-saving', 'slide-down-cancel' ],
 	modalContainerId: 'c_modal_container',
 	modalContainerZIndex: 9000,
 	openModals: [],
+
+	/**
+	 * Returns the CSS class name to use for the specified animation. If the specified animation
+	 * is not one of the valid animations then the defaultAnimation is used. If defaultAnimation
+	 * is also invalid, then default to "slds-fade-in-open"
+	 *
+	 * @param {string} animation the name of the animation to use
+	 * @param {string} defaultAnimation the animation to use if animation argument is invalid
+	 * @returns {string} the CSS class for the specified animation
+	 */
+	getAnimationClassName: function(animation, defaultAnimation) {
+		if (this.animations.indexOf(animation) < 0) {
+			animation = defaultAnimation;
+			if (this.animations.indexOf(animation) < 0) {
+				animation = this.animations[0];
+			}
+		}
+		return 'slds-' + animation;
+	},
 
 	/**
 	 * Returns all child elements for the specified parent

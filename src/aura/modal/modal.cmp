@@ -12,12 +12,16 @@
 	<aura:attribute access="GLOBAL" name="footerClass" type="String" />
 	<aura:attribute access="GLOBAL" name="header" type="aura.Component[]" />
 	<aura:attribute access="GLOBAL" name="footer" type="aura.Component[]" />
+	<aura:attribute access="GLOBAL" name="animation" type="String" default="fade-in-open" />
 
 	<aura:attribute access="PRIVATE" name="visible" type="Boolean" default="false" />
+	<aura:attribute access="PRIVATE" name="currentAnimation" type="String" />
 	<!-- /attributes -->
 
 	<!-- methods -->
-	<aura:method access="GLOBAL" name="open" action="{!c.open}" />
+	<aura:method access="GLOBAL" name="open" action="{!c.open}">
+		<aura:attribute name="animation" type="String" />
+	</aura:method>
 	<aura:method access="GLOBAL" name="close" action="{!c.close}" />
 	<!-- /methods -->
 
@@ -34,7 +38,7 @@
 		<div id="{!globalId + '_modal'}"
 		     role="dialog"
 		     aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
-		     class="{!v.modalClass + ' slds-modal' + if(v.visible, ' slds-fade-in-open', '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}">
+		     class="{!v.modalClass + ' slds-modal' + if(v.visible, ' ' + v.currentAnimation, '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}">
 
 			<!-- container -->
 			<div class="{!v.containerClass + ' slds-modal__container'}">

@@ -3,6 +3,13 @@
 	 * Opens the modal
 	 */
 	open: function(component, event, helper) {
+		var args = event.getParam('arguments');
+
+		var animation = args.animation;
+		var defaultAnimation = component.get('v.animation');
+		var currentAnimation = helper.getAnimationClassName(animation, defaultAnimation);
+		component.set('v.currentAnimation', currentAnimation);
+
 		helper.openModal(component);
 	},
 
