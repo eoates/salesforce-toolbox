@@ -1,7 +1,7 @@
 ({
 	/**
 	 * Handles the showToast application event. If force:showToast is available then the component
-	 * assumes that it is running in the one.app container and will simply raise a force:showToast
+	 * assumes that it is running in the one.app container and will simply fire a force:showToast
 	 * event with the same parameter values as the c:showToast event
 	 */
 	showToast: function(component, event, helper) {

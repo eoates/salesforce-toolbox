@@ -77,7 +77,7 @@
 	},
 
 	/**
-	 * Raises the onclosebutton event to signal that the close button was clicked
+	 * Fires the onclosebutton event to signal that the close button was clicked
 	 */
 	closeButtonClick: function(component, event, helper) {
 		event.stopPropagation();
