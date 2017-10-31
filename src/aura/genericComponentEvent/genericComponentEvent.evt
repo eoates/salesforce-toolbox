@@ -1,0 +1,4 @@
+<aura:event access="GLOBAL" type="COMPONENT">
+	<aura:attribute access="GLOBAL" name="name" type="String" />
+	<aura:attribute access="GLOBAL" name="args" type="Object" />
+</aura:event>
