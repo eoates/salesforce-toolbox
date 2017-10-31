@@ -1,0 +1,81 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="prompt" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="large" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="directional" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="modalClass" type="String" />
+	<aura:attribute access="GLOBAL" name="containerClass" type="String" />
+	<aura:attribute access="GLOBAL" name="headerClass" type="String" />
+	<aura:attribute access="GLOBAL" name="contentClass" type="String" />
+	<aura:attribute access="GLOBAL" name="footerClass" type="String" />
+	<aura:attribute access="GLOBAL" name="header" type="aura.Component[]" />
+	<aura:attribute access="GLOBAL" name="footer" type="aura.Component[]" />
+
+	<aura:attribute access="PRIVATE" name="visible" type="Boolean" default="false" />
+	<!-- /attributes -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="open" action="{!c.open}" />
+	<aura:method access="GLOBAL" name="close" action="{!c.close}" />
+	<!-- /methods -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onbeforeopen" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onopen" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onbeforeclose" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onclose" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- component -->
+	<div id="{!globalId + '_root'}" class="modal-root">
+		<div id="{!globalId + '_modal'}"
+		     role="dialog"
+		     aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
+		     class="{!v.modalClass + ' slds-modal' + if(v.visible, ' slds-fade-in-open', '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}">
+
+			<!-- container -->
+			<div class="{!v.containerClass + ' slds-modal__container'}">
+
+				<!-- header -->
+				<div class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
+					<aura:if isTrue="{!v.closeButton}">
+						<lightning:buttonIcon aura:id="closeButton"
+						                      class="slds-modal__close"
+						                      iconName="utility:close"
+						                      alternativeText="Close"
+						                      variant="bare-inverse"
+						                      size="large"
+						                      onclick="{!c.closeButtonClick}" />
+					</aura:if>
+
+					<h2 id="{!globalId + '_title'}"
+					    class="{!'slds-text-heading_medium' + if(empty(v.title), ' slds-hide', '')}">{!v.title}</h2>
+
+					{!v.header}
+				</div>
+				<!-- /header -->
+
+				<!-- content -->
+				<div class="{!v.contentClass + ' slds-modal__content'}">
+					{!v.body}
+				</div>
+				<!-- /content -->
+
+				<!-- footer -->
+				<aura:if isTrue="{!not(empty(v.footer))}">
+					<div class="{!v.footerClass + ' slds-modal__footer' + if(v.directional, ' slds-modal__footer_directional', '')}">
+						{!v.footer}
+					</div>
+				</aura:if>
+				<!-- /footer -->
+
+			</div>
+			<!-- /container -->
+
+		</div>
+	</div>
+	<!-- /component -->
+</aura:component>
