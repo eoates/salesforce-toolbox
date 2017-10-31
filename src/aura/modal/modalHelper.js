@@ -307,7 +307,12 @@
 		visible = true;
 		component.set('v.visible', visible);
 
-		this.fireEvent(component, 'onopen');
+		// Use setTimeout to allow the modal to render before firing the 'onopen' event. This
+		// ensures that the modal and its contents are visible before any event handlers run
+		var self = this;
+		setTimeout($A.getCallback(function() {
+			self.fireEvent(component, 'onopen');
+		}), 0);
 	},
 
 	/**
@@ -328,7 +333,12 @@
 		visible = false;
 		component.set('v.visible', false);
 
-		this.fireEvent(component, 'onclose');
+		// Use setTimeout to allow the modal to render before firing the 'onclose' event. This
+		// ensures that the modal and its contents are hidden before any event handlers run
+		var self = this;
+		setTimeout($A.getCallback(function() {
+			self.fireEvent(component, 'onclose');
+		}), 0);
 	},
 
 	/**
