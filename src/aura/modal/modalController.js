@@ -38,6 +38,45 @@
 	},
 
 	/**
+	 * Check for ESC or ENTER and raise the appropriate event
+	 */
+	modalKeyDown: function(component, event, helper) {
+		event.stopPropagation();
+
+		// Do nothing if the event has already been canceled
+		if (event.defaultPrevented) {
+			return;
+		}
+
+		var which = event.keyCode || event.which || 0;
+		var handled = false;
+
+		// Escape
+		if (which === 27) {
+			var busy = component.get('v.busy');
+			var closeButton = component.get('v.closeButton');
+			if (closeButton && !busy) {
+				helper.fireEvent(component, 'onclosebutton');
+				handled = true;
+			}
+		}
+
+		// Enter
+		if (which === 13) {
+			var busy = component.get('v.busy');
+			if (!busy) {
+				helper.fireEvent(component, 'onaction');
+				handled = true;
+			}
+		}
+
+		// If we handled the event then cancel it
+		if (handled) {
+			event.preventDefault();
+		}
+	},
+
+	/**
 	 * Raises the onclosebutton event to signal that the close button was clicked
 	 */
 	closeButtonClick: function(component, event, helper) {

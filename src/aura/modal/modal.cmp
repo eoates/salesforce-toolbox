@@ -41,6 +41,7 @@
 	<aura:registerEvent access="GLOBAL" name="onbeforeclose" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onclose" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onaction" type="c:genericComponentEvent" />
 	<!-- /events -->
 
 	<!-- component -->
@@ -48,7 +49,8 @@
 		<div id="{!globalId + '_modal'}"
 		     role="dialog"
 		     aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
-		     class="{!v.modalClass + ' slds-modal' + if(v.visible, ' ' + v.currentAnimation, '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}">
+		     class="{!v.modalClass + ' slds-modal' + if(v.visible, ' ' + v.currentAnimation, '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}"
+		     onkeydown="{!c.modalKeyDown}">
 
 			<!-- container -->
 			<div class="{!v.containerClass + ' slds-modal__container'}">
