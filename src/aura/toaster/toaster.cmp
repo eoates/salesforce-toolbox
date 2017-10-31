@@ -1,9 +1,14 @@
 <aura:component access="GLOBAL">
+	<!-- attributes -->
 	<aura:attribute name="toasts" type="Object[]" access="PRIVATE" />
 	<aura:attribute name="queue" type="Object[]" access="PRIVATE" />
+	<!-- /attributes -->
 
+	<!-- handlers -->
 	<aura:handler event="c:showToast" action="{!c.showToast}" />
+	<!-- /handlers -->
 
+	<!-- component -->
 	<div class="toasts">
 		<aura:iteration items="{!v.toasts}" var="toast">
 			<div class="toast-container">
@@ -41,4 +46,5 @@
 			</div>
 		</aura:iteration>
 	</div>
+	<!-- /component -->
 </aura:component>

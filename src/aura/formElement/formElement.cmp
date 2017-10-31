@@ -1,4 +1,5 @@
 <aura:component access="GLOBAL">
+	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
 	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
@@ -7,8 +8,12 @@
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
 	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
+	<!-- /attributes -->
 
+	<!-- component -->
 	<div class="{!v.class + ' slds-form-element' + if(and(empty(v.error), empty(v.errors)), '', ' slds-has-error')}">
+
+		<!-- label -->
 		<aura:if isTrue="{!empty(v.controlId)}">
 			<span class="{!v.labelClass + ' slds-form-element__label' + if(empty(v.label), ' slds-hide', '')}">
 				<abbr class="{!'slds-required' + if(v.required, '', ' slds-hide')}" title="Required">*</abbr>
@@ -22,11 +27,15 @@
 				</label>
 			</aura:set>
 		</aura:if>
+		<!-- /label -->
 
+		<!-- control -->
 		<div class="{!v.controlClass + ' slds-form-element__control'}">
 			{!v.body}
 		</div>
+		<!-- /control -->
 
+		<!-- errors -->
 		<div class="{!'slds-form-element__help' + if(and(empty(v.error), empty(v.errors)), ' slds-hide', '')}">
 			<aura:if isTrue="{!v.errors.length gt 1}">
 				<ul>
@@ -40,5 +49,8 @@
 				</aura:set>
 			</aura:if>
 		</div>
+		<!-- /errors -->
+
 	</div>
+	<!-- /component -->
 </aura:component>
