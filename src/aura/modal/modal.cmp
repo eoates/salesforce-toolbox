@@ -41,7 +41,6 @@
 	<aura:registerEvent access="GLOBAL" name="onbeforeclose" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onclose" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onaction" type="c:genericComponentEvent" />
 	<!-- /events -->
 
 	<!-- component -->

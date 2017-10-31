@@ -38,7 +38,7 @@
 	},
 
 	/**
-	 * Check for ESC or ENTER and raise the appropriate event
+	 * Fires the onclosebutton event when the user presses the ESC key
 	 */
 	modalKeyDown: function(component, event, helper) {
 		event.stopPropagation();
@@ -57,15 +57,6 @@
 			var closeButton = component.get('v.closeButton');
 			if (closeButton && !busy) {
 				helper.fireEvent(component, 'onclosebutton');
-				handled = true;
-			}
-		}
-
-		// Enter
-		if (which === 13) {
-			var busy = component.get('v.busy');
-			if (!busy) {
-				helper.fireEvent(component, 'onaction');
 				handled = true;
 			}
 		}
