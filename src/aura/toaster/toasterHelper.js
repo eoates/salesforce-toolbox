@@ -18,7 +18,7 @@
 	 * is displayed immediately; otherwise, the toast is added to a queue and will be displayed once
 	 * any other toasts in the queue have been displayed
 	 *
-	 * @param {aura.Component} component the component
+	 * @param {Aura.Component} component the component
 	 * @param {string} type the toast type, which can be error, warning, success, or info
 	 * @param {string} key specifies an icon when the toast type is other
 	 * @param {string} title specifies the toast title in bold
@@ -72,7 +72,7 @@
 	/**
 	 * Removes the toast with the specified name
 	 *
-	 * @param {aura.Component} component the component
+	 * @param {Aura.Component} component the component
 	 * @param {string} name the name of the toast to remove
 	 * @returns {void}
 	 */
@@ -96,7 +96,7 @@
 	 * Displays the next toast in the queue. If there are no toasts in the queue then this function
 	 * does nothing
 	 *
-	 * @param {aura.Component} component the component
+	 * @param {Aura.Component} component the component
 	 * @returns {void}
 	 */
 	showNextToastInQueue: function(component) {

@@ -11,8 +11,8 @@
 	<aura:attribute access="GLOBAL" name="headerClass" type="String" />
 	<aura:attribute access="GLOBAL" name="contentClass" type="String" />
 	<aura:attribute access="GLOBAL" name="footerClass" type="String" />
-	<aura:attribute access="GLOBAL" name="header" type="aura.Component[]" />
-	<aura:attribute access="GLOBAL" name="footer" type="aura.Component[]" />
+	<aura:attribute access="GLOBAL" name="header" type="Aura.Component[]" />
+	<aura:attribute access="GLOBAL" name="footer" type="Aura.Component[]" />
 	<aura:attribute access="GLOBAL" name="animation" type="String" default="fade-in-open" />
 
 	<aura:attribute access="PRIVATE" name="visible" type="Boolean" default="false" />

@@ -185,7 +185,7 @@
 	/**
 	 * Adds a modal to the container element
 	 *
-	 * @param {aura.Component} component the modal component to be added to the container
+	 * @param {Aura.Component} component the modal component to be added to the container
 	 * @returns {void}
 	 */
 	addToModalContainer: function(component) {
@@ -225,7 +225,7 @@
 	/**
 	 * Removes a modal from the container element and places it back in its original container
 	 *
-	 * @param {aura.Component} component the modal component to remove
+	 * @param {Aura.Component} component the modal component to remove
 	 * @returns {void}
 	 */
 	removeFromModalContainer: function(component) {
@@ -333,7 +333,7 @@
 	/**
 	 * Handle the opening of a modal
 	 *
-	 * @param {aura.Component} component the modal component
+	 * @param {Aura.Component} component the modal component
 	 * @returns {void}
 	 */
 	handleModalOpen: function(component) {
@@ -357,7 +357,7 @@
 	/**
 	 * Handle the closing of a modal
 	 *
-	 * @param {aura.Component} component the modal component
+	 * @param {Aura.Component} component the modal component
 	 * @returns {void}
 	 */
 	handleModalClose: function(component) {
@@ -379,7 +379,7 @@
 	/**
 	 * Open the specified modal
 	 *
-	 * @param {aura.Component} component the modal component
+	 * @param {Aura.Component} component the modal component
 	 * @returns {void}
 	 */
 	openModal: function(component) {
@@ -405,7 +405,7 @@
 	/**
 	 * Close the specified modal
 	 *
-	 * @param {aura.Component} component the modal component
+	 * @param {Aura.Component} component the modal component
 	 * @returns {void}
 	 */
 	closeModal: function(component) {
@@ -431,7 +431,7 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {aura.Component} component the modal component
+	 * @param {Aura.Component} component the modal component
 	 * @param {string} name the event name
 	 * @param {object} args optional event arguments
 	 * @returns {void}
