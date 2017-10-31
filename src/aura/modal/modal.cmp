@@ -23,6 +23,14 @@
 		<aura:attribute name="animation" type="String" />
 	</aura:method>
 	<aura:method access="GLOBAL" name="close" action="{!c.close}" />
+	<aura:method access="GLOBAL" name="showToast" action="{!c.showToast}">
+		<aura:attribute name="type" type="String" default="other" />
+		<aura:attribute name="key" type="String" />
+		<aura:attribute name="title" type="String" />
+		<aura:attribute name="message" type="String" />
+		<aura:attribute name="mode" type="String" default="dismissible" />
+		<aura:attribute name="duration" type="Integer" default="5000" />
+	</aura:method>
 	<!-- /methods -->
 
 	<!-- events -->
@@ -32,6 +40,9 @@
 	<aura:registerEvent access="GLOBAL" name="onclose" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent" />
 	<!-- /events -->
+
+	<!-- toaster to show toasts if the modal is closed -->
+	<c:toaster />
 
 	<!-- component -->
 	<div id="{!globalId + '_root'}" class="modal-root">
@@ -46,8 +57,7 @@
 				<!-- header -->
 				<div class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
 					<aura:if isTrue="{!v.closeButton}">
-						<lightning:buttonIcon aura:id="closeButton"
-						                      class="slds-modal__close"
+						<lightning:buttonIcon class="slds-modal__close"
 						                      iconName="utility:close"
 						                      alternativeText="Close"
 						                      variant="bare-inverse"
@@ -59,6 +69,8 @@
 					    class="{!'slds-text-heading_medium' + if(empty(v.title), ' slds-hide', '')}">{!v.title}</h2>
 
 					{!v.header}
+
+					<div aura:id="toastContainer"></div>
 				</div>
 				<!-- /header -->
 

@@ -5,6 +5,93 @@
 	openModals: [],
 
 	/**
+	 * Displays a toast in the header of the modal
+	 */
+	showToast: function(component, toastArgs) {
+		// If there is already a toast being displayed then dismiss it
+		this.dismissToast(component);
+
+		// If the modal is closed (i.e. not visible) then just fire the c:showToast event and let
+		// a c:toaster component show it globally
+		var visible = component.get('v.visible');
+		if (!visible) {
+			var toastEvent = $A.get('e.c:showToast');
+			toastEvent.setParams(toastArgs);
+			toastEvent.fire();
+			return;
+		}
+
+		// Get toast attributes
+		var attributes = {
+			closeButton: (toastArgs.mode !== 'pester'),
+			type: toastArgs.type,
+			key: toastArgs.key,
+			title: toastArgs.title,
+			message: toastArgs.message,
+			onclosebutton: component.getReference('c.dismissToast')
+		};
+
+		var duration = parseFloat(toastArgs.duration);
+		if (isNaN(duration) || !isFinite(duration)) {
+			duration = 5000;
+		} else if (duration < 0) {
+			duration = 0;
+		}
+
+		// Dynamically create a toast component
+		var self = this;
+
+		$A.createComponent('c:toast', attributes, function(toast, status, error) {
+			if (status === 'SUCCESS') {
+				// Add the created toast to the toast container
+				var container = component.find('toastContainer');
+				container.set('v.body', [ toast ]);
+
+				// If the mode is not sticky, then set a timeout to dismiss the toast after the
+				// specified duration
+				if (toastArgs.mode !== 'sticky') {
+					component.toastTimeoutId = setTimeout($A.getCallback(function() {
+						component.toastTimeoutId = null;
+						self.dismissToast(component);
+					}), duration);
+				}
+			} else if (status === 'INCOMPLETE') {
+				$A.warning('No response from server or client is offline.');
+			} else if (status === 'ERROR') {
+				$A.warning('Error: ' + error);
+			}
+		});
+	},
+
+	/**
+	 * Dismisses a toast if one is being displayed
+	 *
+	 * @param {Aura.Component} component the modal component
+	 * @returns {void}
+	 */
+	dismissToast: function(component) {
+		// Clear the current timeout
+		if (component.toastTimeoutId) {
+			clearTimeout(component.toastTimeoutId);
+			component.toastTimeoutId = null;
+		}
+
+		// Get the container which holds the toast
+		var container = component.find('toastContainer');
+
+		// Destroy any toast components in the container
+		var toasts = container.get('v.body');
+		for (var i = 0, n = toasts.length; i < n; i++) {
+			var toast = toasts[i];
+			if (toast.isInstanceOf('c:toast')) {
+				toast.destroy();
+			}
+		}
+
+		container.set('v.body', []);
+	},
+
+	/**
 	 * Returns the CSS class name to use for the specified animation. If the specified animation
 	 * is not one of the valid animations then the defaultAnimation is used. If defaultAnimation
 	 * is also invalid, then default to "slds-fade-in-open"

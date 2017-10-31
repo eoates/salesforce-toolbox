@@ -10,6 +10,7 @@
 		var currentAnimation = helper.getAnimationClassName(animation, defaultAnimation);
 		component.set('v.currentAnimation', currentAnimation);
 
+		helper.dismissToast(component);
 		helper.openModal(component);
 	},
 
@@ -18,6 +19,22 @@
 	 */
 	close: function(component, event, helper) {
 		helper.closeModal(component);
+	},
+
+	/**
+	 * Displays a toast message in the header of the modal
+	 */
+	showToast: function(component, event, helper) {
+		var args = event.getParam('arguments');
+		helper.showToast(component, args);
+	},
+
+	/**
+	 * Handles the onclosebutton event for the displayed toast
+	 */
+	dismissToast: function(component, event, helper) {
+		event.stopPropagation();
+		helper.dismissToast(component);
 	},
 
 	/**
