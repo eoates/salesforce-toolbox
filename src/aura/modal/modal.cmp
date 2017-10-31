@@ -1,6 +1,7 @@
 <aura:component access="GLOBAL">
 	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="busy" type="Boolean" />
 	<aura:attribute access="GLOBAL" name="prompt" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="large" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="directional" type="Boolean" default="false" />
@@ -31,6 +32,7 @@
 		<aura:attribute name="mode" type="String" default="dismissible" />
 		<aura:attribute name="duration" type="Integer" default="5000" />
 	</aura:method>
+	<aura:method access="GLOBAL" name="dismissToast" action="{!c.dismissToast}" />
 	<!-- /methods -->
 
 	<!-- events -->
@@ -40,9 +42,6 @@
 	<aura:registerEvent access="GLOBAL" name="onclose" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent" />
 	<!-- /events -->
-
-	<!-- toaster to show toasts if the modal is closed -->
-	<c:toaster />
 
 	<!-- component -->
 	<div id="{!globalId + '_root'}" class="modal-root">
@@ -62,6 +61,7 @@
 						                      alternativeText="Close"
 						                      variant="bare-inverse"
 						                      size="large"
+						                      disabled="{!v.busy}"
 						                      onclick="{!c.closeButtonClick}" />
 					</aura:if>
 
@@ -76,7 +76,9 @@
 
 				<!-- content -->
 				<div class="{!v.contentClass + ' slds-modal__content'}">
-					{!v.body}
+					<c:spinnerPanel showSpinner="{!v.busy}">
+						{!v.body}
+					</c:spinnerPanel>
 				</div>
 				<!-- /content -->
 
