@@ -1,0 +1,17 @@
+.THIS.toasts {
+	position: fixed;
+	text-align: center;
+	top: auto;
+	left: 0;
+	right: 0;
+	z-index: 10000;
+	pointer-events: none;
+}
+
+.THIS.toasts .toast-container {
+	font-size: 0.8125rem;
+}
+
+.THIS.toasts .toast-container .slds-notify_toast {
+	pointer-events: auto;
+}

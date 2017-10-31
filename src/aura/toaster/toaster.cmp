@@ -1,0 +1,44 @@
+<aura:component access="GLOBAL">
+	<aura:attribute name="toasts" type="Object[]" access="PRIVATE" />
+	<aura:attribute name="queue" type="Object[]" access="PRIVATE" />
+
+	<aura:handler event="c:showToast" action="{!c.showToast}" />
+
+	<div class="toasts">
+		<aura:iteration items="{!v.toasts}" var="toast">
+			<div class="toast-container">
+				<div class="{#if(toast.type eq 'other', ' slds-theme_info', ' slds-theme_' + toast.type) + ' slds-notify slds-notify_toast'}" role="alert">
+					<aura:if isTrue="{#toast.dismissible}">
+						<lightning:buttonIcon class="slds-notify__close"
+						                      iconName="utility:close"
+						                      variant="bare-inverse"
+						                      size="medium"
+						                      title="Close"
+						                      alternativeText="Close"
+						                      name="dismiss"
+						                      value="{#toast.name}"
+						                      onclick="{!c.dismissToast}" />
+					</aura:if>
+
+					<div class="slds-notify__content slds-grid">
+						<aura:if isTrue="{#if(toast.type eq 'other', not(empty(toast.key)), true)}">
+							<lightning:icon class="slds-m-right_small slds-col slds-no-flex"
+							                iconName="{#'utility:' + if(toast.type eq 'other', toast.key, toast.type)}"
+							                variant="{#if(toast.type eq 'warning', '', 'inverse')}"
+							                size="xx-small" />
+						</aura:if>
+
+						<div class="slds-col slds-align-middle">
+							<aura:if isTrue="{#not(empty(toast.title))}">
+								<h2 class="slds-text-heading_small">{#toast.title}</h2>
+							</aura:if>
+							<aura:if isTrue="{#not(empty(toast.message))}">
+								{#toast.message}
+							</aura:if>
+						</div>
+					</div>
+				</div>
+			</div>
+		</aura:iteration>
+	</div>
+</aura:component>

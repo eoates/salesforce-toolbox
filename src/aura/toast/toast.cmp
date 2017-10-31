@@ -1,0 +1,44 @@
+<aura:component access="GLOBAL">
+	<aura:attribute access="GLOBAL" name="container" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="closeButtonSize" type="String" default="large" />
+	<aura:attribute access="GLOBAL" name="iconSize" type="String" default="small" />
+	<aura:attribute access="GLOBAL" name="type" type="String" default="other" />
+	<aura:attribute access="GLOBAL" name="key" type="String" />
+	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="message" type="String" />
+
+	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent" />
+
+	<div class="{!if(v.container, 'slds-notify_container', '')}">
+		<div class="{!if(v.type eq 'other', ' slds-theme_info', ' slds-theme_' + v.type) + ' slds-notify slds-notify_toast'}" role="alert">
+			<aura:if isTrue="{!v.closeButton}">
+				<lightning:buttonIcon class="slds-notify__close"
+				                      iconName="utility:close"
+				                      variant="bare-inverse"
+				                      size="{!v.closeButtonSize}"
+				                      title="Close"
+				                      alternativeText="Close"
+				                      onclick="{!c.closeClick}" />
+			</aura:if>
+
+			<div class="slds-notify__content slds-grid">
+				<aura:if isTrue="{!if(v.type eq 'other', not(empty(v.key)), true)}">
+					<lightning:icon class="slds-m-right_small slds-col slds-no-flex"
+					                iconName="{!'utility:' + if(v.type eq 'other', v.key, v.type)}"
+					                variant="{!if(v.type eq 'warning', '', 'inverse')}"
+					                size="{!v.iconSize}" />
+				</aura:if>
+
+				<div class="slds-col slds-align-middle">
+					<aura:if isTrue="{!not(empty(v.title))}">
+						<h2 class="slds-text-heading_small">{!v.title}</h2>
+					</aura:if>
+					<aura:if isTrue="{!not(empty(v.message))}">
+						{!v.message}
+					</aura:if>
+				</div>
+			</div>
+		</div>
+	</div>
+</aura:component>

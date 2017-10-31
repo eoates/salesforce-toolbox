@@ -1,0 +1,8 @@
+<aura:event access="GLOBAL" type="APPLICATION">
+	<aura:attribute access="GLOBAL" name="type" type="String" default="other" />
+	<aura:attribute access="GLOBAL" name="key" type="String" />
+	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="message" type="String" />
+	<aura:attribute access="GLOBAL" name="mode" type="String" default="dismissible" />
+	<aura:attribute access="GLOBAL" name="duration" type="Integer" default="5000" />
+</aura:event>
