@@ -1,11 +1,16 @@
 <aura:component access="GLOBAL">
+	<!-- dependencies -->
+	<aura:dependency type="COMPONENT" resource="markup://c:toast" />
+	<aura:dependency type="EVENT" resource="markup://c:showToast" />
+	<!-- /dependencies -->
+
 	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="title" type="String" />
 	<aura:attribute access="GLOBAL" name="busy" type="Boolean" />
 	<aura:attribute access="GLOBAL" name="prompt" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="large" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="directional" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="modalClass" type="String" />
 	<aura:attribute access="GLOBAL" name="containerClass" type="String" />
 	<aura:attribute access="GLOBAL" name="headerClass" type="String" />
