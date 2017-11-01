@@ -398,6 +398,11 @@
 		// ensures that the modal and its contents are visible before any event handlers run
 		var self = this;
 		setTimeout($A.getCallback(function() {
+			var closeButton = component.find('closeButton');
+			if (closeButton) {
+				closeButton.focus();
+			}
+
 			self.fireEvent(component, 'onopen');
 		}), 0);
 	},

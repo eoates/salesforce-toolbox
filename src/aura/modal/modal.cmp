@@ -57,7 +57,8 @@
 				<!-- header -->
 				<div class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
 					<aura:if isTrue="{!v.closeButton}">
-						<lightning:buttonIcon class="slds-modal__close"
+						<lightning:buttonIcon aura:id="closeButton"
+						                      class="slds-modal__close"
 						                      iconName="utility:close"
 						                      alternativeText="Close"
 						                      variant="bare-inverse"
