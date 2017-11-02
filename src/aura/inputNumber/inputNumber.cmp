@@ -1,0 +1,45 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="id" type="String" />
+	<aura:attribute access="GLOBAL" name="name" type="String" />
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="min" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="max" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="step" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="precision" type="Integer" />
+	<aura:attribute access="GLOBAL" name="scale" type="Integer" />
+	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="select" action="{!c.select}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<input aura:id="input"
+	       id="{!v.id}"
+	       name="{!v.name}"
+	       class="{!v.class + ' slds-input'}"
+	       type="{#if($Browser.formFactor eq 'DESKTOP', 'text', 'number')}"
+	       tabindex="{!v.tabindex}"
+	       disabled="{!if(v.disabled, 'disabled', '')}"
+	       readonly="{!if(v.readonly, 'readonly', '')}"
+	       onfocus="{!c.inputFocus}"
+	       onblur="{!c.inputBlur}"
+	       onkeydown="{!c.inputKeyDown}"
+	       onkeypress="{!c.inputKeyPress}"
+	       onchange="{!c.inputChange}" />
+	<!-- /component -->
+</aura:component>
