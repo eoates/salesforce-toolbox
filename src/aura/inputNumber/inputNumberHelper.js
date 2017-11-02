@@ -421,10 +421,7 @@
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);
-		event.setParams({
-			name: name,
-			args: args || {}
-		});
+		event.setParam('arguments', args || {});
 		event.fire();
 	}
 })

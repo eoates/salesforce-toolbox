@@ -388,7 +388,7 @@
 			return;
 		}
 
-		var result = this.fireEvent(component, 'onbeforeopen');
+		this.fireEvent(component, 'onbeforeopen');
 		this.handleModalOpen(component);
 
 		visible = true;
@@ -419,7 +419,7 @@
 			return;
 		}
 
-		var result = this.fireEvent(component, 'onbeforeclose');
+		this.fireEvent(component, 'onbeforeclose');
 		this.handleModalClose(component);
 
 		visible = false;
@@ -443,10 +443,7 @@
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);
-		event.setParams({
-			name: name,
-			args: args || {}
-		});
+		event.setParam('arguments', args || {});
 		event.fire();
 	}
 })
