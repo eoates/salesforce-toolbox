@@ -146,6 +146,7 @@
 	 * this method ensures that the returned value is within a valid range
 	 *
 	 * @param {Aura.Component} component the inputNumber component
+	 * @param {number} precision the maximum number of digits in the number
 	 * @returns {number} the scale
 	 */
 	getScale: function(component, precision) {
@@ -380,26 +381,22 @@
 		}
 
 		var hasFocus = (inputElement === document.activeElement);
-
-		var value = component.get('v.value');
-		if ($A.util.isUndefinedOrNull(value)) {
-			inputElement.value = '';
-			return;
-		}
-
 		var format = this.getFormat(component);
+		var value = component.get('v.value');
 
 		var strValue = '';
 		var numValue = null;
-		if (this.isNumber(value)) {
-			numValue = value;
-			strValue = this.formatNumber(numValue, format, hasFocus);
-		} else {
-			numValue = this.parseNumber(value, format);
-			if (this.isNumber(numValue)) {
+		if (!$A.util.isUndefinedOrNull(value)) {
+			if (this.isNumber(value)) {
+				numValue = value;
 				strValue = this.formatNumber(numValue, format, hasFocus);
 			} else {
-				strValue = value + '';
+				numValue = this.parseNumber(value, format);
+				if (this.isNumber(numValue)) {
+					strValue = this.formatNumber(numValue, format, hasFocus);
+				} else {
+					strValue = value + '';
+				}
 			}
 		}
 
