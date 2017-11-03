@@ -4,6 +4,7 @@
 	<aura:attribute access="GLOBAL" name="name" type="String" />
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="value" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
 	<aura:attribute access="GLOBAL" name="min" type="Decimal" />
 	<aura:attribute access="GLOBAL" name="max" type="Decimal" />
 	<aura:attribute access="GLOBAL" name="step" type="Decimal" />
@@ -33,6 +34,7 @@
 	       name="{!v.name}"
 	       class="{!v.class + ' slds-input'}"
 	       type="{#if($Browser.formFactor eq 'DESKTOP', 'text', 'number')}"
+	       placeholder="{!v.placeholder}"
 	       tabindex="{!v.tabindex}"
 	       disabled="{!if(v.disabled, 'disabled', '')}"
 	       readonly="{!if(v.readonly, 'readonly', '')}"
