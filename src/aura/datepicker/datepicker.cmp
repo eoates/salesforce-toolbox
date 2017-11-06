@@ -1,0 +1,115 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="String" />
+	<aura:attribute access="GLOBAL" name="trapFocus" type="Boolean" default="false" />
+
+	<aura:attribute access="PRIVATE" name="year" type="Integer" />
+	<aura:attribute access="PRIVATE" name="month" type="Integer" />
+	<aura:attribute access="PRIVATE" name="activeIndex" type="Integer" default="0" />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="oncancel" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<!-- /handlers -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<div id="{#globalId + '_container'}"
+	     role="dialog"
+	     class="{!v.class + ' slds-datepicker'}"
+	     aria-hidden="false"
+	     aria-label="Date picker: MONTH NAME"
+	     onfocusin="{!c.containerFocusIn}"
+	     onfocusout="{!c.containerFocusOut}"
+	     onkeydown="{!c.containerKeyDown}"
+	     onmousedown="{!c.containerMouseDown}">
+
+		<!-- filter -->
+		<div class="slds-datepicker__filter slds-grid">
+			<div class="slds-datepicker__filter_month slds-grid slds-grid_align-spread slds-grow">
+				<div class="slds-align-middle"
+				     onkeydown="{!c.previousMonthKeyDown}"
+				     onmousedown="{!c.nullEventHandler}">
+					<lightning:buttonIcon aura:id="previousMonth"
+					                      iconName="utility:left"
+					                      variant="container"
+					                      title="Previous Month"
+					                      alternativeText="Previous Month"
+					                      onclick="{!c.previousMonthClick}" />
+				</div>
+
+				<h2 id="{#globalId + '_month'}"
+				    class="slds-align-middle"
+				    aria-atomic="true"
+				    aria-live="assertive">MONTH NAME</h2>
+
+				<div class="slds-align-middle"
+				     onkeydown="{!c.nullEventHandler}"
+				     onmousedown="{!c.nullEventHandler}">
+					<lightning:buttonIcon aura:id="nextMonth"
+					                      iconName="utility:right"
+					                      variant="container"
+					                      title="Next Month"
+					                      alternativeText="Next Month"
+					                      onclick="{!c.nextMonthClick}" />
+				</div>
+			</div>
+			<div class="slds-shrink-none">
+				<label class="slds-assistive-text" for="{#globalId + '_year'}">Pick a Year</label>
+				<div class="slds-select_container">
+					<select id="{#globalId + '_year'}"
+					        class="slds-select"
+					        onchange="{!c.yearChange}"
+					        onkeydown="{!c.nullEventHandler}"
+					        onmousedown="{!c.nullEventHandler}">
+					</select>
+				</div>
+			</div>
+		</div>
+		<!-- /filter -->
+
+		<!-- calendar -->
+		<table role="grid"
+		       class="slds-datepicker__month"
+		       aria-labelledby="{#globalId + '_month'}"
+		       aria-multiselectable="false">
+			<thead>
+				<tr>
+					<th scope="col"><abbr title="Sunday">Sun</abbr></th>
+					<th scope="col"><abbr title="Monday">Mon</abbr></th>
+					<th scope="col"><abbr title="Tuesday">Tue</abbr></th>
+					<th scope="col"><abbr title="Wednesday">Wed</abbr></th>
+					<th scope="col"><abbr title="Thursday">Thu</abbr></th>
+					<th scope="col"><abbr title="Friday">Fri</abbr></th>
+					<th scope="col"><abbr title="Saturday">Sat</abbr></th>
+				</tr>
+			</thead>
+
+			<tbody id="{#globalId + '_body'}">
+			</tbody>
+		</table>
+		<!-- /calendar -->
+
+		<!-- today -->
+		<button aura:id="today"
+		        class="slds-button slds-align_absolute-center slds-text-link"
+		        onclick="{!c.todayClick}"
+		        onkeydown="{!c.todayKeyDown}"
+		        onmousedown="{!c.nullEventHandler}">Today</button>
+		<!-- /today -->
+
+	</div>
+	<!-- /component -->
+</aura:component>
