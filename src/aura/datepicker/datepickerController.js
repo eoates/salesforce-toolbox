@@ -87,7 +87,6 @@
 
 		component.blurTimeoutId = setTimeout($A.getCallback(function() {
 			component.blurTimeoutId = null;
-			helper.cancel(component);
 			helper.fireEvent(component, 'onblur');
 		}), 0);
 	},
@@ -197,19 +196,25 @@
 	 * to the parent element since the lightning:buttonIcon does not have its own keydown event
 	 */
 	previousMonthKeyDown: function(component, event, helper) {
-		event.stopPropagation();
-
-		// If we aren't trapping focus then do nothing
 		var trapFocus = component.get('v.trapFocus');
-		if (!trapFocus) {
-			return;
-		}
 
-		// When SHIFT+TAB is pressed then change focus to the last element
 		var which = event.keyCode || event.which || 0;
-		if ((which === 9) && event.shiftKey) {
-			event.preventDefault();
-			component.find('today').getElement().focus();
+		switch (which) {
+			case 9: // Tab
+				event.stopPropagation();
+
+				// If we are trapping focus and SHIFT+TAB is pressed then move focus to the last
+				// element
+				if (trapFocus && event.shiftKey) {
+					component.find('today').getElement().focus();
+					event.preventDefault();
+				}
+				break;
+
+			case 13: // Enter
+			case 32: // Space
+				event.stopPropagation();
+				break;
 		}
 	},
 
@@ -218,6 +223,21 @@
 	 */
 	previousMonthClick: function(component, event, helper) {
 		helper.navigate(component, -1, 'm', false);
+	},
+
+	/**
+	 * Handles the keydown event for the next month button. Technically this event is attached
+	 * to the parent element since the lightning:buttonIcon does not have its own keydown event
+	 */
+	nextMonthKeyDown: function(component, event, helper) {
+		var which = event.keyCode || event.which || 0;
+		switch (which) {
+			case 9: // Tab
+			case 13: // Enter
+			case 32: // Space
+				event.stopPropagation();
+				break;
+		}
 	},
 
 	/**
@@ -240,19 +260,24 @@
 	 * Handles the keydown event of the today button
 	 */
 	todayKeyDown: function(component, event, helper) {
-		event.stopPropagation();
-
-		// If we aren't trapping focus then do nothing
 		var trapFocus = component.get('v.trapFocus');
-		if (!trapFocus) {
-			return;
-		}
 
-		// When TAB is pressed then change focus to the first element
 		var which = event.keyCode || event.which || 0;
-		if ((which === 9) && !event.shiftKey) {
-			event.preventDefault();
-			component.find('previousMonth').focus();
+		switch (which) {
+			case 9: // Tab
+				event.stopPropagation();
+
+				// If we are trapping focus and TAB is pressed then move focus to the first element
+				if (trapFocus && !event.shiftKey) {
+					event.preventDefault();
+					component.find('previousMonth').focus();
+				}
+				break;
+
+			case 13: // Enter
+			case 32: // Space
+				event.stopPropagation();
+				return;
 		}
 	},
 

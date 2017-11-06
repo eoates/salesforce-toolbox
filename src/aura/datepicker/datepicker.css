@@ -1,3 +1,7 @@
 .THIS td.slds-disabled-text {
 	cursor: default;
 }
+
+.THIS td.is-active:not(:focus) span.slds-day {
+	background-color: #f9f9fa;
+}

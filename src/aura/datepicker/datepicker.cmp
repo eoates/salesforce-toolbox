@@ -56,7 +56,7 @@
 				    aria-live="assertive">MONTH NAME</h2>
 
 				<div class="slds-align-middle"
-				     onkeydown="{!c.nullEventHandler}"
+				     onkeydown="{!c.nextMonthKeyDown}"
 				     onmousedown="{!c.nullEventHandler}">
 					<lightning:buttonIcon aura:id="nextMonth"
 					                      iconName="utility:right"
