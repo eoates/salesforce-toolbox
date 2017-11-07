@@ -23,23 +23,23 @@
 	 * Handles the focus event of the input element. Removes any formatting from the input
 	 */
 	inputFocus: function(component, event, helper) {
-		var inputElement = event.target;
-		var selectionStart = inputElement.selectionStart;
-		var selectionEnd = inputElement.selectionEnd;
-		var selectionLength = selectionEnd - selectionStart;
-
-		var oldValue = inputElement.value;
-
 		if (helper.isDesktop()) {
+			var inputElement = event.target;
+			var selectionStart = inputElement.selectionStart;
+			var selectionEnd = inputElement.selectionEnd;
+			var selectionLength = selectionEnd - selectionStart;
+
+			var oldValue = inputElement.value;
+
 			var value = oldValue.replace(/,/g, '');
 			value = helper.trim(value);
 
 			inputElement.value = value;
-		}
 
-		var autoSelect = component.get('v.autoselect');
-		if ((selectionLength === oldValue.length) || autoSelect) {
-			inputElement.select();
+			var autoSelect = component.get('v.autoselect');
+			if ((selectionLength === oldValue.length) || autoSelect) {
+				inputElement.select();
+			}
 		}
 
 		helper.fireEvent(component, 'onfocus');
@@ -49,16 +49,13 @@
 	 * Handles the blur event of the input element. Applies formatting
 	 */
 	inputBlur: function(component, event, helper) {
-		if (helper.isMobile()) {
-			helper.fireEvent(component, 'onblur');
-			return;
-		}
-
-		var inputElement = event.target;
-		var format = helper.getFormat(component);
-		var value = helper.parseNumber(inputElement.value, format);
-		if (helper.isNumber(value)) {
-			inputElement.value = helper.formatNumber(value, format);
+		if (helper.isDesktop()) {
+			var inputElement = event.target;
+			var format = helper.getFormat(component);
+			var value = helper.parseNumber(inputElement.value, format);
+			if (helper.isNumber(value)) {
+				inputElement.value = helper.formatNumber(value, format);
+			}
 		}
 
 		helper.fireEvent(component, 'onblur');
