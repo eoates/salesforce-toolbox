@@ -1,0 +1,99 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="id" type="String" />
+	<aura:attribute access="GLOBAL" name="name" type="String" />
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="String" />
+	<aura:attribute access="GLOBAL" name="format" type="String" default="MM/dd/yyyy" />
+	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
+	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- handlers -->
+	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<!-- /handlers -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="select" action="{!c.select}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<aura:if isTrue="{#$Browser.formFactor eq 'DESKTOP'}">
+		<!-- desktop -->
+		<div aura:id="container"
+		     class="slds-input-has-icon slds-input-has-icon_right slds-dropdown-trigger slds-dropdown-trigger_click"
+		     onfocusin="{!c.containerFocusIn}"
+		     onfocusout="{!c.containerFocusOut}">
+
+			<!-- input -->
+			<input aura:id="input"
+			       id="{!v.id}"
+			       name="{!v.name}"
+			       class="{!v.class + ' slds-input'}"
+			       type="text"
+			       placeholder="{!v.placeholder}"
+			       tabindex="{!v.tabindex}"
+			       disabled="{!if(v.disabled, 'disabled', '')}"
+			       readonly="{!if(v.readonly, 'readonly', '')}"
+			       onfocus="{!c.inputFocus}"
+			       onblur="{!c.inputBlur}"
+			       onchange="{!c.inputChange}" />
+			<!-- /input -->
+
+			<!-- datepicker trigger -->
+			<lightning:buttonIcon class="slds-input__icon slds-input__icon_right"
+			                      iconName="utility:event"
+			                      variant="container"
+			                      title="Select a Date"
+			                      alternativeText="Select a Date"
+			                      disabled="{!v.disabled}"
+			                      onclick="{!c.triggerClick}" />
+			<!-- /datepicker trigger -->
+
+			<!-- datepicker -->
+			<div aura:id="dropdown"
+			     class="slds-dropdown slds-dropdown_right"
+			     aria-hidden="true"
+			     role="dialog">
+				<c:datepicker aura:id="datepicker"
+				              trapFocus="true"
+				              onselect="{!c.datepickerSelect}"
+				              onchange="{!c.datepickerChange}"
+				              oncancel="{!c.datepickerCancel}"
+				              onfocus="{!c.datepickerFocus}"
+				              onblur="{!c.datepickerBlur}" />
+			</div>
+			<!-- /datepicker -->
+
+		</div>
+		<!-- /desktop -->
+
+		<aura:set attribute="else">
+			<!-- mobile -->
+			<input aura:id="input"
+			       id="{!v.id}"
+			       name="{!v.name}"
+			       class="{!v.class + ' slds-input'}"
+			       type="date"
+			       placeholder="{!v.placeholder}"
+			       tabindex="{!v.tabindex}"
+			       disabled="{!if(v.disabled, 'disabled', '')}"
+			       readonly="{!if(v.readonly, 'readonly', '')}"
+			       onfocus="{!c.inputFocus}"
+			       onblur="{!c.inputBlur}"
+			       onchange="{!c.inputChange}" />
+			<!-- /mobile -->
+		</aura:set>
+	</aura:if>
+	<!-- /component -->
+</aura:component>
