@@ -286,12 +286,6 @@
 	 */
 	todayClick: function(component, event, helper) {
 		var today = new Date();
-		var value = helper.toDate(component.get('v.value'));
-		if (!helper.isSameDate(value, today)) {
-			helper.setValue(component, new Date(), false);
-		} else {
-			helper.setActiveDate(component, today);
-			helper.fireEvent(component, 'oncancel');
-		}
+		helper.setValue(component, today, false);
 	}
 })

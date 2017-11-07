@@ -581,6 +581,9 @@
 
 		if (this.isSameDate(value, this.toDate(oldValue))) {
 			this.setActiveDate(component, value, focus);
+			this.fireEvent(component, 'onselect', {
+				value: value
+			});
 			return false;
 		}
 
@@ -623,6 +626,11 @@
 		} finally {
 			component.ignoreValueChange = false;
 		}
+
+		// Fire the select event
+		this.fireEvent(component, 'onselect', {
+			value: value
+		});
 
 		// Fire the change event
 		this.fireEvent(component, 'onchange', {

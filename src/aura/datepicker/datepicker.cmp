@@ -10,6 +10,7 @@
 	<!-- /attributes -->
 
 	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onselect" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="oncancel" type="c:genericComponentEvent" />
 	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
