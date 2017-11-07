@@ -28,9 +28,7 @@
 
 	<!-- component -->
 	<div id="{#globalId + '_container'}"
-	     role="dialog"
 	     class="{!v.class + ' slds-datepicker'}"
-	     aria-hidden="false"
 	     aria-label="Date picker: MONTH NAME"
 	     onfocusin="{!c.containerFocusIn}"
 	     onfocusout="{!c.containerFocusOut}"
