@@ -30,6 +30,28 @@
 	},
 
 	/**
+	 * Handles change to the disabled attribute
+	 */
+	disabledChange: function(component, event, helper) {
+		// If disabled then close the dropdown
+		var disabled = component.get('v.disabled');
+		if (disabled && helper.isOpen(component)) {
+			helper.close(component);
+		}
+	},
+
+	/**
+	 * Handles change to the readonly attribute
+	 */
+	readOnlyChange: function(component, event, helper) {
+		// If read-only then close the dropdown
+		var readOnly = component.get('v.readonly');
+		if (readOnly && helper.isOpen(component)) {
+			helper.close(component);
+		}
+	},
+
+	/**
 	 * Handles the focusin event of the container element
 	 */
 	containerFocusIn: function(component, event, helper) {

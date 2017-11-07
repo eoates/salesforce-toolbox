@@ -20,6 +20,8 @@
 
 	<!-- handlers -->
 	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<aura:handler value="{!v.disabled}" name="change" action="{!c.disabledChange}" />
+	<aura:handler value="{!v.readonly}" name="change" action="{!c.readOnlyChange}" />
 	<!-- /handlers -->
 
 	<!-- methods -->
@@ -31,7 +33,7 @@
 	<aura:if isTrue="{#$Browser.formFactor eq 'DESKTOP'}">
 		<!-- desktop -->
 		<div aura:id="container"
-		     class="slds-input-has-icon slds-input-has-icon_right slds-dropdown-trigger slds-dropdown-trigger_click"
+		     class="{!'slds-dropdown-trigger slds-dropdown-trigger_click' + if(and(not(v.disabled), v.readonly), '', ' slds-input-has-icon slds-input-has-icon_right')}"
 		     onfocusin="{!c.containerFocusIn}"
 		     onfocusout="{!c.containerFocusOut}">
 
@@ -44,19 +46,19 @@
 			       placeholder="{!v.placeholder}"
 			       tabindex="{!v.tabindex}"
 			       disabled="{!if(v.disabled, 'disabled', '')}"
-			       readonly="{!if(v.readonly, 'readonly', '')}"
+			       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 			       onfocus="{!c.inputFocus}"
 			       onblur="{!c.inputBlur}"
 			       onchange="{!c.inputChange}" />
 			<!-- /input -->
 
 			<!-- datepicker trigger -->
-			<lightning:buttonIcon class="slds-input__icon slds-input__icon_right"
+			<lightning:buttonIcon class="{!'slds-input__icon slds-input__icon_right' + if(and(not(v.disabled), v.readonly), ' slds-hide', '')}"
 			                      iconName="utility:event"
 			                      variant="container"
 			                      title="Select a Date"
 			                      alternativeText="Select a Date"
-			                      disabled="{!v.disabled}"
+			                      disabled="{!v.disabled || v.readonly}"
 			                      onclick="{!c.triggerClick}" />
 			<!-- /datepicker trigger -->
 

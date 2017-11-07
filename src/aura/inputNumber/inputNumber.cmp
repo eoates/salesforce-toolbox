@@ -37,7 +37,7 @@
 	       placeholder="{!v.placeholder}"
 	       tabindex="{!v.tabindex}"
 	       disabled="{!if(v.disabled, 'disabled', '')}"
-	       readonly="{!if(v.readonly, 'readonly', '')}"
+	       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 	       onfocus="{!c.inputFocus}"
 	       onblur="{!c.inputBlur}"
 	       onkeydown="{!c.inputKeyDown}"
