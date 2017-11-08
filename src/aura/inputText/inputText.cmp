@@ -1,0 +1,48 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="id" type="String" />
+	<aura:attribute access="GLOBAL" name="name" type="String" />
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="String" />
+	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
+	<aura:attribute access="GLOBAL" name="maxlength" type="Integer" />
+	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="autocomplete" type="String" default="off" />
+	<aura:attribute access="GLOBAL" name="autotrim" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- handlers -->
+	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<!-- /handlers -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="select" action="{!c.select}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<input aura:id="input"
+	       id="{!v.id}"
+	       name="{!v.name}"
+	       class="{!v.class + ' slds-input'}"
+	       type="text"
+	       placeholder="{!v.placeholder}"
+	       maxlength="{!v.maxlength}"
+	       tabindex="{!v.tabindex}"
+	       autocomplete="{!v.autocomplete}"
+	       disabled="{!if(v.disabled, 'disabled', '')}"
+	       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
+	       onfocus="{!c.inputFocus}"
+	       onblur="{!c.inputBlur}"
+	       onchange="{!c.inputChange}" />
+	<!-- /component -->
+</aura:component>
