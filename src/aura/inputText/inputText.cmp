@@ -4,6 +4,7 @@
 	<aura:attribute access="GLOBAL" name="name" type="String" />
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="value" type="String" />
+	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
 	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
 	<aura:attribute access="GLOBAL" name="maxlength" type="Integer" />
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
@@ -35,6 +36,7 @@
 	       name="{!v.name}"
 	       class="{!v.class + ' slds-input'}"
 	       type="text"
+	       accesskey="{!v.accesskey}"
 	       placeholder="{!v.placeholder}"
 	       maxlength="{!v.maxlength}"
 	       tabindex="{!v.tabindex}"

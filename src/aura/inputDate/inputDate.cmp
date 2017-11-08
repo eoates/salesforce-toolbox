@@ -5,6 +5,7 @@
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="value" type="String" />
 	<aura:attribute access="GLOBAL" name="format" type="String" default="MM/dd/yyyy" />
+	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
 	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
@@ -43,6 +44,7 @@
 			       name="{!v.name}"
 			       class="{!v.class + ' slds-input'}"
 			       type="text"
+			       accesskey="{!v.accesskey}"
 			       placeholder="{!v.placeholder}"
 			       tabindex="{!v.tabindex}"
 			       autocomplete="off"
@@ -88,6 +90,7 @@
 			       name="{!v.name}"
 			       class="{!v.class + ' slds-input'}"
 			       type="date"
+			       accesskey="{!v.accesskey}"
 			       placeholder="{!v.placeholder}"
 			       tabindex="{!v.tabindex}"
 			       autocomplete="false"
