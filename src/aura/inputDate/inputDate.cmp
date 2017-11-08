@@ -7,6 +7,7 @@
 	<aura:attribute access="GLOBAL" name="format" type="String" default="MM/dd/yyyy" />
 	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
 	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
+	<aura:attribute access="GLOBAL" name="title" type="String" />
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
@@ -46,6 +47,7 @@
 			       type="text"
 			       accesskey="{!v.accesskey}"
 			       placeholder="{!v.placeholder}"
+			       title="{!v.title}"
 			       tabindex="{!v.tabindex}"
 			       autocomplete="off"
 			       disabled="{!if(v.disabled, 'disabled', '')}"
@@ -92,6 +94,7 @@
 			       type="date"
 			       accesskey="{!v.accesskey}"
 			       placeholder="{!v.placeholder}"
+			       title="{!v.title}"
 			       tabindex="{!v.tabindex}"
 			       autocomplete="false"
 			       disabled="{!if(v.disabled, 'disabled', '')}"
