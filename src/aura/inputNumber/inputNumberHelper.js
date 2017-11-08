@@ -411,7 +411,7 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component the modal component
+	 * @param {Aura.Component} component the inputNumber component
 	 * @param {string} name the event name
 	 * @param {object} args optional event arguments
 	 * @returns {void}

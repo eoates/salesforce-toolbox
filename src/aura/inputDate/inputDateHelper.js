@@ -238,7 +238,7 @@
 			return;
 		}
 
-		// Updat the value
+		// Update the value
 		component.ignoreValueChange = true;
 		try {
 			component.set('v.value', value);
@@ -286,7 +286,7 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component the datepicker component
+	 * @param {Aura.Component} component the inputDate component
 	 * @param {string} name the event name
 	 * @param {object} args optional event arguments
 	 * @returns {void}
