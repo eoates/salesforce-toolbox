@@ -36,6 +36,7 @@
 	       type="{#if($Browser.formFactor eq 'DESKTOP', 'text', 'number')}"
 	       placeholder="{!v.placeholder}"
 	       tabindex="{!v.tabindex}"
+	       autocomplete="off"
 	       disabled="{!if(v.disabled, 'disabled', '')}"
 	       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 	       onfocus="{!c.inputFocus}"
