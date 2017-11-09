@@ -16,6 +16,17 @@
 	},
 
 	/**
+	 * Return the CSS class for the option. We support 2 attributes for specifying an option's
+	 * class - class and className. Since class is a keyword we have to use quotes
+	 *
+	 * @param {object} option the option
+	 * @returns {string} the option's CSS class
+	 */
+	getOptionClass: function(option) {
+		return this.asString(option['class']) + ' ' + this.asString(option.className);
+	},
+
+	/**
 	 * Returns the index of the option with the specified value. If a matching option is not found
 	 * then -1 is returned
 	 *
@@ -100,7 +111,7 @@
 				selectElement.appendChild(optionElement);
 			}
 
-			optionElement.className = this.asString(option.className);
+			optionElement.className = this.getOptionClass(option);
 			optionElement.value = optionValue;
 			optionElement.disabled = !!option.disabled;
 			optionElement.innerText = optionLabel;
