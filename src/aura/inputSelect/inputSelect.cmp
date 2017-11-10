@@ -13,6 +13,11 @@
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="editable" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="label" type="String" />
+	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
+	<aura:attribute access="GLOBAL" name="helpText" type="String" />
+	<aura:attribute access="GLOBAL" name="error" type="String" />
+	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
 
 	<aura:attribute access="PRIVATE" name="localOptions" type="Object[]" />
 	<!-- /attributes -->
@@ -36,53 +41,60 @@
 	<!-- /methods -->
 
 	<!-- component -->
-	<div aura:id="container"
-	     class="{!v.containerClass + if(v.disabled, ' is-disabled', '') + if(v.editable, ' is-editable', '') + ' input-select-container slds-select_container'}"
-	     onfocusin="{!c.containerFocusIn}"
-	     onfocusout="{!c.containerFocusOut}">
-		<aura:if isTrue="{!v.editable}">
-			<!-- editable -->
-			<input aura:id="input"
-			       id="{!v.id}"
-			       name="{!v.name}"
-			       type="text"
-			       accesskey="{!v.accesskey}"
-			       title="{!v.title}"
-			       tabindex="{!v.tabindex}"
-			       disabled="{!if(v.disabled, 'disabled', '')}"
-			       onfocus="{!c.inputFocus}"
-			       onblur="{!c.inputBlur}"
-			       onkeydown="{!c.inputKeyDown}"
-			       onkeypress="{!c.inputKeyPress}"
-			       onchange="{!c.inputChange}" />
-
-			<select aura:id="select"
-			        class="{!v.class + ' input-select slds-select'}"
-			        tabindex="-1"
-			        disabled="{!if(v.disabled, 'disabled', '')}"
-			        onchange="{!c.selectChange}">
-			</select>
-			<!-- /editable -->
-
-			<aura:set attribute="else">
-				<!-- non-editable -->
-				<span class="{!if(v.selectedIndex eq -1, 'faux-option', 'slds-hide')}">{!v.value}</span>
+	<c:formElement controlId="{#globalId + '_input'}"
+	               label="{!v.label}"
+	               required="{!v.required}"
+	               helpText="{!v.helpText}"
+	               error="{!v.error}"
+	               errors="{!v.errors}">
+		<div aura:id="container"
+		     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
+		     onfocusin="{!c.containerFocusIn}"
+		     onfocusout="{!c.containerFocusOut}">
+			<aura:if isTrue="{!v.editable}">
+				<!-- editable -->
+				<input aura:id="input"
+				       id="{#globalId + '_input'}"
+				       name="{!v.name}"
+				       type="text"
+				       accesskey="{!v.accesskey}"
+				       title="{!v.title}"
+				       tabindex="{!v.tabindex}"
+				       disabled="{!if(v.disabled, 'disabled', '')}"
+				       onfocus="{!c.inputFocus}"
+				       onblur="{!c.inputBlur}"
+				       onkeydown="{!c.inputKeyDown}"
+				       onkeypress="{!c.inputKeyPress}"
+				       onchange="{!c.inputChange}" />
 
 				<select aura:id="select"
-				        id="{!v.id}"
-				        name="{!v.name}"
-				        class="{!v.class + ' input-select slds-select'}"
-				        accesskey="{!v.accesskey}"
-				        title="{!v.title}"
-				        tabindex="{!v.tabindex}"
+				        class="{!v.class + ' slds-select'}"
+				        tabindex="-1"
 				        disabled="{!if(v.disabled, 'disabled', '')}"
-				        onfocus="{!c.selectFocus}"
-				        onblur="{!c.selectBlur}"
 				        onchange="{!c.selectChange}">
 				</select>
-				<!-- /non-editable -->
-			</aura:set>
-		</aura:if>
-	</div>
+				<!-- /editable -->
+
+				<aura:set attribute="else">
+					<!-- non-editable -->
+					<span class="{!if(v.selectedIndex eq -1, 'faux-option', 'slds-hide')}">{!v.value}</span>
+
+					<select aura:id="select"
+					        id="{#globalId + '_input'}"
+					        name="{!v.name}"
+					        class="{!v.class + ' slds-select'}"
+					        accesskey="{!v.accesskey}"
+					        title="{!v.title}"
+					        tabindex="{!v.tabindex}"
+					        disabled="{!if(v.disabled, 'disabled', '')}"
+					        onfocus="{!c.selectFocus}"
+					        onblur="{!c.selectBlur}"
+					        onchange="{!c.selectChange}">
+					</select>
+					<!-- /non-editable -->
+				</aura:set>
+			</aura:if>
+		</div>
+	</c:formElement>
 	<!-- /component -->
 </aura:component>

@@ -1,18 +1,18 @@
-.THIS.is-editable.has-focus:not(.has-error) select:not(:focus) {
+.THIS:not(.slds-has-error) .is-editable.has-focus select:not(:focus) {
 	border-color: #1589ee;
 	background-color: white;
 	box-shadow: 0 0 3px #0070D2;
 	background-clip: padding-box;
 }
 
-.THIS.is-editable.has-focus.has-error select:not(:focus) {
+.THIS.slds-has-error .is-editable.has-focus select:not(:focus) {
 	border-color: #c23934;
 	background-color: white;
 	box-shadow: #c23934 0 0 0 1px inset, 0 0 3px #0070D2;
 	background-clip: padding-box;
 }
 
-.THIS.is-editable input {
+.THIS .is-editable input {
 	background-color: white;
 	position: absolute;
 	border: 0;
@@ -24,11 +24,11 @@
 	padding: 0 0 0 11px;
 }
 
-.THIS.is-editable input::-ms-clear {
+.THIS .is-editable input::-ms-clear {
 	display: none;
 }
 
-.THIS.is-editable input[disabled] {
+.THIS .is-editable input[disabled] {
 	background-color: #e9eaec;
 	cursor: not-allowed;
 	-webkit-user-select: none;
@@ -37,20 +37,19 @@
 	        user-select: none;
 }
 
-.THIS.is-editable select {
+.THIS .is-editable select {
 	color: white;
 }
 
-.THIS.is-editable select[disabled] {
+.THIS .is-editable select[disabled] {
 	color: transparent;
 }
 
-.THIS.is-editable option {
+.THIS .is-editable option {
 	color: #16325c;
 }
 
-.THIS.is-editable option[disabled] {
-	/*color: #808080;*/
+.THIS .is-editable option[disabled] {
 	color: graytext;
 }
 

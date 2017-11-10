@@ -1,6 +1,5 @@
 <aura:component access="GLOBAL">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="id" type="String" />
 	<aura:attribute access="GLOBAL" name="name" type="String" />
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="value" type="String" />
@@ -13,6 +12,11 @@
 	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="autotrim" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="label" type="String" />
+	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
+	<aura:attribute access="GLOBAL" name="helpText" type="String" />
+	<aura:attribute access="GLOBAL" name="error" type="String" />
+	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
 	<!-- /attributes -->
 
 	<!-- events -->
@@ -31,20 +35,27 @@
 	<!-- /methods -->
 
 	<!-- component -->
-	<input aura:id="input"
-	       id="{!v.id}"
-	       name="{!v.name}"
-	       class="{!v.class + ' slds-input'}"
-	       type="text"
-	       accesskey="{!v.accesskey}"
-	       placeholder="{!v.placeholder}"
-	       title="{!v.title}"
-	       maxlength="{!v.maxlength}"
-	       tabindex="{!v.tabindex}"
-	       disabled="{!if(v.disabled, 'disabled', '')}"
-	       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
-	       onfocus="{!c.inputFocus}"
-	       onblur="{!c.inputBlur}"
-	       onchange="{!c.inputChange}" />
+	<c:formElement controlId="{#globalId + '_input'}"
+	               label="{!v.label}"
+	               required="{!v.required}"
+	               helpText="{!v.helpText}"
+	               error="{!v.error}"
+	               errors="{!v.errors}">
+		<input aura:id="input"
+		       id="{#globalId + '_input'}"
+		       name="{!v.name}"
+		       class="{!v.class + ' slds-input'}"
+		       type="text"
+		       accesskey="{!v.accesskey}"
+		       placeholder="{!v.placeholder}"
+		       title="{!v.title}"
+		       maxlength="{!v.maxlength}"
+		       tabindex="{!v.tabindex}"
+		       disabled="{!if(v.disabled, 'disabled', '')}"
+		       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
+		       onfocus="{!c.inputFocus}"
+		       onblur="{!c.inputBlur}"
+		       onchange="{!c.inputChange}" />
+	</c:formElement>
 	<!-- /component -->
 </aura:component>
