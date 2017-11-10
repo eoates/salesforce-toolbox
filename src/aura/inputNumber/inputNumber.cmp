@@ -40,7 +40,6 @@
 	       placeholder="{!v.placeholder}"
 	       title="{!v.title}"
 	       tabindex="{!v.tabindex}"
-	       autocomplete="off"
 	       disabled="{!if(v.disabled, 'disabled', '')}"
 	       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 	       onfocus="{!c.inputFocus}"

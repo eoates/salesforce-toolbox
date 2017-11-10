@@ -11,7 +11,6 @@
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="autocomplete" type="String" default="off" />
 	<aura:attribute access="GLOBAL" name="autotrim" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
 	<!-- /attributes -->
@@ -42,7 +41,6 @@
 	       title="{!v.title}"
 	       maxlength="{!v.maxlength}"
 	       tabindex="{!v.tabindex}"
-	       autocomplete="{!v.autocomplete}"
 	       disabled="{!if(v.disabled, 'disabled', '')}"
 	       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 	       onfocus="{!c.inputFocus}"
