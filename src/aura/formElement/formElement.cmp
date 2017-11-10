@@ -3,6 +3,7 @@
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
 	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
+	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
 	<aura:attribute access="GLOBAL" name="controlId" type="String" />
 	<aura:attribute access="GLOBAL" name="label" type="String" />
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" default="false" />
@@ -43,7 +44,7 @@
 		<!-- /control -->
 
 		<!-- errors -->
-		<div class="{!'slds-form-element__help' + if(and(empty(v.error), empty(v.errors)), ' slds-hide', '')}">
+		<div class="{!v.errorClass + ' slds-form-element__help' + if(and(empty(v.error), empty(v.errors)), ' slds-hide', '')}">
 			<aura:if isTrue="{!v.errors.length gt 1}">
 				<ul>
 					<aura:iteration items="{!v.errors}" var="error">
