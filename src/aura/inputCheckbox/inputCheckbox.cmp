@@ -1,0 +1,55 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="name" type="String" />
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
+	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="label" type="String" />
+	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
+	<aura:attribute access="GLOBAL" name="helpText" type="String" />
+	<aura:attribute access="GLOBAL" name="error" type="String" />
+	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<c:formElement required="{!v.required}"
+	               error="{!v.error}"
+	               errors="{!v.errors}">
+		<span class="{!v.class + ' slds-checkbox'}">
+			<input aura:id="input"
+			       id="{#globalId + '_input'}"
+			       type="checkbox"
+			       checked="{!if(v.value, 'checked', '')}"
+			       accesskey="{!v.accesskey}"
+			       title="{!v.title}"
+			       tabindex="{!v.tabindex}"
+			       disabled="{!if(v.disabled, 'disabled', '')}"
+			       onfocus="{!c.inputFocus}"
+			       onblur="{!c.inputBlur}"
+			       onchange="{!c.inputChange}" />
+
+			<label for="{#globalId + '_input'}" class="slds-checkbox__label">
+				<span class="slds-checkbox_faux"></span>
+				<span class="slds-form-element__label">{!v.label}</span>
+			</label>
+
+			<aura:if isTrue="{!not(empty(v.helpText))}">
+				<lightning:helptext class="help-text" content="{!v.helpText}" />
+			</aura:if>
+		</span>
+	</c:formElement>
+	<!-- /component -->
+</aura:component>
