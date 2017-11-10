@@ -17,11 +17,15 @@
 	position: absolute;
 	border: 0;
 	outline: none;
-	left: 3px;
-	top: 3px;
-	bottom: 3px;
+	left: 2px;
+	top: 2px;
 	width: calc(100% - 28px);
-	padding: 0 0 1px 6px;
+	height: calc(100% - 4px);
+	padding: 0 0 0 11px;
+}
+
+.THIS.is-editable input::-ms-clear {
+	display: none;
 }
 
 .THIS.is-editable input[disabled] {
