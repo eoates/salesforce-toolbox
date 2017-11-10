@@ -6,6 +6,7 @@
 	<aura:attribute access="GLOBAL" name="controlId" type="String" />
 	<aura:attribute access="GLOBAL" name="label" type="String" />
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
 	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
 	<!-- /attributes -->
@@ -28,6 +29,12 @@
 			</aura:set>
 		</aura:if>
 		<!-- /label -->
+
+		<!-- help text -->
+		<aura:if isTrue="{!not(empty(v.helpText))}">
+			<lightning:helptext class="help-text" content="{!v.helpText}" />
+		</aura:if>
+		<!-- /help text -->
 
 		<!-- control -->
 		<div class="{!v.controlClass + ' slds-form-element__control'}">

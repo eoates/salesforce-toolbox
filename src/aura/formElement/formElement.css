@@ -1,2 +1,4 @@
-.THIS {
+.THIS .help-text {
+	display: inline-block !important;
+	margin-bottom: 1px;
 }
