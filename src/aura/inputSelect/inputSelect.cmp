@@ -37,7 +37,7 @@
 
 	<!-- component -->
 	<div aura:id="container"
-	     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
+	     class="{!v.containerClass + if(v.disabled, ' is-disabled', '') + if(v.editable, ' is-editable', '') + ' input-select-container slds-select_container'}"
 	     onfocusin="{!c.containerFocusIn}"
 	     onfocusout="{!c.containerFocusOut}">
 		<aura:if isTrue="{!v.editable}">
@@ -57,7 +57,7 @@
 			       onchange="{!c.inputChange}" />
 
 			<select aura:id="select"
-			        class="{!v.class + ' slds-select'}"
+			        class="{!v.class + ' input-select slds-select'}"
 			        tabindex="-1"
 			        disabled="{!if(v.disabled, 'disabled', '')}"
 			        onchange="{!c.selectChange}">
@@ -66,10 +66,12 @@
 
 			<aura:set attribute="else">
 				<!-- non-editable -->
+				<span class="{!if(v.selectedIndex eq -1, 'faux-option', 'slds-hide')}">{!v.value}</span>
+
 				<select aura:id="select"
 				        id="{!v.id}"
 				        name="{!v.name}"
-				        class="{!v.class + ' slds-select'}"
+				        class="{!v.class + ' input-select slds-select'}"
 				        accesskey="{!v.accesskey}"
 				        title="{!v.title}"
 				        tabindex="{!v.tabindex}"

@@ -50,5 +50,14 @@
 }
 
 .THIS.is-editable option[disabled] {
-	color: #808080;
+	/*color: #808080;*/
+	color: graytext;
+}
+
+.THIS .faux-option {
+	position: absolute;
+	color: graytext;
+	pointer-events: none;
+	margin-top: 6px;
+	margin-left: 11px;
 }
