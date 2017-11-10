@@ -6,10 +6,15 @@
 	<aura:attribute access="GLOBAL" name="containerClass" type="String" />
 	<aura:attribute access="GLOBAL" name="value" type="String" />
 	<aura:attribute access="GLOBAL" name="options" type="Object[]" />
+	<aura:attribute access="GLOBAL" name="selectedIndex" type="Integer" default="-1" />
 	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
 	<aura:attribute access="GLOBAL" name="title" type="String" />
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="editable" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+
+	<aura:attribute access="PRIVATE" name="localOptions" type="Object[]" />
 	<!-- /attributes -->
 
 	<!-- events -->
@@ -19,8 +24,11 @@
 	<!-- /events -->
 
 	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
 	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
 	<aura:handler value="{!v.options}" name="change" action="{!c.optionsChange}" />
+	<aura:handler value="{!v.selectedIndex}" name="change" action="{!c.selectedIndexChange}" />
+	<aura:handler value="{!v.editable}" name="change" action="{!c.editableChange}" />
 	<!-- /handlers -->
 
 	<!-- methods -->
@@ -28,17 +36,51 @@
 	<!-- /methods -->
 
 	<!-- component -->
-	<div class="{!v.containerClass + ' slds-select_container'}">
-		<select aura:id="select"
-		        class="{!v.class + ' slds-select'}"
-		        accesskey="{!v.accesskey}"
-		        title="{!v.title}"
-		        tabindex="{!v.tabindex}"
-		        disabled="{!if(v.disabled, 'disabled', '')}"
-		        onfocus="{!c.selectFocus}"
-		        onblur="{!c.selectBlur}"
-		        onchange="{!c.selectChange}">
-		</select>
+	<div aura:id="container"
+	     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
+	     onfocusin="{!c.containerFocusIn}"
+	     onfocusout="{!c.containerFocusOut}">
+		<aura:if isTrue="{!v.editable}">
+			<!-- editable -->
+			<input aura:id="input"
+			       id="{!v.id}"
+			       name="{!v.name}"
+			       type="text"
+			       accesskey="{!v.accesskey}"
+			       title="{!v.title}"
+			       tabindex="{!v.tabindex}"
+			       disabled="{!if(v.disabled, 'disabled', '')}"
+			       onfocus="{!c.inputFocus}"
+			       onblur="{!c.inputBlur}"
+			       onkeydown="{!c.inputKeyDown}"
+			       onkeypress="{!c.inputKeyPress}"
+			       onchange="{!c.inputChange}" />
+
+			<select aura:id="select"
+			        class="{!v.class + ' slds-select'}"
+			        tabindex="-1"
+			        disabled="{!if(v.disabled, 'disabled', '')}"
+			        onchange="{!c.selectChange}">
+			</select>
+			<!-- /editable -->
+
+			<aura:set attribute="else">
+				<!-- non-editable -->
+				<select aura:id="select"
+				        id="{!v.id}"
+				        name="{!v.name}"
+				        class="{!v.class + ' slds-select'}"
+				        accesskey="{!v.accesskey}"
+				        title="{!v.title}"
+				        tabindex="{!v.tabindex}"
+				        disabled="{!if(v.disabled, 'disabled', '')}"
+				        onfocus="{!c.selectFocus}"
+				        onblur="{!c.selectBlur}"
+				        onchange="{!c.selectChange}">
+				</select>
+				<!-- /non-editable -->
+			</aura:set>
+		</aura:if>
 	</div>
 	<!-- /component -->
 </aura:component>

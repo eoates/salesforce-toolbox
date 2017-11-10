@@ -4,6 +4,8 @@
 	 */
 	afterRender: function(component, helper) {
 		this.superAfterRender();
-		helper.updateOptions(component);
+
+		helper.updateOptionElements(component);
+		helper.updateInputAndSelectElements(component);
 	}
 })

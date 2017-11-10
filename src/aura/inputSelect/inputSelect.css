@@ -1,2 +1,50 @@
-.THIS {
+.THIS.is-editable.has-focus:not(.has-error) select:not(:focus) {
+	border-color: #1589ee;
+	background-color: white;
+	box-shadow: 0 0 3px #0070D2;
+	background-clip: padding-box;
+}
+
+.THIS.is-editable.has-focus.has-error select:not(:focus) {
+	border-color: #c23934;
+	background-color: white;
+	box-shadow: #c23934 0 0 0 1px inset, 0 0 3px #0070D2;
+	background-clip: padding-box;
+}
+
+.THIS.is-editable input {
+	background-color: white;
+	position: absolute;
+	border: 0;
+	outline: none;
+	left: 3px;
+	top: 3px;
+	bottom: 3px;
+	width: calc(100% - 28px);
+	padding: 0 0 1px 6px;
+}
+
+.THIS.is-editable input[disabled] {
+	background-color: #e9eaec;
+	cursor: not-allowed;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
+
+.THIS.is-editable select {
+	color: white;
+}
+
+.THIS.is-editable select[disabled] {
+	color: transparent;
+}
+
+.THIS.is-editable option {
+	color: #16325c;
+}
+
+.THIS.is-editable option[disabled] {
+	color: #808080;
 }
