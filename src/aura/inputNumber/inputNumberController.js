@@ -125,7 +125,6 @@
 		var which = event.keyCode || event.which || 0;
 
 		var format = helper.getFormat(component);
-		var allowDecimal = format.scale > 0;
 		var allowNegative = format.min < 0;
 
 		var value = inputElement.value;
@@ -142,21 +141,16 @@
 			}
 		} else if (which === 46) {
 			// 46 = period
-			if (allowDecimal) {
-				// If one or more characters are selected then we remove the selected substring from
-				// the value as it will be overwritten with the period
-				if (selectionLength > 0) {
-					var left = value.substr(0, selectionStart);
-					var right = value.substr(selectionEnd);
-					value = left + right;
-				}
+			// If one or more characters are selected then we remove the selected substring from
+			// the value as it will be overwritten with the period
+			if (selectionLength > 0) {
+				var left = value.substr(0, selectionStart);
+				var right = value.substr(selectionEnd);
+				value = left + right;
+			}
 
-				// Make sure the value does not already contain a period
-				if (value.indexOf('.') >= 0) {
-					event.preventDefault();
-				}
-			} else {
-				// Scale is 0 so don't allow a decimal
+			// Make sure the value does not already contain a period
+			if (value.indexOf('.') >= 0) {
 				event.preventDefault();
 			}
 		} else if ((which >= 48) && (which <= 57)) {
