@@ -231,7 +231,7 @@
 	/**
 	 * Returns the first day in the calendar that matches the predicate
 	 *
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @param {Function} predicate a function that will be called for each day in the calendar
 	 * @returns {object} the first day that matched the specified predicate. If there was no match
 	 *                   then null is returned
@@ -251,7 +251,7 @@
 	/**
 	 * Returns the day at the specified index
 	 *
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @param {number} index the index of the desired day
 	 * @returns {object} the day at the specified index
 	 */
@@ -262,7 +262,7 @@
 	/**
 	 * Returns the day for the specified date
 	 *
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @param {Date} date the value of the day to return
 	 * @returns {object} the day for the specified date
 	 */
@@ -277,7 +277,7 @@
 	 * the component's renderer
 	 *
 	 * @param {Aura.Component} component the datepicker component
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @returns {void}
 	 */
 	addRows: function(component, calendar) {
@@ -321,7 +321,7 @@
 	 * Updates all of the cells in the calendar when the month or selected date is changed
 	 *
 	 * @param {Aura.Component} component the datepicker component
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @returns {void}
 	 */
 	updateRows: function(component, calendar) {
@@ -348,8 +348,8 @@
 	 * Updates an individual cell in the calendar
 	 *
 	 * @param {HTMLElement} cell the cell to update
-	 * @param {object} calendar the calendar
-	 * @param {object} day the day that the cell represents
+	 * @param {Object} calendar the calendar
+	 * @param {Object} day the day that the cell represents
 	 * @returns {void}
 	 */
 	updateCell: function(cell, calendar, day) {
@@ -374,7 +374,7 @@
 	 * Updates the displayed month name whenever the month changes
 	 *
 	 * @param {Aura.Component} component the datepicker component
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @returns {void}
 	 */
 	updateMonthName: function(component, calendar) {
@@ -391,7 +391,7 @@
 	 * Updates the year select options when the year changes
 	 *
 	 * @param {Aura.Component} component the datepicker component
-	 * @param {object} calendar the calendar
+	 * @param {Object} calendar the calendar
 	 * @returns {void}
 	 */
 	updateYearOptions: function(component, calendar) {
@@ -660,7 +660,7 @@
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {Date} date the date of the active day
 	 * @param {boolean} [focus] true if the active day should receive focus
-	 * @param {object} [calendar] the calendar
+	 * @param {Object} [calendar] the calendar
 	 * @returns {void}
 	 */
 	setActiveDate: function(component, date, focus, calendar) {
@@ -770,7 +770,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {string} name the event name
-	 * @param {object} args optional event arguments
+	 * @param {Object} args optional event arguments
 	 * @returns {void}
 	 */
 	fireEvent: function(component, name, args) {

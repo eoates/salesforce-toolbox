@@ -285,7 +285,7 @@
 	 *
 	 * @param {Aura.Component} component the inputDate component
 	 * @param {string} name the event name
-	 * @param {object} args optional event arguments
+	 * @param {Object} args optional event arguments
 	 * @returns {void}
 	 */
 	fireEvent: function(component, name, args) {

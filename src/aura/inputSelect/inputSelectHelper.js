@@ -19,7 +19,7 @@
 	 * Creates a local copy of the options so we don't modify the array passed via the component's
 	 * options attribute
 	 *
-	 * @param {object[]} options the options to copy
+	 * @param {Object[]} options the options to copy
 	 * @returns {object[]} an array containing the copied options
 	 */
 	createLocalOptions: function(options) {
@@ -66,7 +66,7 @@
 	 * Return the CSS class for the option. We support 2 attributes for specifying an option's
 	 * class - class and className. Since class is a keyword we have to use quotes
 	 *
-	 * @param {object} option the option
+	 * @param {Object} option the option
 	 * @returns {string} the option's CSS class
 	 */
 	getOptionClass: function(option) {
@@ -98,7 +98,7 @@
 	/**
 	 * Returns the index of the first option that has the specified value
 	 *
-	 * @param {object[]} options the options
+	 * @param {Object[]} options the options
 	 * @param {string} value the value to find
 	 * @returns {number} the index of the matching option or -1
 	 */
@@ -111,7 +111,7 @@
 	/**
 	 * Returns the index of the first option that is not disabled and has the specified label
 	 *
-	 * @param {object[]} options the options
+	 * @param {Object[]} options the options
 	 * @param {string} label the label to find
 	 * @returns {number} the index of the matching option or -1
 	 */
@@ -126,7 +126,7 @@
 	 * Returns the index of the first option that is not disabled and where the label starts with
 	 * the specified text
 	 *
-	 * @param {object[]} options the options
+	 * @param {Object[]} options the options
 	 * @param {string} label the label to find
 	 * @returns {number} the index of the matching option or -1
 	 */
@@ -513,7 +513,7 @@
 	 *
 	 * @param {Aura.Component} component the inputSelect component
 	 * @param {string} name the event name
-	 * @param {object} args optional event arguments
+	 * @param {Object} args optional event arguments
 	 * @returns {void}
 	 */
 	fireEvent: function(component, name, args) {

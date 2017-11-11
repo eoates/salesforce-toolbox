@@ -177,7 +177,7 @@
 	 * Gets the minimum value
 	 *
 	 * @param {Aura.Component} component the inputNumber component
-	 * @param {object} range an object containing the valid number range
+	 * @param {Object} range an object containing the valid number range
 	 * @returns {number} the minimum value
 	 */
 	getMin: function(component, range) {
@@ -191,7 +191,7 @@
 	 * Gets the maximium value
 	 *
 	 * @param {Aura.Component} component the inputNumber component
-	 * @param {object} range an object containing the valid number range
+	 * @param {Object} range an object containing the valid number range
 	 * @returns {number} the maximum value
 	 */
 	getMax: function(component, range) {
@@ -287,7 +287,7 @@
 	 *
 	 * @param {*} value the value to be parsed. May be any type, but anything other than a string
 	 *                  will be converted to a string before parsing
-	 * @param {object} format an object that contains formatting information and constraints
+	 * @param {Object} format an object that contains formatting information and constraints
 	 * @returns {number} the parsed number or null if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
@@ -332,7 +332,7 @@
 	 * number (undefined, null, NaN, etc.) then an empty string will be returned
 	 *
 	 * @param {number} value the number to format
-	 * @param {object} format an object containing formatting information
+	 * @param {Object} format an object containing formatting information
 	 * @param {boolean} [hasFocus] if true then the thousands separator will not be used
 	 * @returns {string} the formatted number
 	 */
@@ -446,7 +446,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {string} name the event name
-	 * @param {object} args optional event arguments
+	 * @param {Object} args optional event arguments
 	 * @returns {void}
 	 */
 	fireEvent: function(component, name, args) {
