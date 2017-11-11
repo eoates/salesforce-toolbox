@@ -727,7 +727,7 @@
 
 		var result;
 		var lastDay = this.lastDayOfMonth(year, month);
-		if (day > lastDay.date()) {
+		if (day > lastDay.getDate()) {
 			result = lastDay;
 		} else {
 			result = new Date(year, month, day);
