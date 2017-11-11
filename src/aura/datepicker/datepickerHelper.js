@@ -7,95 +7,15 @@
 	],
 
 	/**
-	 * Removes leading and trailing white space characters from a string. If the specified value is
-	 * null or undefined then an empty string will be returned. If the value is not a string then it
-	 * will be converted to a string and then trimmed
+	 * Imports modules used by the component
 	 *
-	 * @param {*} value the value to be trimmed
-	 * @return {string} the trimmed string
+	 * @param {Aura.Component} component the datepicker component
+	 * @return {void}
 	 */
-	trim: function(value) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			value = '';
-		} else {
-			if (!this.isString(value)) {
-				value = '' + value;
-			}
-			value = value.replace(/^\s+|\s+$/g, '');
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
 		}
-		return value;
-	},
-
-	/**
-	 * Converts the value to a Date if possible. If the value cannot be converted to a Date then
-	 * null is returned
-	 *
-	 * @param {*} value the value to convert
-	 * @return {Date} the converted date or null if the value could not be converted to a Date
-	 */
-	toDate: function(value) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			value = null;
-		} else if (this.isDate(value)) {
-			value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-		} else if (this.isNumber(value)) {
-			value = new Date(value);
-		} else {
-			value = this.trim(value);
-			if (value !== '') {
-				try {
-					value = $A.localizationService.parseDateTime(value);
-				} catch (e) {
-					value = null;
-				}
-			} else {
-				value = null;
-			}
-		}
-		return value;
-	},
-
-	/**
-	 * Converts a Date to UTC
-	 *
-	 * @param {Date} date the date to convert to UTC
-	 * @return {Date} the UTC date
-	 */
-	toUTCDate: function(date) {
-		var result = new Date(date);
-		result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-		return result;
-	},
-
-	/**
-	 * Returns true if the value is a string
-	 *
-	 * @param {*} vaue the value to test
-	 * @return {boolean} true if the value is a string; otherwise, false
-	 */
-	isString: function(value) {
-		return (typeof value === 'string');
-	},
-
-	/**
-	 * Returns true if the value is a number. This method does not treat special NaN or Infinity as
-	 * numbers even though they technically are
-	 *
-	 * @param {*} value the value to test
-	 * @return {boolean} true if the value is a number; otherwise, false
-	 */
-	isNumber: function(value) {
-		return (typeof value === 'number') && isFinite(value);
-	},
-
-	/**
-	 * Returns true if the value is a date
-	 *
-	 * @param {*} value the value to test
-	 * @return {boolean} true if the value is a date; otherwise, false
-	 */
-	isDate: function(value) {
-		return (Object.prototype.toString.call(value) === '[object Date]');
 	},
 
 	/**
@@ -106,69 +26,15 @@
 	 * @return {boolean} true if the 2 dates represent the same day; otherwise, false
 	 */
 	isSameDate: function(date1, date2) {
-		if ($A.util.isUndefinedOrNull(date1) && $A.util.isUndefinedOrNull(date2)) {
+		if (this.utils.isUndefinedOrNull(date1) && this.utils.isUndefinedOrNull(date2)) {
 			return true;
 		}
 
-		if ($A.util.isUndefinedOrNull(date1) || $A.util.isUndefinedOrNull(date2)) {
+		if (this.utils.isUndefinedOrNull(date1) || this.utils.isUndefinedOrNull(date2)) {
 			return false;
 		}
 
 		return $A.localizationService.isSame(date1, date2, 'day');
-	},
-
-	/**
-	 * Adds a specified number of days to a date
-	 *
-	 * @param {Date} date the date
-	 * @param {number} days the number of days to add to date
-	 * @return {Date} the new date
-	 */
-	addDays: function(date, days) {
-		var result = new Date(date);
-		result.setDate(result.getDate() + days);
-		return result;
-	},
-
-	/**
-	 * Returns the number of days between 2 date values
-	 *
-	 * @param {Date} date1 the first date
-	 * @param {Date} date2 the second date
-	 * @return {number} the number of days between the dates
-	 */
-	getDaysBetween: function(date1, date2) {
-		var millisecondsPerDay = 24 * 60 * 60 * 1000;
-		return (this.toUTCDate(date2) - this.toUTCDate(date1)) / millisecondsPerDay;
-	},
-
-	/**
-	 * Returns the first day of the specified month
-	 *
-	 * @param {number} year the year
-	 * @param {number} month the month
-	 * @return {Date} the first day of the specified month
-	 */
-	getFirstDayOfMonth: function(year, month) {
-		return new Date(year, month, 1);
-	},
-
-	/**
-	 * Returns the last day of the specified month
-	 *
-	 * @param {number} year the year
-	 * @param {number} month the month
-	 * @return {Date} the last day of the specified month
-	 */
-	getLastDayOfMonth: function(year, month) {
-		month++;
-		if (month === 12) {
-			month = 0;
-			year++;
-		}
-
-		var d = this.getFirstDayOfMonth(year, month);
-		return this.addDays(d, -1);
 	},
 
 	/**
@@ -183,19 +49,19 @@
 	 */
 	getCalendar: function(year, month, selected) {
 		var today = new Date();
-		var firstDayOfMonth = this.getFirstDayOfMonth(year, month);
-		var lastDayOfMonth = this.getLastDayOfMonth(year, month);
-		var beginDate = this.addDays(firstDayOfMonth, -firstDayOfMonth.getDay());
-		var endDate = this.addDays(lastDayOfMonth, 6 - lastDayOfMonth.getDay());
-		var days = this.getDaysBetween(endDate, beginDate);
+		var firstDayOfMonth = this.utils.firstDayOfMonth(year, month);
+		var lastDayOfMonth = this.utils.lastDayOfMonth(year, month);
+		var beginDate = this.utils.addDays(firstDayOfMonth, -firstDayOfMonth.getDay());
+		var endDate = this.utils.addDays(lastDayOfMonth, 6 - lastDayOfMonth.getDay());
+		var days = this.utils.daysBetween(endDate, beginDate);
 		var weeks = Math.ceil(days / 7);
 		if (weeks === 4) {
 			// Show last week of previous month and first week of next month
-			beginDate = this.addDays(beginDate, -7);
-			endDate = this.addDays(endDate, 7);
+			beginDate = this.utils.addDays(beginDate, -7);
+			endDate = this.utils.addDays(endDate, 7);
 		} else if (weeks === 5) {
 			// Show the first full week of the next month
-			endDate = this.addDays(endDate, 7);
+			endDate = this.utils.addDays(endDate, 7);
 		}
 
 		var currentDate = beginDate;
@@ -215,7 +81,7 @@
 				};
 				calendarDays.push(day);
 
-				currentDate = this.addDays(currentDate, 1);
+				currentDate = this.utils.addDays(currentDate, 1);
 			}
 		}
 
@@ -492,13 +358,13 @@
 		var span = event.target;
 		var cell = span.parentNode;
 		var index = parseInt(cell.getAttribute('data-index'), 10);
-		if (!this.isNumber(index)) {
+		if (!this.utils.isNumber(index)) {
 			return;
 		}
 
 		var year = component.get('v.year');
 		var month = component.get('v.month');
-		var value = this.toDate(component.get('v.value'));
+		var value = this.utils.asDate(component.get('v.value'));
 		var calendar = this.getCalendar(year, month, value);
 
 		var day = this.getDayByIndex(calendar, index);
@@ -523,7 +389,7 @@
 	navigate: function(component, count, unit, focus) {
 		var year = component.get('v.year');
 		var month = component.get('v.month');
-		var value = this.toDate(component.get('v.value'));
+		var value = this.utils.asDate(component.get('v.value'));
 		var calendar = this.getCalendar(year, month, value);
 
 		var activeIndex = component.get('v.activeIndex');
@@ -532,34 +398,13 @@
 
 		if (unit === 'y') {
 			// Years
-			year += count;
+			activeDate = this.utils.addYears(activeDate, count);
 		} else if (unit === 'm') {
 			// Months
-			year += (count - (count % 12)) / 12;
-			month += (count % 12);
-			if (month > 11) {
-				// Roll forward to next year
-				month = 0;
-				year++;
-			} else if (month < 0) {
-				// Roll back to previous year
-				month = 11;
-				year--;
-			}
+			activeDate = this.utils.addMonths(activeDate, count);
 		} else if (unit === 'd') {
 			// Days
-			activeDate = this.addDays(activeDate, count);
-
-			year = activeDate.getFullYear();
-			month = activeDate.getMonth();
-		}
-
-		// Make sure date is within range
-		var lastDayOfMonth = this.getLastDayOfMonth(year, month);
-		if (activeDate.getDate() > lastDayOfMonth.getDate()) {
-			activeDate = lastDayOfMonth;
-		} else {
-			activeDate = new Date(year, month, activeDate.getDate());
+			activeDate = this.utils.addDays(activeDate, count);
 		}
 
 		// Display the active day
@@ -572,14 +417,15 @@
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {Date} value the value
 	 * @param {boolean} [focus] true if the active day should receive the focus
+	 * @return {void}
 	 */
 	setValue: function(component, value, focus) {
 		var oldValue = component.get('v.value');
-		if ($A.util.isUndefinedOrNull(oldValue)) {
+		if (this.utils.isUndefinedOrNull(oldValue)) {
 			oldValue = null;
 		}
 
-		if (this.isSameDate(value, this.toDate(oldValue))) {
+		if (this.isSameDate(value, this.utils.asDate(oldValue))) {
 			this.setActiveDate(component, value, focus);
 			this.fireEvent(component, 'onselect', {
 				value: value
@@ -615,7 +461,7 @@
 
 		// Set the value
 		if (value) {
-			value = $A.localizationService.formatDateTime(value, this.valueFormat);
+			value = this.utils.formatDate(value, this.valueFormat);
 		} else {
 			value = null;
 		}
@@ -641,11 +487,14 @@
 
 	/**
 	 * Returns the active date
+	 *
+	 * @param {Aura.Component} component the datepicker component
+	 * @return {Date} the active date
 	 */
 	getActiveDate: function(component) {
 		var year = component.get('v.year');
 		var month = component.get('v.month');
-		var value = this.toDate(component.get('v.value'));
+		var value = this.utils.asDate(component.get('v.value'));
 		var calendar = this.getCalendar(year, month, value);
 
 		var activeIndex = component.get('v.activeIndex');
@@ -666,7 +515,7 @@
 	setActiveDate: function(component, date, focus, calendar) {
 		var year = component.get('v.year');
 		var month = component.get('v.month');
-		var value = this.toDate(component.get('v.value'));
+		var value = this.utils.asDate(component.get('v.value'));
 		var activeIndex = component.get('v.activeIndex');
 
 		// If the calendar was not specified then get it using the currently selected year and month
@@ -724,7 +573,7 @@
 	 */
 	cancel: function(component, focus) {
 		var today = new Date();
-		var value = this.toDate(component.get('v.value'));
+		var value = this.utils.asDate(component.get('v.value'));
 		this.setActiveDate(component, value || today, focus);
 		this.fireEvent(component, 'oncancel');
 	},
@@ -739,7 +588,7 @@
 	 * @return {void}
 	 */
 	toggleClass: function(element, className, state) {
-		if ($A.util.isUndefinedOrNull(state)) {
+		if (this.utils.isUndefinedOrNull(state)) {
 			state = !$A.util.hasClass(element, className);
 		}
 
@@ -756,9 +605,10 @@
 	 * @param {HTMLElement} element the element
 	 * @param {string} name the attribute name
 	 * @param {*} value the attribute value
+	 * @return {void}
 	 */
 	setElementAttribute: function(element, name, value) {
-		if ($A.util.isUndefinedOrNull(value)) {
+		if (this.utils.isUndefinedOrNull(value)) {
 			element.removeAttribute(name);
 		} else {
 			element.setAttribute(name, value);

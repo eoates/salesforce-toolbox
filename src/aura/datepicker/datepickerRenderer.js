@@ -9,7 +9,7 @@
 		// Create calendar DOM elements
 		var year = component.get('v.year');
 		var month = component.get('v.month');
-		var value = helper.toDate(component.get('v.value'));
+		var value = helper.utils.asDate(component.get('v.value'));
 		var calendar = helper.getCalendar(year, month, value);
 
 		helper.addRows(component, calendar);

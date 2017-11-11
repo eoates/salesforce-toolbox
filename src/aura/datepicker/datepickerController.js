@@ -10,8 +10,10 @@
 	 * Initializes the component
 	 */
 	init: function(component, event, helper) {
+		helper.importModules(component);
+
 		var today = new Date();
-		var value = helper.toDate(component.get('v.value'));
+		var value = helper.utils.asDate(component.get('v.value'));
 		var year = value ? value.getFullYear() : today.getFullYear();
 		var month = value ? value.getMonth() : today.getMonth();
 
@@ -30,7 +32,7 @@
 		}
 
 		var today = new Date();
-		var value = helper.toDate(component.get('v.value'));
+		var value = helper.utils.asDate(component.get('v.value'));
 		var year = value ? value.getFullYear() : today.getFullYear();
 		var month = value ? value.getMonth() : today.getMonth();
 		var calendar = helper.getCalendar(year, month, value);
@@ -81,10 +83,6 @@
 		// element gains focus. When onfocusout is called we use a timeout to wait a fraction of a
 		// second to see if another element within the container gains focus. If so then we will
 		// clear the timeout and do nothing. If not, however, then we will fire our own onblur event
-		if (component.blurTimeoutId) {
-			clearTimeout(component.blurTimeoutId);
-		}
-
 		component.blurTimeoutId = setTimeout($A.getCallback(function() {
 			component.blurTimeoutId = null;
 			helper.fireEvent(component, 'onblur');

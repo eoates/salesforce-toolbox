@@ -27,6 +27,8 @@
 	<!-- /methods -->
 
 	<!-- component -->
+	<c:utils aura:id="utils" />
+
 	<div id="{#globalId + '_container'}"
 	     class="{!v.class + ' slds-datepicker'}"
 	     aria-label="Date picker: MONTH NAME"
