@@ -6,7 +6,7 @@
 	 * Returns the number of toasts that can be displayed simultaneously on the current device. On
 	 * phones we only want to display a single toast at a time. On other devices we display 3
 	 *
-	 * @returns {number} the number of toasts to display simultaneously
+	 * @return {number} the number of toasts to display simultaneously
 	 */
 	getMaxToasts: function() {
 		var formFactor = $A.get('$Browser.formFactor');
@@ -25,7 +25,7 @@
 	 * @param {string} message specifies the message to display
 	 * @param {string} mode the toast mode, which can be dismissible, pester, or sticky
 	 * @param {number} duration toast duration in milliseconds
-	 * @returns {void}
+	 * @return {void}
 	 */
 	createToast: function(component, type, key, title, message, mode, duration) {
 		duration = parseFloat(duration);
@@ -74,7 +74,7 @@
 	 *
 	 * @param {Aura.Component} component the component
 	 * @param {string} name the name of the toast to remove
-	 * @returns {void}
+	 * @return {void}
 	 */
 	removeToast: function(component, name) {
 		if (!component.isValid()) {
@@ -97,7 +97,7 @@
 	 * does nothing
 	 *
 	 * @param {Aura.Component} component the component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	showNextToastInQueue: function(component) {
 		if (!component.isValid()) {

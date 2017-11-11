@@ -5,8 +5,8 @@
 	 * Returns true if the application running on a desktop browser. This method uses the $Browser
 	 * global variable to get the device type
 	 *
-	 * @returns {boolean} true if the application is running on a desktop browser or false if it
-	 *                    is running on a phone or tablet
+	 * @return {boolean} true if the application is running on a desktop browser or false if it
+	 *                   is running on a phone or tablet
 	 */
 	isDesktop: function() {
 		var formFactor = $A.get('$Browser.formFactor');
@@ -17,7 +17,7 @@
 	 * Returns true if the application is running on a phone or a table. This method will always
 	 * return the opposite of isDesktop()
 	 *
-	 * @returns {boolean} true if the application is running on a phone or a table; otherwise, false
+	 * @return {boolean} true if the application is running on a phone or a table; otherwise, false
 	 */
 	isMobile: function() {
 		return !this.isDesktop();
@@ -29,7 +29,7 @@
 	 * will be converted to a string and then trimmed
 	 *
 	 * @param {*} value the value to be trimmed
-	 * @returns {string} the trimmed string
+	 * @return {string} the trimmed string
 	 */
 	trim: function(value) {
 		if ($A.util.isUndefinedOrNull(value)) {
@@ -48,7 +48,7 @@
 	 * null is returned
 	 *
 	 * @param {*} value the value to convert
-	 * @returns {Date} the converted date or null if the value could not be converted to a Date
+	 * @return {Date} the converted date or null if the value could not be converted to a Date
 	 */
 	toDate: function(value) {
 		if ($A.util.isUndefinedOrNull(value)) {
@@ -76,7 +76,7 @@
 	 * Returns true if the value is a string
 	 *
 	 * @param {*} vaue the value to test
-	 * @returns {boolean} true if the value is a string; otherwise, false
+	 * @return {boolean} true if the value is a string; otherwise, false
 	 */
 	isString: function(value) {
 		return (typeof value === 'string');
@@ -87,7 +87,7 @@
 	 * numbers even though they technically are
 	 *
 	 * @param {*} value the value to test
-	 * @returns {boolean} true if the value is a number; otherwise, false
+	 * @return {boolean} true if the value is a number; otherwise, false
 	 */
 	isNumber: function(value) {
 		return (typeof value === 'number') && isFinite(value);
@@ -97,7 +97,7 @@
 	 * Returns true if the value is a date
 	 *
 	 * @param {*} value the value to test
-	 * @returns {boolean} true if the value is a date; otherwise, false
+	 * @return {boolean} true if the value is a date; otherwise, false
 	 */
 	isDate: function(value) {
 		return (Object.prototype.toString.call(value) === '[object Date]');
@@ -107,7 +107,7 @@
 	 * Returns true if the dropdown is open
 	 *
 	 * @param {Aura.Component} component the inputDate component
-	 * @returns {boolean} true if the dropdown is open; otherwise, false
+	 * @return {boolean} true if the dropdown is open; otherwise, false
 	 */
 	isOpen: function(component) {
 		var container = component.find('container');
@@ -119,7 +119,7 @@
 	 *
 	 * @param {Aura.Component} component the inputDate component
 	 * @param {boolean} [focus] true if the datepicker should receive focus
-	 * @returns {void}
+	 * @return {void}
 	 */
 	open: function(component) {
 		var datepicker = component.find('datepicker');
@@ -144,7 +144,7 @@
 	 *
 	 * @param {Aura.Component} component the inputDate component
 	 * @param {boolean} [focus] true if the input element should recieve focus
-	 * @returns {void}
+	 * @return {void}
 	 */
 	close: function(component, focus) {
 		if (this.isOpen(component)) {
@@ -170,7 +170,7 @@
 	 *
 	 * @param {Date} value the date to format
 	 * @param {string} [format] the format
-	 * @returns {string} the formatted date
+	 * @return {string} the formatted date
 	 */
 	formatDate: function(value, format) {
 		if ($A.util.isUndefinedOrNull(value)) {
@@ -190,7 +190,7 @@
 	 * Returns the value as a formatted string
 	 *
 	 * @param {Aura.Component} component the inputDate component
-	 * @returns {string} the formatted value
+	 * @return {string} the formatted value
 	 */
 	getFormattedValue: function(component) {
 		var value = component.get('v.value');
@@ -218,7 +218,7 @@
 	 *
 	 * @param {Aura.Component} component the inputDate component
 	 * @param {string} value the value
-	 * @returns {void}
+	 * @return {void}
 	 */
 	setValue: function(component, value) {
 		// Format the value
@@ -257,7 +257,7 @@
 	 * Returns the input HTML element
 	 *
 	 * @param {Aura.Component} component the inputDate component
-	 * @returns {HTMLElement} the input element
+	 * @return {HTMLElement} the input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -271,7 +271,7 @@
 	 * Updates the value of the input element so it displays the formatted value
 	 *
 	 * @param {Aura.Component} component the inputDate component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateInputElement: function(component) {
 		var inputElement = this.getInputElement(component);
@@ -286,7 +286,7 @@
 	 * @param {Aura.Component} component the inputDate component
 	 * @param {string} name the event name
 	 * @param {Object} args optional event arguments
-	 * @returns {void}
+	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);

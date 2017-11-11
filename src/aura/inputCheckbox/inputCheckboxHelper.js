@@ -3,7 +3,7 @@
 	 * Returns the input HTML element
 	 *
 	 * @param {Aura.Component} component the inputCheckbox component
-	 * @returns {HTMLElement} the input element
+	 * @return {HTMLElement} the input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -19,7 +19,7 @@
 	 * @param {Aura.Component} component the inputCheckbox component
 	 * @param {string} name the event name
 	 * @param {Object} args optional event arguments
-	 * @returns {void}
+	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);

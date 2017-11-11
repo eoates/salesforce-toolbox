@@ -14,8 +14,8 @@
 	 * Returns true if the application running on a desktop browser. This method uses the $Browser
 	 * global variable to get the device type
 	 *
-	 * @returns {boolean} true if the application is running on a desktop browser or false if it
-	 *                    is running on a phone or tablet
+	 * @return {boolean} true if the application is running on a desktop browser or false if it
+	 *                   is running on a phone or tablet
 	 */
 	isDesktop: function() {
 		var formFactor = $A.get('$Browser.formFactor');
@@ -26,7 +26,7 @@
 	 * Returns true if the application is running on a phone or a table. This method will always
 	 * return the opposite of isDesktop()
 	 *
-	 * @returns {boolean} true if the application is running on a phone or a table; otherwise, false
+	 * @return {boolean} true if the application is running on a phone or a table; otherwise, false
 	 */
 	isMobile: function() {
 		return !this.isDesktop();
@@ -37,7 +37,7 @@
 	 * numbers even though they technically are
 	 *
 	 * @param {*} value the value to test
-	 * @returns {boolean} true if the value is a number; otherwise, false
+	 * @return {boolean} true if the value is a number; otherwise, false
 	 */
 	isNumber: function(value) {
 		return (typeof value === 'number') && isFinite(value);
@@ -50,7 +50,7 @@
 	 *
 	 * @param {*} value the value to convert
 	 * @param {number} defaultValue the number to return if value cannot be converted
-	 * @returns {number} the converted value as a number
+	 * @return {number} the converted value as a number
 	 */
 	toNumber: function(value, defaultValue) {
 		if (this.isNumber(value)) {
@@ -68,7 +68,7 @@
 	 *
 	 * @param {*} value the value to convert
 	 * @param {number} defaultValue the number to return if value cannot be converted
-	 * @returns {number} the converted value as an integer
+	 * @return {number} the converted value as an integer
 	 */
 	toInteger: function(value, defaultValue) {
 		value = this.toNumber(value, defaultValue);
@@ -81,7 +81,7 @@
 	 * will be converted to a string and then trimmed
 	 *
 	 * @param {*} value the value to be trimmed
-	 * @returns {string} the trimmed string
+	 * @return {string} the trimmed string
 	 */
 	trim: function(value) {
 		if ($A.util.isUndefinedOrNull(value)) {
@@ -101,7 +101,7 @@
 	 *
 	 * @param {string} value the value to test
 	 * @param {string} searchString the string to check for
-	 * @returns {boolean} true if value ends with searchString; otherwise, false
+	 * @return {boolean} true if value ends with searchString; otherwise, false
 	 */
 	endsWithIgnoreCase: function(value, searchString) {
 		var a = searchString.toLowerCase();
@@ -117,7 +117,7 @@
 	 * @param {number} value the value to check
 	 * @param {number} min the minimum allowed value
 	 * @param {number} max the maximum allowed value
-	 * @returns {number} a number that is definitely within the specified range
+	 * @return {number} a number that is definitely within the specified range
 	 */
 	numberInRange: function(value, min, max) {
 		value = Math.max(value, min);
@@ -131,7 +131,7 @@
 	 * directly as this method ensures that the returned value is within a vaid range
 	 *
 	 * @param {Aura.Component} component the inputNumber component
-	 * @returns {number} the precision
+	 * @return {number} the precision
 	 */
 	getPrecision: function(component) {
 		var precision = component.get('v.precision');
@@ -147,7 +147,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {number} precision the maximum number of digits in the number
-	 * @returns {number} the scale
+	 * @return {number} the scale
 	 */
 	getScale: function(component, precision) {
 		var scale = component.get('v.scale');
@@ -162,7 +162,7 @@
 	 *
 	 * @param {number} precision the maximum number of digits in the number
 	 * @param {number} scale the number of digits to the right of the decimal
-	 * @returns {object} an object containing 2 properties: min and max
+	 * @return {object} an object containing 2 properties: min and max
 	 */
 	getRange: function(precision, scale) {
 		var max = (Math.pow(10, precision) - 1) / Math.pow(10, scale);
@@ -178,7 +178,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {Object} range an object containing the valid number range
-	 * @returns {number} the minimum value
+	 * @return {number} the minimum value
 	 */
 	getMin: function(component, range) {
 		var min = component.get('v.min');
@@ -192,7 +192,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {Object} range an object containing the valid number range
-	 * @returns {number} the maximum value
+	 * @return {number} the maximum value
 	 */
 	getMax: function(component, range) {
 		var max = component.get('v.max');
@@ -207,7 +207,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {number} scale number of digits to the right of the decimal
-	 * @returns {number} the step value
+	 * @return {number} the step value
 	 */
 	getStep: function(component, scale) {
 		var step = component.get('v.step');
@@ -224,7 +224,7 @@
 	 * Returns an object containing information about the number format
 	 *
 	 * @param {Aura.Component} component the inputNumber component
-	 * @returns {object} an object containing properties for formatting the number
+	 * @return {object} an object containing properties for formatting the number
 	 */
 	getFormat: function(component) {
 		var precision = this.getPrecision(component);
@@ -263,7 +263,7 @@
 	 * end. If the value does not end with one of the shortcuts then null is returned
 	 *
 	 * @param {string} value the value to test
-	 * @returns {object} an object containing the multiplier and the value with the shortcut removed
+	 * @return {object} an object containing the multiplier and the value with the shortcut removed
 	 */
 	getMultiplier: function(value) {
 		for (var key in this.multipliers) {
@@ -288,7 +288,7 @@
 	 * @param {*} value the value to be parsed. May be any type, but anything other than a string
 	 *                  will be converted to a string before parsing
 	 * @param {Object} format an object that contains formatting information and constraints
-	 * @returns {number} the parsed number or null if the value could not be parsed
+	 * @return {number} the parsed number or null if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
 		// Remove leading/trailing white space and commas. If nothing is left then return null
@@ -334,7 +334,7 @@
 	 * @param {number} value the number to format
 	 * @param {Object} format an object containing formatting information
 	 * @param {boolean} [hasFocus] if true then the thousands separator will not be used
-	 * @returns {string} the formatted number
+	 * @return {string} the formatted number
 	 */
 	formatNumber: function(value, format, hasFocus) {
 		if (!this.isNumber(value)) {
@@ -358,7 +358,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {number} value the value
-	 * @returns {boolean} true if the value changed
+	 * @return {boolean} true if the value changed
 	 */
 	setValue: function(component, value) {
 		var oldValue = component.get('v.value');
@@ -380,7 +380,7 @@
 	 * Returns the input HTML element
 	 *
 	 * @param {Aura.Component} component the inputNumber component
-	 * @returns {HTMLElement} the input element
+	 * @return {HTMLElement} the input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -395,7 +395,7 @@
 	 *
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {boolean} [hasFocus] true if the input element current has keyboard focus
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateInputElement: function(component, hasFocus) {
 		var inputElement = this.getInputElement(component);
@@ -429,7 +429,7 @@
 	 * Sets attributes only needed when the application is running on mobile
 	 *
 	 * @param {Aura.Component} component the inputNumber component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	setInputElementAttributesForMobile: function(component) {
 		var inputElement = this.getInputElement(component);
@@ -447,7 +447,7 @@
 	 * @param {Aura.Component} component the inputNumber component
 	 * @param {string} name the event name
 	 * @param {Object} args optional event arguments
-	 * @returns {void}
+	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);

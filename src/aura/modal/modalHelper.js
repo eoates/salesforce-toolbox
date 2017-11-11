@@ -67,7 +67,7 @@
 	 * Dismisses a toast if one is being displayed
 	 *
 	 * @param {Aura.Component} component the modal component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	dismissToast: function(component) {
 		// Clear the current timeout
@@ -98,7 +98,7 @@
 	 *
 	 * @param {string} animation the name of the animation to use
 	 * @param {string} defaultAnimation the animation to use if animation argument is invalid
-	 * @returns {string} the CSS class for the specified animation
+	 * @return {string} the CSS class for the specified animation
 	 */
 	getAnimationClassName: function(animation, defaultAnimation) {
 		if (this.animations.indexOf(animation) < 0) {
@@ -114,7 +114,7 @@
 	 * Returns all child elements for the specified parent
 	 *
 	 * @param {HTMLElement} parent the parent element
-	 * @returns {HTMLElement[]} the child elements
+	 * @return {HTMLElement[]} the child elements
 	 */
 	getChildElements: function(parent) {
 		var children = [];
@@ -130,7 +130,7 @@
 	/**
 	 * Returns the body element
 	 *
-	 * @returns {HTMLElement} the body element if it exists; otherwise, null
+	 * @return {HTMLElement} the body element if it exists; otherwise, null
 	 */
 	getBodyElement: function() {
 		var body = document.body;
@@ -146,7 +146,7 @@
 	/**
 	 * Returns the modal container element
 	 *
-	 * @returns {HTMLElement} the element which contains all modals
+	 * @return {HTMLElement} the element which contains all modals
 	 */
 	getModalContainer: function() {
 		return document.getElementById(this.modalContainerId);
@@ -155,7 +155,7 @@
 	/**
 	 * Creates the modal container element
 	 *
-	 * @returns {HTMLElement} an element which will be used to contain all of the modals
+	 * @return {HTMLElement} an element which will be used to contain all of the modals
 	 */
 	createModalContainer: function() {
 		var container = null;
@@ -186,7 +186,7 @@
 	 * Adds a modal to the container element
 	 *
 	 * @param {Aura.Component} component the modal component to be added to the container
-	 * @returns {void}
+	 * @return {void}
 	 */
 	addToModalContainer: function(component) {
 		var componentId = component.getGlobalId();
@@ -226,7 +226,7 @@
 	 * Removes a modal from the container element and places it back in its original container
 	 *
 	 * @param {Aura.Component} component the modal component to remove
-	 * @returns {void}
+	 * @return {void}
 	 */
 	removeFromModalContainer: function(component) {
 		var componentId = component.getGlobalId();
@@ -264,7 +264,7 @@
 	 * Displays the modal backdrop. This is displayed when the first modal is opened and remains
 	 * visible until the last modal is closed
 	 *
-	 * @returns {void}
+	 * @return {void}
 	 */
 	showModalBackdrop: function() {
 		var backdropId = this.modalContainerId + '_backdrop';
@@ -277,7 +277,7 @@
 	/**
 	 * Hides the modal backdrop
 	 *
-	 * @returns {void}
+	 * @return {void}
 	 */
 	hideModalBackdrop: function() {
 		var backdropId = this.modalContainerId + '_backdrop';
@@ -292,7 +292,7 @@
 	 *
 	 * @param {string} componentId the ID of the modal component
 	 * @param {number} zIndex the value to use for the z-index property
-	 * @returns {void}
+	 * @return {void}
 	 */
 	setModalZIndex: function(componentId, zIndex) {
 		var modalId = componentId + '_modal';
@@ -305,7 +305,7 @@
 	/**
 	 * Adjusts the CSS z-index property of the active modal so it appears above all other modals
 	 *
-	 * @returns {void}
+	 * @return {void}
 	 */
 	bringActiveModalToFront: function() {
 		if (this.openModals.length > 0) {
@@ -318,7 +318,7 @@
 	 * Adjusts the CSS z-index property of all inactive modals so they appear behind the active
 	 * modal
 	 *
-	 * @returns {void}
+	 * @return {void}
 	 */
 	sendInactiveModalsToBack: function() {
 		if (this.openModals.length > 1) {
@@ -334,7 +334,7 @@
 	 * Handle the opening of a modal
 	 *
 	 * @param {Aura.Component} component the modal component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	handleModalOpen: function(component) {
 		var componentId = component.getGlobalId();
@@ -358,7 +358,7 @@
 	 * Handle the closing of a modal
 	 *
 	 * @param {Aura.Component} component the modal component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	handleModalClose: function(component) {
 		var componentId = component.getGlobalId();
@@ -380,7 +380,7 @@
 	 * Open the specified modal
 	 *
 	 * @param {Aura.Component} component the modal component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	openModal: function(component) {
 		var visible = component.get('v.visible');
@@ -411,7 +411,7 @@
 	 * Close the specified modal
 	 *
 	 * @param {Aura.Component} component the modal component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	closeModal: function(component) {
 		var visible = component.get('v.visible');
@@ -439,7 +439,7 @@
 	 * @param {Aura.Component} component the modal component
 	 * @param {string} name the event name
 	 * @param {Object} args optional event arguments
-	 * @returns {void}
+	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);

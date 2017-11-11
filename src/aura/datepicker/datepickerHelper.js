@@ -12,7 +12,7 @@
 	 * will be converted to a string and then trimmed
 	 *
 	 * @param {*} value the value to be trimmed
-	 * @returns {string} the trimmed string
+	 * @return {string} the trimmed string
 	 */
 	trim: function(value) {
 		if ($A.util.isUndefinedOrNull(value)) {
@@ -31,7 +31,7 @@
 	 * null is returned
 	 *
 	 * @param {*} value the value to convert
-	 * @returns {Date} the converted date or null if the value could not be converted to a Date
+	 * @return {Date} the converted date or null if the value could not be converted to a Date
 	 */
 	toDate: function(value) {
 		if ($A.util.isUndefinedOrNull(value)) {
@@ -59,7 +59,7 @@
 	 * Converts a Date to UTC
 	 *
 	 * @param {Date} date the date to convert to UTC
-	 * @returns {Date} the UTC date
+	 * @return {Date} the UTC date
 	 */
 	toUTCDate: function(date) {
 		var result = new Date(date);
@@ -71,7 +71,7 @@
 	 * Returns true if the value is a string
 	 *
 	 * @param {*} vaue the value to test
-	 * @returns {boolean} true if the value is a string; otherwise, false
+	 * @return {boolean} true if the value is a string; otherwise, false
 	 */
 	isString: function(value) {
 		return (typeof value === 'string');
@@ -82,7 +82,7 @@
 	 * numbers even though they technically are
 	 *
 	 * @param {*} value the value to test
-	 * @returns {boolean} true if the value is a number; otherwise, false
+	 * @return {boolean} true if the value is a number; otherwise, false
 	 */
 	isNumber: function(value) {
 		return (typeof value === 'number') && isFinite(value);
@@ -92,7 +92,7 @@
 	 * Returns true if the value is a date
 	 *
 	 * @param {*} value the value to test
-	 * @returns {boolean} true if the value is a date; otherwise, false
+	 * @return {boolean} true if the value is a date; otherwise, false
 	 */
 	isDate: function(value) {
 		return (Object.prototype.toString.call(value) === '[object Date]');
@@ -103,7 +103,7 @@
 	 *
 	 * @param {Date} date1 the first date
 	 * @param {Date} date2 the second date
-	 * @returns {boolean} true if the 2 dates represent the same day; otherwise, false
+	 * @return {boolean} true if the 2 dates represent the same day; otherwise, false
 	 */
 	isSameDate: function(date1, date2) {
 		if ($A.util.isUndefinedOrNull(date1) && $A.util.isUndefinedOrNull(date2)) {
@@ -122,7 +122,7 @@
 	 *
 	 * @param {Date} date the date
 	 * @param {number} days the number of days to add to date
-	 * @returns {Date} the new date
+	 * @return {Date} the new date
 	 */
 	addDays: function(date, days) {
 		var result = new Date(date);
@@ -135,7 +135,7 @@
 	 *
 	 * @param {Date} date1 the first date
 	 * @param {Date} date2 the second date
-	 * @returns {number} the number of days between the dates
+	 * @return {number} the number of days between the dates
 	 */
 	getDaysBetween: function(date1, date2) {
 		var millisecondsPerDay = 24 * 60 * 60 * 1000;
@@ -147,7 +147,7 @@
 	 *
 	 * @param {number} year the year
 	 * @param {number} month the month
-	 * @returns {Date} the first day of the specified month
+	 * @return {Date} the first day of the specified month
 	 */
 	getFirstDayOfMonth: function(year, month) {
 		return new Date(year, month, 1);
@@ -158,7 +158,7 @@
 	 *
 	 * @param {number} year the year
 	 * @param {number} month the month
-	 * @returns {Date} the last day of the specified month
+	 * @return {Date} the last day of the specified month
 	 */
 	getLastDayOfMonth: function(year, month) {
 		month++;
@@ -179,7 +179,7 @@
 	 * @param {number} year the year
 	 * @param {number} month the month
 	 * @param {Date} [selected] the selected date
-	 * @returns {object} the calendar for the specified month
+	 * @return {object} the calendar for the specified month
 	 */
 	getCalendar: function(year, month, selected) {
 		var today = new Date();
@@ -233,8 +233,8 @@
 	 *
 	 * @param {Object} calendar the calendar
 	 * @param {Function} predicate a function that will be called for each day in the calendar
-	 * @returns {object} the first day that matched the specified predicate. If there was no match
-	 *                   then null is returned
+	 * @return {object} the first day that matched the specified predicate. If there was no match
+	 *                  then null is returned
 	 */
 	getDay: function(calendar, predicate) {
 		var days = calendar.days;
@@ -253,7 +253,7 @@
 	 *
 	 * @param {Object} calendar the calendar
 	 * @param {number} index the index of the desired day
-	 * @returns {object} the day at the specified index
+	 * @return {object} the day at the specified index
 	 */
 	getDayByIndex: function(calendar, index) {
 		return calendar.days[index];
@@ -264,7 +264,7 @@
 	 *
 	 * @param {Object} calendar the calendar
 	 * @param {Date} date the value of the day to return
-	 * @returns {object} the day for the specified date
+	 * @return {object} the day for the specified date
 	 */
 	getDayByValue: function(calendar, date) {
 		return this.getDay(calendar, function(day) {
@@ -278,7 +278,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {Object} calendar the calendar
-	 * @returns {void}
+	 * @return {void}
 	 */
 	addRows: function(component, calendar) {
 		var self = this;
@@ -322,7 +322,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {Object} calendar the calendar
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateRows: function(component, calendar) {
 		var globalId = component.getGlobalId();
@@ -350,7 +350,7 @@
 	 * @param {HTMLElement} cell the cell to update
 	 * @param {Object} calendar the calendar
 	 * @param {Object} day the day that the cell represents
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateCell: function(cell, calendar, day) {
 		this.toggleClass(cell, 'slds-disabled-text', day.disabled);
@@ -375,7 +375,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {Object} calendar the calendar
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateMonthName: function(component, calendar) {
 		var globalId = component.getGlobalId();
@@ -392,7 +392,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {Object} calendar the calendar
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateYearOptions: function(component, calendar) {
 		var globalId = component.getGlobalId();
@@ -437,7 +437,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {boolean} [focus] true if the active cell should receive focus; otherwise, false
-	 * @returns {void}
+	 * @return {void}
 	 */
 	updateActiveCellTabIndex: function(component, focus) {
 		var globalId = component.getGlobalId();
@@ -468,7 +468,7 @@
 	 * Sets focus to the cell which represents the active day
 	 *
 	 * @param {Aura.Component} component the datepicker component
-	 * @returns {void}
+	 * @return {void}
 	 */
 	focusActiveCell: function(component) {
 		var globalId = component.getGlobalId();
@@ -486,7 +486,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {MouseEvent} event the event information
-	 * @returns {void}
+	 * @return {void}
 	 */
 	handleDayMouseDown: function(component, event) {
 		var span = event.target;
@@ -518,7 +518,7 @@
 	 * @param {string} unit the unit by which to increment or decrement ("y" = years, "m" = months,
 	 *                      "d" = days)
 	 * @param {boolean} focus true if the active day should receive focus; otherwise, false
-	 * @returns {void}
+	 * @return {void}
 	 */
 	navigate: function(component, count, unit, focus) {
 		var year = component.get('v.year');
@@ -661,7 +661,7 @@
 	 * @param {Date} date the date of the active day
 	 * @param {boolean} [focus] true if the active day should receive focus
 	 * @param {Object} [calendar] the calendar
-	 * @returns {void}
+	 * @return {void}
 	 */
 	setActiveDate: function(component, date, focus, calendar) {
 		var year = component.get('v.year');
@@ -720,7 +720,7 @@
 	 *
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {boolean} [focus] true if the active day should receive focus
-	 * @returns {void}
+	 * @return {void}
 	 */
 	cancel: function(component, focus) {
 		var today = new Date();
@@ -736,7 +736,7 @@
 	 * @param {string} className the CSS class to add or remove
 	 * @param {boolean} [state] true to add the CSS class, false to remove it, or undefined/null to
 	 *                          toggle it
-	 * @returns {void}
+	 * @return {void}
 	 */
 	toggleClass: function(element, className, state) {
 		if ($A.util.isUndefinedOrNull(state)) {
@@ -771,7 +771,7 @@
 	 * @param {Aura.Component} component the datepicker component
 	 * @param {string} name the event name
 	 * @param {Object} args optional event arguments
-	 * @returns {void}
+	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {
 		var event = component.getEvent(name);
