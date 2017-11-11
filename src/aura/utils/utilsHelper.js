@@ -446,12 +446,13 @@
 			return '';
 		}
 
-		format = this.asString(value);
+		format = this.asString(format);
 		if (this.isBlank(format)) {
 			format = this.FORMAT_ISO_8601;
 		}
 
-		return $A.localizationService.formatDateTime(value, format);
+		var formattedDate = $A.localizationService.formatDateTime(value, format);
+		return formattedDate;
 	},
 
 	/**
