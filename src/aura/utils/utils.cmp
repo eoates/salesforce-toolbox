@@ -1,0 +1,3 @@
+<aura:component access="GLOBAL">
+	<aura:method access="GLOBAL" name="getModule" action="{!c.getModule}" />
+</aura:component>
