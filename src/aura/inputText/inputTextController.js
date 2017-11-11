@@ -20,6 +20,13 @@
 	},
 
 	/**
+	 * Initializes the component
+	 */
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
 	 * Handles change to the value attribute
 	 */
 	valueChange: function(component, event, helper) {
@@ -48,13 +55,6 @@
 	 * Handles the blur event of the input element
 	 */
 	inputBlur: function(component, event, helper) {
-		var inputElement = event.target;
-
-		var autoTrim = component.get('v.autotrim');
-		if (autoTrim) {
-			inputElement.value = helper.trim(inputElement.value);
-		}
-
 		helper.fireEvent(component, 'onblur');
 	},
 
@@ -66,7 +66,7 @@
 
 		var autoTrim = component.get('v.autotrim');
 		if (autoTrim) {
-			inputElement.value = helper.trim(inputElement.value);
+			inputElement.value = helper.utils.trim(inputElement.value);
 		}
 
 		var changed = helper.setValue(component, inputElement.value);
