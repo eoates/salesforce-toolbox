@@ -26,7 +26,7 @@
 		if (component.ignoreValueChange) {
 			return;
 		}
-		helper.updateInputElementValue(component);
+		helper.updateInputElement(component);
 	},
 
 	/**
@@ -77,10 +77,6 @@
 		// element gains focus. When onfocusout is called we use a timeout to wait a fraction of a
 		// second to see if another element within the container gains focus. If so then we will
 		// clear the timeout and do nothing. If not, however, then we will fire our own onblur event
-		if (component.blurTimeoutId) {
-			clearTimeout(component.blurTimeoutId);
-		}
-
 		component.blurTimeoutId = setTimeout($A.getCallback(function() {
 			component.blurTimeoutId = null;
 			helper.fireEvent(component, 'onblur');
@@ -108,7 +104,7 @@
 	 */
 	inputBlur: function(component, event, helper) {
 		if (helper.isDesktop()) {
-			helper.updateInputElementValue(component);
+			helper.updateInputElement(component);
 		} else {
 			helper.fireEvent(component, 'onblur');
 		}

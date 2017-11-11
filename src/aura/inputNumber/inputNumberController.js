@@ -20,11 +20,23 @@
 	},
 
 	/**
+	 * Handles change to the value attribute
+	 */
+	valueChange: function(component, event, helper) {
+		if (component.ignoreValueChange) {
+			return;
+		}
+
+		helper.updateInputElement(component);
+	},
+
+	/**
 	 * Handles the focus event of the input element. Removes any formatting from the input
 	 */
 	inputFocus: function(component, event, helper) {
 		if (helper.isDesktop()) {
 			var inputElement = event.target;
+
 			var selectionStart = inputElement.selectionStart;
 			var selectionEnd = inputElement.selectionEnd;
 			var selectionLength = selectionEnd - selectionStart;
@@ -49,15 +61,7 @@
 	 * Handles the blur event of the input element. Applies formatting
 	 */
 	inputBlur: function(component, event, helper) {
-		if (helper.isDesktop()) {
-			var inputElement = event.target;
-			var format = helper.getFormat(component);
-			var value = helper.parseNumber(inputElement.value, format);
-			if (helper.isNumber(value)) {
-				inputElement.value = helper.formatNumber(value, format);
-			}
-		}
-
+		helper.updateInputElement(component);
 		helper.fireEvent(component, 'onblur');
 	},
 
@@ -67,7 +71,6 @@
 	 */
 	inputKeyDown: function(component, event, helper) {
 		var inputElement = event.target;
-		var which = event.keyCode || event.which || 0;
 
 		var format = helper.getFormat(component);
 		var step = format.step;
@@ -79,6 +82,8 @@
 		}
 
 		var newValue = (value - stepMin) - ((value - stepMin) % step) + stepMin;
+
+		var which = event.keyCode || event.which || 0;
 		if (which === 38) {
 			// Arrow up
 			if ((newValue + step) <= format.max) {
@@ -97,18 +102,12 @@
 		newValue = newValue.toFixed(format.scale);
 		newValue = parseFloat(newValue);
 
-		inputElement.value = helper.formatNumber(newValue, format, true);
-
-		var oldValue = component.get('v.value');
-		if (newValue !== oldValue) {
-			component.set('v.value', newValue);
-			helper.fireEvent(component, 'onchange', {
-				value: newValue,
-				oldValue: oldValue
-			});
+		var changed = helper.setValue(component, newValue);
+		helper.updateInputElement(component, true);
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
 		}
 
-		event.stopPropagation();
 		event.preventDefault();
 	},
 
@@ -126,6 +125,7 @@
 		var which = event.keyCode || event.which || 0;
 
 		var format = helper.getFormat(component);
+		var allowDecimal = format.scale > 0;
 		var allowNegative = format.min < 0;
 
 		var value = inputElement.value;
@@ -142,16 +142,21 @@
 			}
 		} else if (which === 46) {
 			// 46 = period
-			// If one or more characters are selected then we remove the selected substring from
-			// the value as it will be overwritten with the period
-			if (selectionLength > 0) {
-				var left = value.substr(0, selectionStart);
-				var right = value.substr(selectionEnd);
-				value = left + right;
-			}
+			if (allowDecimal) {
+				// If one or more characters are selected then we remove the selected substring from
+				// the value as it will be overwritten with the period
+				if (selectionLength > 0) {
+					var left = value.substr(0, selectionStart);
+					var right = value.substr(selectionEnd);
+					value = left + right;
+				}
 
-			// Make sure the value does not already contain a period
-			if (value.indexOf('.') >= 0) {
+				// Make sure the value does not already contain a period
+				if (value.indexOf('.') >= 0) {
+					event.preventDefault();
+				}
+			} else {
+				// Scale is 0 so don't allow a decimal
 				event.preventDefault();
 			}
 		} else if ((which >= 48) && (which <= 57)) {
@@ -197,15 +202,10 @@
 		var format = helper.getFormat(component);
 		var value = helper.parseNumber(inputElement.value, format);
 
-		inputElement.value = helper.formatNumber(value, format);
-
-		var oldValue = component.get('v.value');
-		if (value !== oldValue) {
-			component.set('v.value', value);
-			helper.fireEvent(component, 'onchange', {
-				value: value,
-				oldValue: oldValue
-			});
+		var changed = helper.setValue(component, value);
+		helper.updateInputElement(component);
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
 		}
 	}
 })

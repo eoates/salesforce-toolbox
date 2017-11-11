@@ -247,13 +247,10 @@
 		}
 
 		// Update the input element value
-		this.updateInputElementValue(component);
+		this.updateInputElement(component);
 
 		// Fire the change event
-		this.fireEvent(component, 'onchange', {
-			value: value,
-			oldValue: oldValue
-		});
+		this.fireEvent(component, 'onchange');
 	},
 
 	/**
@@ -276,7 +273,7 @@
 	 * @param {Aura.Component} component the inputDate component
 	 * @returns {void}
 	 */
-	updateInputElementValue: function(component) {
+	updateInputElement: function(component) {
 		var inputElement = this.getInputElement(component);
 		if (inputElement) {
 			inputElement.value = this.getFormattedValue(component);

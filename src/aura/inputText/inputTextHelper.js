@@ -24,23 +24,14 @@
 	 *
 	 * @param {Aura.Component} component the inputText component
 	 * @param {string} value the value
-	 * @param {boolean} [updateInput] true to update the input element
-	 * @returns {void}
+	 * @returns {boolean} true if the value changed
 	 */
-	setValue: function(component, value, updateInput) {
-		// Format the value
-		var autoTrim = component.get('v.autotrim');
-		if (autoTrim) {
-			value = this.trim(value);
-		}
-
-		// Determine whether the value has changed
+	setValue: function(component, value) {
 		var oldValue = component.get('v.value');
 		if (value === oldValue) {
-			return;
+			return false;
 		}
 
-		// Update the value
 		component.ignoreValueChange = true;
 		try {
 			component.set('v.value', value);
@@ -48,18 +39,8 @@
 			component.ignoreValueChange = false;
 		}
 
-		// Update the input element value
-		if (updateInput || $A.util.isUndefinedOrNull(updateInput)) {
-			this.updateInputElementValue(component);
-		}
-
-		// Fire the change event
-		this.fireEvent(component, 'onchange', {
-			value: value,
-			oldValue: oldValue
-		});
+		return true;
 	},
-
 
 	/**
 	 * Returns the input HTML element
@@ -81,7 +62,7 @@
 	 * @param {Aura.Component} component the inputText component
 	 * @returns {void}
 	 */
-	updateInputElementValue: function(component) {
+	updateInputElement: function(component) {
 		var inputElement = this.getInputElement(component);
 		if (inputElement) {
 			var value = component.get('v.value');
@@ -89,11 +70,6 @@
 				value = '';
 			} else if (typeof value !== 'string') {
 				value = value + '';
-			}
-
-			var autoTrim = component.get('v.autotrim');
-			if (autoTrim) {
-				value = this.trim(value);
 			}
 
 			inputElement.value = value;

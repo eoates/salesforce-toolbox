@@ -4,7 +4,8 @@
 	 */
 	afterRender: function(component, helper) {
 		this.superAfterRender();
-		helper.renderInputElement(component);
+		helper.updateInputElement(component);
+		helper.setInputElementAttributesForMobile(component);
 	},
 
 	/**
@@ -12,6 +13,6 @@
 	 */
 	rerender: function(component, helper) {
 		this.superRerender();
-		helper.renderInputElement(component);
+		helper.setInputElementAttributesForMobile(component);
 	}
 })

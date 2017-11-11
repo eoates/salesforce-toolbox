@@ -29,6 +29,10 @@
 	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
 	<!-- /events -->
 
+	<!-- handlers -->
+	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<!-- /handlers -->
+
 	<!-- methods -->
 	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
 	<aura:method access="GLOBAL" name="select" action="{!c.select}" />

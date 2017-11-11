@@ -354,6 +354,29 @@
 	},
 
 	/**
+	 * Sets the value
+	 *
+	 * @param {Aura.Component} component the inputNumber component
+	 * @param {number} value the value
+	 * @returns {boolean} true if the value changed
+	 */
+	setValue: function(component, value) {
+		var oldValue = component.get('v.value');
+		if (value === oldValue) {
+			return false;
+		}
+
+		component.ignoreValueChange = true;
+		try {
+			component.set('v.value', value);
+		} finally {
+			component.ignoreValueChange = false;
+		}
+
+		return true;
+	},
+
+	/**
 	 * Returns the input HTML element
 	 *
 	 * @param {Aura.Component} component the inputNumber component
@@ -368,19 +391,18 @@
 	},
 
 	/**
-	 * This method is invoked by the renderer to update the input element. Do not use this method
-	 * outside of the renderer
+	 * Updates the input element
 	 *
 	 * @param {Aura.Component} component the inputNumber component
+	 * @param {boolean} [hasFocus] true if the input element current has keyboard focus
 	 * @returns {void}
 	 */
-	renderInputElement: function(component) {
+	updateInputElement: function(component, hasFocus) {
 		var inputElement = this.getInputElement(component);
 		if (!inputElement) {
 			return;
 		}
 
-		var hasFocus = (inputElement === document.activeElement);
 		var format = this.getFormat(component);
 		var value = component.get('v.value');
 
@@ -401,7 +423,18 @@
 		}
 
 		inputElement.value = strValue;
-		if (this.isMobile()) {
+	},
+
+	/**
+	 * Sets attributes only needed when the application is running on mobile
+	 *
+	 * @param {Aura.Component} component the inputNumber component
+	 * @returns {void}
+	 */
+	setInputElementAttributesForMobile: function(component) {
+		var inputElement = this.getInputElement(component);
+		if (inputElement && this.isMobile()) {
+			var format = this.getFormat(component);
 			inputElement.min = format.min;
 			inputElement.max = format.max;
 			inputElement.step = format.step;

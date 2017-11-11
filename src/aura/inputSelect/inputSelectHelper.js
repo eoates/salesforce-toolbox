@@ -371,7 +371,6 @@
 		var selectElement = this.getSelectElement(component);
 
 		var value = inputElement.value;
-		var oldValue = component.get('v.value');
 
 		var options = component.get('v.localOptions');
 		var selectedIndex = this.indexOfOptionByLabel(options, value);
@@ -390,10 +389,7 @@
 
 		var changed = valueChanged || selectedIndexChanged;
 		if (changed) {
-			this.fireEvent(component, 'onchange', {
-				value: value,
-				oldValue: oldValue
-			});
+			this.fireEvent(component, 'onchange');
 		}
 
 		return changed;
@@ -407,12 +403,10 @@
 	 */
 	setValueFromSelectElement: function(component) {
 		var selectElement = this.getSelectElement(component);
-
 		var value = selectElement.value;
-		var oldValue = component.get('v.value');
+		var selectedIndex = selectElement.selectedIndex;
 
 		var options = component.get('v.localOptions');
-		var selectedIndex = selectElement.selectedIndex;
 
 		var editable = component.get('v.editable');
 		if (editable) {
@@ -431,10 +425,7 @@
 
 		var changed = valueChanged || selectedIndexChanged;
 		if (changed) {
-			this.fireEvent(component, 'onchange', {
-				value: value,
-				oldValue: oldValue
-			});
+			this.fireEvent(component, 'onchange');
 		}
 
 		return changed;

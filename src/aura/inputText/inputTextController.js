@@ -26,7 +26,8 @@
 		if (component.ignoreValueChange) {
 			return;
 		}
-		helper.updateInputElementValue(component);
+
+		helper.updateInputElement(component);
 	},
 
 	/**
@@ -34,6 +35,7 @@
 	 */
 	inputFocus: function(component, event, helper) {
 		var inputElement = event.target;
+
 		var autoSelect = component.get('v.autoselect');
 		if (autoSelect) {
 			inputElement.select();
@@ -46,7 +48,13 @@
 	 * Handles the blur event of the input element
 	 */
 	inputBlur: function(component, event, helper) {
-		helper.updateInputElementValue(component);
+		var inputElement = event.target;
+
+		var autoTrim = component.get('v.autotrim');
+		if (autoTrim) {
+			inputElement.value = helper.trim(inputElement.value);
+		}
+
 		helper.fireEvent(component, 'onblur');
 	},
 
@@ -55,6 +63,15 @@
 	 */
 	inputChange: function(component, event, helper) {
 		var inputElement = event.target;
-		helper.setValue(component, inputElement.value, false);
+
+		var autoTrim = component.get('v.autotrim');
+		if (autoTrim) {
+			inputElement.value = helper.trim(inputElement.value);
+		}
+
+		var changed = helper.setValue(component, inputElement.value);
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
+		}
 	}
 })
