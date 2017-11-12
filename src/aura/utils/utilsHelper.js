@@ -346,6 +346,40 @@
 	},
 
 	/**
+	 * Ensures that a number is within a given range. If value is less than min then min is
+	 * returned. If value is greater than max then max is returned. Otherwise, value is returned.
+	 *
+	 * @param {number} value - the value
+	 * @param {number} min   - the minimimum value or undefined if there is no minimum
+	 * @param {number} max   - the maximium value or undefined if there is no maximum
+	 *
+	 * @return {number} the value
+	 */
+	minmax: function(value, min, max) {
+		if (!this.isNumber(value)) {
+			return NaN;
+		}
+
+		if (!this.isUndefined(min)) {
+			if (!this.isNumber(min)) {
+				return NaN;
+			} else {
+				value = Math.max(value, min);
+			}
+		}
+
+		if (!this.isUndefined(max)) {
+			if (!this.isNumber(max)) {
+				return NaN;
+			} else if (this.isUndefined(min) || (max > min)) {
+				value = Math.min(value, max);
+			}
+		}
+
+		return value;
+	},
+
+	/**
 	 * Returns the number of digits to the right of the decimal. If value is a number then it is
 	 * first converted to a string which will drop any trailing 0s. If value is already a string
 	 * then this will not happen. As an example, calling this method with the number 9.900 will

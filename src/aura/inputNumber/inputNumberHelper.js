@@ -45,23 +45,6 @@
 	},
 
 	/**
-	 * Ensures that a value is within a specified range. If the number is within the the same value
-	 * will be returned. If the number is too low then min will be returned and if it is too high
-	 * then max will be returned
-	 *
-	 * @param {number} value - the value to check
-	 * @param {number} min   - the minimum allowed value
-	 * @param {number} max   - the maximum allowed value
-	 *
-	 * @return {number} a number that is definitely within the specified range
-	 */
-	numberInRange: function(value, min, max) {
-		value = Math.max(value, min);
-		value = Math.min(value, max);
-		return value;
-	},
-
-	/**
 	 * Gets the precision. The precision is the maximum number of digits allowed in the number. Use
 	 * this method to get the precision instead of reading the component's precision attribute
 	 * directly as this method ensures that the returned value is within a vaid range
@@ -73,7 +56,7 @@
 	getPrecision: function(component) {
 		var precision = component.get('v.precision');
 		precision = this.toInteger(precision, this.maxPrecision);
-		precision = this.numberInRange(precision, this.minPrecision, this.maxPrecision);
+		precision = this.utils.minmax(precision, this.minPrecision, this.maxPrecision);
 		return precision;
 	},
 
@@ -90,7 +73,7 @@
 	getScale: function(component, precision) {
 		var scale = component.get('v.scale');
 		scale = this.toInteger(scale, this.minScale);
-		scale = this.numberInRange(scale, this.minScale, this.maxScale);
+		scale = this.utils.minmax(scale, this.minScale, this.maxScale);
 		scale = Math.min(scale, precision - 1);
 		return scale;
 	},
@@ -123,7 +106,7 @@
 	getMin: function(component, range) {
 		var min = component.get('v.min');
 		min = this.toNumber(min, range.min);
-		min = this.numberInRange(min, range.min, range.max);
+		min = this.utils.minmax(min, range.min, range.max);
 		return min;
 	},
 
@@ -138,7 +121,7 @@
 	getMax: function(component, range) {
 		var max = component.get('v.max');
 		max = this.toNumber(max, range.max);
-		max = this.numberInRange(max, range.min, range.max);
+		max = this.utils.minmax(max, range.min, range.max);
 		return max;
 	},
 
@@ -244,7 +227,7 @@
 		if (this.utils.isNumber(value)) {
 			value = value.toFixed(format.scale);
 			value = parseFloat(value);
-			value = this.numberInRange(value, format.min, format.max);
+			value = this.utils.minmax(value, format.min, format.max);
 		} else {
 			value = format.nillable ? undefined : format.min;
 		}
