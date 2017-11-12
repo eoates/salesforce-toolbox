@@ -3,110 +3,42 @@
 	maxPrecision: 15,
 	minScale: 0,
 	maxScale: 14,
-	multipliers: {
-		'K': 1000,
-		'M': 1000000,
-		'B': 1000000000,
-		'T': 1000000000000
-	},
+	multipliers: [ 'k', 'm', 'b', 't' ],
 
 	/**
-	 * Returns true if the application running on a desktop browser. This method uses the $Browser
-	 * global variable to get the device type
+	 * Imports modules used by the component
 	 *
-	 * @return {boolean} true if the application is running on a desktop browser or false if it
-	 *                   is running on a phone or tablet
+	 * @param  {Aura.Component} the inputNumber component
+	 * @return {void}
 	 */
-	isDesktop: function() {
-		var formFactor = $A.get('$Browser.formFactor');
-		return (formFactor === 'DESKTOP');
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
+		}
 	},
 
 	/**
-	 * Returns true if the application is running on a phone or a table. This method will always
-	 * return the opposite of isDesktop()
-	 *
-	 * @return {boolean} true if the application is running on a phone or a table; otherwise, false
-	 */
-	isMobile: function() {
-		return !this.isDesktop();
-	},
-
-	/**
-	 * Returns true if the value is a number. This method does not treat special NaN or Infinity as
-	 * numbers even though they technically are
-	 *
-	 * @param {*} value the value to test
-	 * @return {boolean} true if the value is a number; otherwise, false
-	 */
-	isNumber: function(value) {
-		return (typeof value === 'number') && isFinite(value);
-	},
-
-	/**
-	 * Converts a value to a number. The conversion used by this method is very simple and not as
-	 * complex as parseNumber(). If the specified value cannot be converted to a number then 0 will
-	 * be returned
+	 * Converts a value to a number. If the specified value cannot be converted to a number then
+	 * defaultValue is returned
 	 *
 	 * @param {*} value the value to convert
 	 * @param {number} defaultValue the number to return if value cannot be converted
 	 * @return {number} the converted value as a number
 	 */
 	toNumber: function(value, defaultValue) {
-		if (this.isNumber(value)) {
-			return value;
-		}
-
-		value = this.trim(value);
-		value = parseFloat(value);
-
-		return this.isNumber(value) ? value : defaultValue;
+		value = this.utils.asNumber(value);
+		return this.utils.isNumber(value) ? value : defaultValue;
 	},
 
 	/**
-	 * Similar to the toNumber() method, but the return value is a whole integer
+	 * Similar to the toNumber() method, but the return value is an integer
 	 *
 	 * @param {*} value the value to convert
 	 * @param {number} defaultValue the number to return if value cannot be converted
 	 * @return {number} the converted value as an integer
 	 */
 	toInteger: function(value, defaultValue) {
-		value = this.toNumber(value, defaultValue);
-		return Math.floor(value);
-	},
-
-	/**
-	 * Removes leading and trailing white space characters from a string. If the specified value is
-	 * null or undefined then an empty string will be returned. If the value is not a string then it
-	 * will be converted to a string and then trimmed
-	 *
-	 * @param {*} value the value to be trimmed
-	 * @return {string} the trimmed string
-	 */
-	trim: function(value) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			value = '';
-		} else {
-			if (typeof value !== 'string') {
-				value = '' + value;
-			}
-			value = value.replace(/^\s+|\s+$/g, '');
-		}
-		return value;
-	},
-
-	/**
-	 * Returns true if the value ends with the specified search string. The comparison is
-	 * case-insensitive
-	 *
-	 * @param {string} value the value to test
-	 * @param {string} searchString the string to check for
-	 * @return {boolean} true if value ends with searchString; otherwise, false
-	 */
-	endsWithIgnoreCase: function(value, searchString) {
-		var a = searchString.toLowerCase();
-		var b = value.substr(0 - searchString.length).toLowerCase();
-		return a === b;
+		return this.utils.asInteger(this.toNumber(value, defaultValue));
 	},
 
 	/**
@@ -256,27 +188,30 @@
 	},
 
 	/**
-	 * Checks to see if the value ends with a special multiplier shortcut key. These shortcuts
-	 * include K for thousands, M for millions, B for billions and T for trillions. If the value
-	 * does end with one of these special shortcuts then an object is returned which contains both
-	 * the shortcut that was detected as well the original value with the shortcut removed from the
-	 * end. If the value does not end with one of the shortcuts then null is returned
+	 * Returns true if the character is a special multiplier shortcut
+	 *
+	 * @param {string} value the character to check
+	 * @return {boolean} true if value is a shortcut
+	 */
+	isMultiplier: function(value) {
+		return this.multipliers.indexOf(value.toLowerCase()) >= 0;
+	},
+
+	/**
+	 * Checks to see if the value ends with a special multiplier shortcut. These shortcuts include K
+	 * for thousands, M for millions, B for billions and T for trillions
 	 *
 	 * @param {string} value the value to test
-	 * @return {object} an object containing the multiplier and the value with the shortcut removed
+	 * @return {boolean} true if the value ends with a multiplier; otherwise, false
 	 */
-	getMultiplier: function(value) {
-		for (var key in this.multipliers) {
-			if (this.endsWithIgnoreCase(value, key)) {
-				value = value.substr(0, value.length - 1);
-				return {
-					factor: this.multipliers[key],
-					value: value
-				};
+	hasMultiplier: function(value) {
+		for (var i = 0, n = this.multipliers.length; i < n; i++) {
+			var multiplier = this.multipliers[i];
+			if (this.utils.endsWithIgnoreCase(value, multiplier)) {
+				return true;
 			}
 		}
-
-		return null;
+		return false;
 	},
 
 	/**
@@ -291,40 +226,16 @@
 	 * @return {number} the parsed number or null if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
-		// Remove leading/trailing white space and commas. If nothing is left then return null
-		// or the min value if null is not allowed
-		var strValue = this.trim(value);
-		strValue = strValue.replace(/,/g, '');
-		if (strValue === '') {
-			return format.nillable ? null : format.min;
-		}
-
-		// Check for shortcuts characters at the end of the value to indicate thousands (K),
-		// millions (M), billions (B) or trillions (T)
-		var multiplier = this.getMultiplier(strValue);
-		if (multiplier) {
-			strValue = multiplier.value;
-		}
-
-		// Parse the number as a float
-		var numValue = parseFloat(strValue);
-		if (this.isNumber(numValue)) {
-			// Multiply it by the multiplier and convert it to the desired scale. This will take
-			// care of any necessary rounding
-			if (multiplier) {
-				numValue *= multiplier.factor;
-			}
-			strValue = numValue.toFixed(format.scale);
-
-			// Parse it again to get the final value
-			numValue = parseFloat(strValue);
-			numValue = this.numberInRange(numValue, format.min, format.max);
+		value = this.utils.asNumber(value);
+		if (this.utils.isNumber(value)) {
+			value = value.toFixed(format.scale);
+			value = parseFloat(value);
+			value = this.numberInRange(value, format.min, format.max);
 		} else {
-			// Not a valid number. Return null or the min value if null is not allowed
-			numValue = format.nillable ? null : format.min;
+			value = format.nillable ? null : format.min;
 		}
 
-		return numValue;
+		return value;
 	},
 
 	/**
@@ -337,20 +248,12 @@
 	 * @return {string} the formatted number
 	 */
 	formatNumber: function(value, format, hasFocus) {
-		if (!this.isNumber(value)) {
-			return '';
+		var thousands = ',';
+		if (this.utils.isMobile() || hasFocus) {
+			thousands = '';
 		}
 
-		var negative = (value < 0) ? '-' : '',
-			thousands = (this.isMobile() || hasFocus) ? '' : ',',
-			scale = format.scale,
-			i = parseInt(value = Math.abs(+value || 0).toFixed(scale), 10) + '',
-			j = ((j = i.length) > 3) ? (j % 3) : 0;
-
-		return negative +
-			(j ? i.substr(0, j) + thousands : '') +
-			i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousands) +
-			(scale ? '.' + Math.abs(value - i).toFixed(scale).slice(2) : '');
+		return this.utils.formatNumber(value, format.scale, thousands);
 	},
 
 	/**
@@ -409,12 +312,12 @@
 		var strValue = '';
 		var numValue = null;
 		if (!$A.util.isUndefinedOrNull(value)) {
-			if (this.isNumber(value)) {
+			if (this.utils.isNumber(value)) {
 				numValue = value;
 				strValue = this.formatNumber(numValue, format, hasFocus);
 			} else {
 				numValue = this.parseNumber(value, format);
-				if (this.isNumber(numValue)) {
+				if (this.utils.isNumber(numValue)) {
 					strValue = this.formatNumber(numValue, format, hasFocus);
 				} else {
 					strValue = value + '';
@@ -433,7 +336,7 @@
 	 */
 	setInputElementAttributesForMobile: function(component) {
 		var inputElement = this.getInputElement(component);
-		if (inputElement && this.isMobile()) {
+		if (inputElement && this.utils.isMobile()) {
 			var format = this.getFormat(component);
 			inputElement.min = format.min;
 			inputElement.max = format.max;

@@ -20,6 +20,13 @@
 	},
 
 	/**
+	 * Initializes the component
+	 */
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
 	 * Handles change to the value attribute
 	 */
 	valueChange: function(component, event, helper) {
@@ -34,7 +41,7 @@
 	 * Handles the focus event of the input element. Removes any formatting from the input
 	 */
 	inputFocus: function(component, event, helper) {
-		if (helper.isDesktop()) {
+		if (helper.utils.isDesktop()) {
 			var inputElement = event.target;
 
 			var selectionStart = inputElement.selectionStart;
@@ -44,7 +51,7 @@
 			var oldValue = inputElement.value;
 
 			var value = oldValue.replace(/,/g, '');
-			value = helper.trim(value);
+			value = helper.utils.trim(value);
 
 			inputElement.value = value;
 
@@ -77,7 +84,7 @@
 		var stepMin = format.stepMin;
 
 		var value = helper.parseNumber(inputElement.value, format);
-		if (!helper.isNumber(value)) {
+		if (!helper.utils.isNumber(value)) {
 			value = 0;
 		}
 
@@ -117,7 +124,7 @@
 	 */
 	inputKeyPress: function(component, event, helper) {
 		// We don't need to handle this event on mobile
-		if (helper.isMobile()) {
+		if (helper.utils.isMobile()) {
 			return;
 		}
 
@@ -160,23 +167,15 @@
 			// All other characters
 			var allowChar = false;
 
-			// Check for special multipliers, but only at the very end and only if a multiplier is
-			// not already present
-			var multiplier = helper.getMultiplier(value);
+			// Check for special multipliers, but only at the very end and only if a multiplier
+			// shortcut is not already present
+			var multiplier = helper.hasMultiplier(value);
 			if (
 				!multiplier
 				&& (value.length > 0)
 				&& ((selectionStart + selectionLength) === value.length)
 			) {
-				for (var key in helper.multipliers) {
-					var l = key.toLowerCase().charCodeAt(0);
-					var u = key.toUpperCase().charCodeAt(0);
-					if ((which === l) || (which === u)) {
-						// Allow multiplier shortcut
-						allowChar = true;
-						break;
-					}
-				}
+				allowChar = helper.isMultiplier(String.fromCharCode(which));
 			}
 
 			// If the character is not allowed then call preventDefault() on the event to keep it
