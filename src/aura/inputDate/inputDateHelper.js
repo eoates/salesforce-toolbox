@@ -2,105 +2,15 @@
 	valueFormat: 'yyyy-MM-dd',
 
 	/**
-	 * Returns true if the application running on a desktop browser. This method uses the $Browser
-	 * global variable to get the device type
+	 * Imports modules used by the component
 	 *
-	 * @return {boolean} true if the application is running on a desktop browser or false if it
-	 *                   is running on a phone or tablet
+	 * @param  {Aura.Component} component the inputDate component
+	 * @return {void}
 	 */
-	isDesktop: function() {
-		var formFactor = $A.get('$Browser.formFactor');
-		return (formFactor === 'DESKTOP');
-	},
-
-	/**
-	 * Returns true if the application is running on a phone or a table. This method will always
-	 * return the opposite of isDesktop()
-	 *
-	 * @return {boolean} true if the application is running on a phone or a table; otherwise, false
-	 */
-	isMobile: function() {
-		return !this.isDesktop();
-	},
-
-	/**
-	 * Removes leading and trailing white space characters from a string. If the specified value is
-	 * null or undefined then an empty string will be returned. If the value is not a string then it
-	 * will be converted to a string and then trimmed
-	 *
-	 * @param {*} value the value to be trimmed
-	 * @return {string} the trimmed string
-	 */
-	trim: function(value) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			value = '';
-		} else {
-			if (!this.isString(value)) {
-				value = '' + value;
-			}
-			value = value.replace(/^\s+|\s+$/g, '');
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
 		}
-		return value;
-	},
-
-	/**
-	 * Converts the value to a Date if possible. If the value cannot be converted to a Date then
-	 * null is returned
-	 *
-	 * @param {*} value the value to convert
-	 * @return {Date} the converted date or null if the value could not be converted to a Date
-	 */
-	toDate: function(value) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			value = null;
-		} else if (this.isDate(value)) {
-			value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-		} else if (this.isNumber(value)) {
-			value = new Date(value);
-		} else {
-			value = this.trim(value);
-			if (value !== '') {
-				try {
-					value = $A.localizationService.parseDateTime(value);
-				} catch (e) {
-					value = null;
-				}
-			} else {
-				value = null;
-			}
-		}
-		return value;
-	},
-
-	/**
-	 * Returns true if the value is a string
-	 *
-	 * @param {*} vaue the value to test
-	 * @return {boolean} true if the value is a string; otherwise, false
-	 */
-	isString: function(value) {
-		return (typeof value === 'string');
-	},
-
-	/**
-	 * Returns true if the value is a number. This method does not treat special NaN or Infinity as
-	 * numbers even though they technically are
-	 *
-	 * @param {*} value the value to test
-	 * @return {boolean} true if the value is a number; otherwise, false
-	 */
-	isNumber: function(value) {
-		return (typeof value === 'number') && isFinite(value);
-	},
-
-	/**
-	 * Returns true if the value is a date
-	 *
-	 * @param {*} value the value to test
-	 * @return {boolean} true if the value is a date; otherwise, false
-	 */
-	isDate: function(value) {
-		return (Object.prototype.toString.call(value) === '[object Date]');
 	},
 
 	/**
@@ -165,28 +75,6 @@
 	},
 
 	/**
-	 * Formats a date using the specified format. If no format is provided then a default format
-	 * will be used
-	 *
-	 * @param {Date} value the date to format
-	 * @param {string} [format] the format
-	 * @return {string} the formatted date
-	 */
-	formatDate: function(value, format) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			return '';
-		}
-
-		if ($A.util.isEmpty(format)) {
-			format = this.valueFormat;
-		} else {
-			format = '' + format;
-		}
-
-		return $A.localizationService.formatDateTime(value, format);
-	},
-
-	/**
 	 * Returns the value as a formatted string
 	 *
 	 * @param {Aura.Component} component the inputDate component
@@ -194,19 +82,19 @@
 	 */
 	getFormattedValue: function(component) {
 		var value = component.get('v.value');
-		var format = component.get('v.format');
 
-		if (this.isMobile()) {
+		var format = this.utils.asString(component.get('v.format'));
+		if (this.utils.isBlank(format) || this.utils.isMobile()) {
 			format = this.valueFormat;
 		}
 
 		var strValue = '';
-		if (!$A.util.isUndefinedOrNull(value)) {
-			var dateValue = this.toDate(value);
+		if (!this.utils.isUndefinedOrNull(value)) {
+			var dateValue = this.utils.asDate(value);
 			if (dateValue) {
-				strValue = this.formatDate(dateValue, format);
+				strValue = this.utils.formatDate(dateValue, format);
 			} else {
-				strValue = value + '';
+				strValue = this.utils.asString(value);
 			}
 		}
 
@@ -218,24 +106,26 @@
 	 *
 	 * @param {Aura.Component} component the inputDate component
 	 * @param {string} value the value
-	 * @return {void}
+	 * @return {boolean} true if the value changed
 	 */
 	setValue: function(component, value) {
 		// Format the value
-		value = this.trim(value);
+		value = this.utils.trim(value);
 		if (value) {
-			var dateValue = this.toDate(value);
+			var dateValue = this.utils.asDate(value);
 			if (dateValue) {
-				value = this.formatDate(dateValue);
+				value = this.utils.formatDate(dateValue, this.valueFormat);
 			} else {
 				value = null;
 			}
+		} else {
+			value = null;
 		}
 
 		// Determine whether the value has changed
 		var oldValue = component.get('v.value');
 		if (value === oldValue) {
-			return;
+			return false;
 		}
 
 		// Update the value
@@ -246,11 +136,7 @@
 			component.ignoreValueChange = false;
 		}
 
-		// Update the input element value
-		this.updateInputElement(component);
-
-		// Fire the change event
-		this.fireEvent(component, 'onchange');
+		return true;
 	},
 
 	/**

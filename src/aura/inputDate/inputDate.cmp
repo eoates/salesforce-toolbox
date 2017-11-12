@@ -25,6 +25,7 @@
 	<!-- /events -->
 
 	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
 	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
 	<aura:handler value="{!v.disabled}" name="change" action="{!c.disabledChange}" />
 	<aura:handler value="{!v.readonly}" name="change" action="{!c.readOnlyChange}" />
@@ -36,6 +37,8 @@
 	<!-- /methods -->
 
 	<!-- component -->
+	<c:utils aura:id="utils" />
+
 	<c:formElement controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"

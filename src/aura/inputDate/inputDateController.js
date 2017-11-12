@@ -20,6 +20,13 @@
 	},
 
 	/**
+	 * Initializes the component
+	 */
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
 	 * Handles change to the value attribute
 	 */
 	valueChange: function(component, event, helper) {
@@ -87,7 +94,7 @@
 	 * Handles the focus event of the input element
 	 */
 	inputFocus: function(component, event, helper) {
-		if (helper.isDesktop()) {
+		if (helper.utils.isDesktop()) {
 			var inputElement = event.target;
 
 			var autoSelect = component.get('v.autoselect');
@@ -103,7 +110,7 @@
 	 * Handles the blur event of the input element
 	 */
 	inputBlur: function(component, event, helper) {
-		if (helper.isDesktop()) {
+		if (helper.utils.isDesktop()) {
 			helper.updateInputElement(component);
 		} else {
 			helper.fireEvent(component, 'onblur');
@@ -115,7 +122,12 @@
 	 */
 	inputChange: function(component, event, helper) {
 		var inputElement = event.target;
-		helper.setValue(component, inputElement.value);
+
+		var changed = helper.setValue(component, inputElement.value);
+		helper.updateInputElement(component);
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
+		}
 	},
 
 	/**
@@ -132,8 +144,12 @@
 		var datepicker = event.getSource();
 		var value = datepicker.get('v.value');
 
-		helper.setValue(component, value);
+		var changed = helper.setValue(component, value);
+		helper.updateInputElement(component);
 		helper.close(component, true);
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
+		}
 	},
 
 	/**
