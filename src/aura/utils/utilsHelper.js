@@ -774,7 +774,24 @@
 
 		var millisecondsPerDay = 24 * 60 * 60 * 1000;
 		var days = (this.treatAsUTC(date2) - this.treatAsUTC(date1)) / millisecondsPerDay;
-		return this.trunc(days);
+		return days;
+	},
+
+	/**
+	 * Returns true if two dates represent the same day
+	 *
+	 * @param {Date} date1 - the first date
+	 * @param {Date} date2 - the second date
+	 *
+	 * @return {boolean} true if the two dates represent the same day
+	 */
+	sameDay: function(date1, date2) {
+		if (!this.isDate(date1) || !this.isDate(date2)) {
+			return false;
+		}
+
+		var same = $A.localizationService.isSame(date1, date2, 'day');
+		return same;
 	},
 
 	/**

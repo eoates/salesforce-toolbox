@@ -20,26 +20,6 @@
 	},
 
 	/**
-	 * Returns true if 2 date values represent the same day
-	 *
-	 * @param {Date} date1 - the first date
-	 * @param {Date} date2 - the second date
-	 *
-	 * @return {boolean} true if the 2 dates represent the same day; otherwise, false
-	 */
-	isSameDate: function(date1, date2) {
-		if (this.utils.isUndefinedOrNull(date1) && this.utils.isUndefinedOrNull(date2)) {
-			return true;
-		}
-
-		if (this.utils.isUndefinedOrNull(date1) || this.utils.isUndefinedOrNull(date2)) {
-			return false;
-		}
-
-		return $A.localizationService.isSame(date1, date2, 'day');
-	},
-
-	/**
 	 * Gets the calendar for the specified month. The calendar has an array containing all of the
 	 * days in the month. Each day has information about that day such as whether it is the selected
 	 * date, whether it is disabled, etc.
@@ -78,8 +58,8 @@
 					year: currentDate.getFullYear(),
 					month: currentDate.getMonth(),
 					date: currentDate.getDate(),
-					selected: this.isSameDate(currentDate, selected),
-					today: this.isSameDate(currentDate, today),
+					selected: this.utils.sameDay(currentDate, selected),
+					today: this.utils.sameDay(currentDate, today),
 					disabled: (currentDate.getMonth() !== month)
 				};
 				calendarDays.push(day);
@@ -140,7 +120,7 @@
 	 */
 	getDayByValue: function(calendar, date) {
 		return this.getDay(calendar, function(day) {
-			return this.isSameDate(day.value, date);
+			return this.utils.sameDay(day.value, date);
 		});
 	},
 
@@ -439,7 +419,7 @@
 	 */
 	setValue: function(component, value, focus) {
 		var oldValue = component.get('v.value');
-		if (this.isSameDate(value, this.utils.asDate(oldValue))) {
+		if (this.utils.sameDay(value, this.utils.asDate(oldValue))) {
 			this.setActiveDate(component, value, focus);
 			this.fireEvent(component, 'onselect', {
 				value: value
