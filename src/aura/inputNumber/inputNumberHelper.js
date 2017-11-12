@@ -165,7 +165,7 @@
 		var min = this.getMin(component, range);
 		var max = this.getMax(component, range);
 		var step = this.getStep(component, scale);
-		var nillable = $A.util.getBooleanValue(component.get('v.nillable'));
+		var nillable = this.utils.asBoolean(component.get('v.nillable'));
 
 		// When a user presses the ARROW UP or ARROW DOWN key in a number field the value is
 		// incremented/decremented by the amount in the step attribute. The min attribute affects
@@ -309,23 +309,13 @@
 		var format = this.getFormat(component);
 		var value = component.get('v.value');
 
-		var strValue = '';
-		var numValue = null;
-		if (!$A.util.isUndefinedOrNull(value)) {
-			if (this.utils.isNumber(value)) {
-				numValue = value;
-				strValue = this.formatNumber(numValue, format, hasFocus);
-			} else {
-				numValue = this.parseNumber(value, format);
-				if (this.utils.isNumber(numValue)) {
-					strValue = this.formatNumber(numValue, format, hasFocus);
-				} else {
-					strValue = value + '';
-				}
-			}
+		if (this.utils.isNumber(value)) {
+			value = this.formatNumber(value, format, hasFocus);
+		} else {
+			value = this.utils.asString(value);
 		}
 
-		inputElement.value = strValue;
+		inputElement.value = value;
 	},
 
 	/**
