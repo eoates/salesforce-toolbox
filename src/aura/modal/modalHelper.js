@@ -56,7 +56,7 @@
 				// specified duration
 				if (toastArgs.mode !== 'sticky') {
 					component.toastTimeoutId = setTimeout($A.getCallback(function() {
-						component.toastTimeoutId = null;
+						component.toastTimeoutId = undefined;
 						self.dismissToast(component);
 					}), duration);
 				}
@@ -79,7 +79,7 @@
 		// Clear the current timeout
 		if (component.toastTimeoutId) {
 			clearTimeout(component.toastTimeoutId);
-			component.toastTimeoutId = null;
+			component.toastTimeoutId = undefined;
 		}
 
 		// Get the container which holds the toast
@@ -138,7 +138,7 @@
 	/**
 	 * Returns the body element
 	 *
-	 * @return {HTMLElement} the body element if it exists; otherwise, null
+	 * @return {HTMLElement} the body element
 	 */
 	getBodyElement: function() {
 		var body = document.body;
@@ -166,7 +166,7 @@
 	 * @return {HTMLElement} an element which will be used to contain all of the modals
 	 */
 	createModalContainer: function() {
-		var container = null;
+		var container;
 
 		var body = this.getBodyElement();
 		if (body) {
