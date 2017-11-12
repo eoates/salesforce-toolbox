@@ -12,7 +12,7 @@
 	/**
 	 * Selects the input element
 	 */
-	select: function() {
+	select: function(component, event, helper) {
 		var inputElement = helper.getInputElement(component);
 		if (inputElement) {
 			inputElement.select();

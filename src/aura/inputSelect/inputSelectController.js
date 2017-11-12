@@ -19,6 +19,21 @@
 	},
 
 	/**
+	 * Selects the input element
+	 */
+	select: function(component, event, helper) {
+		var editable = component.get('v.editable');
+		if (!editable) {
+			return;
+		}
+
+		var inputElement = helper.getInputElement(component);
+		if (inputElement) {
+			inputElement.select();
+		}
+	},
+
+	/**
 	 * Initializes the component
 	 */
 	init: function(component, event, helper) {
@@ -114,13 +129,16 @@
 		$A.util.addClass(container, 'has-focus');
 
 		// Walk up the element tree and check to see if the component is within a slds-form-element
-		// and, if so, check whether it has the slds-has-error class
+		// and, if so, check whether it has the slds-has-error class. This is to prevent issues with
+		// styling when the text input has focus
 		var hasError = false;
 		var element = container;
 		while (element) {
 			if ($A.util.hasClass(element, 'slds-form-element')) {
 				hasError = $A.util.hasClass(element, 'slds-has-error');
-				break;
+				if (hasError) {
+					break;
+				}
 			}
 			element = element.parentElement;
 		}

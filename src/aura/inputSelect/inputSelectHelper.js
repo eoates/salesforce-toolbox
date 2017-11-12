@@ -396,6 +396,12 @@
 			inputElement.value = option.label;
 			selectElement.selectedIndex = selectedIndex;
 		} else {
+			var autoTrim = component.get('v.autotrim');
+			if (autoTrim) {
+				value = this.utils.trim(value);
+				inputElement.value = value;
+			}
+
 			selectElement.selectedIndex = -1;
 		}
 

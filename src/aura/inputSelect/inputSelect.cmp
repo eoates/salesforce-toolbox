@@ -12,6 +12,7 @@
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="editable" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="autotrim" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="label" type="String" />
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
@@ -44,6 +45,7 @@
 
 	<!-- methods -->
 	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="select" action="{!c.select}" />
 	<!-- /methods -->
 
 	<!-- component -->

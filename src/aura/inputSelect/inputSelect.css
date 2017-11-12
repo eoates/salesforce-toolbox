@@ -5,7 +5,8 @@
 	background-clip: padding-box;
 }
 
-.THIS.slds-has-error .is-editable.has-focus select:not(:focus) {
+.THIS.slds-has-error .is-editable.has-focus select:not(:focus),
+.THIS .is-editable.has-focus.has-error select:not(:focus) {
 	border-color: #c23934;
 	background-color: white;
 	box-shadow: #c23934 0 0 0 1px inset, 0 0 3px #0070D2;
