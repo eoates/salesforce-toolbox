@@ -69,7 +69,7 @@
 			dropdown.getElement().setAttribute('aria-hidden', true);
 
 			var datepicker = component.find('datepicker');
-			datepicker.set('v.value', null);
+			datepicker.set('v.value', undefined);
 		}
 
 		if (focus) {
@@ -122,10 +122,10 @@
 			if (dateValue) {
 				value = this.utils.formatDate(dateValue, this.valueFormat);
 			} else {
-				value = null;
+				value = undefined;
 			}
 		} else {
-			value = null;
+			value = undefined;
 		}
 
 		// Determine whether the value has changed
@@ -157,7 +157,7 @@
 		if (input) {
 			return input.getElement();
 		}
-		return null;
+		return undefined;
 	},
 
 	/**

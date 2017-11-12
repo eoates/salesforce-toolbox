@@ -104,7 +104,7 @@
 	 * @param {Function} predicate - a function that will be called for each day in the calendar
 	 *
 	 * @return {Object} the first day that matched the specified predicate. If there was no match
-	 *                  then null is returned
+	 *                  then undefined is returned
 	 */
 	getDay: function(calendar, predicate) {
 		var days = calendar.days;
@@ -115,7 +115,7 @@
 				return day;
 			}
 		}
-		return null;
+		return undefined;
 	},
 
 	/**
@@ -232,9 +232,9 @@
 		this.toggleClass(cell, 'slds-is-selected', !day.disabled && day.selected);
 		this.toggleClass(cell, 'slds-is-today', !day.disabled && !day.selected && day.today);
 
-		this.setElementAttribute(cell, 'aria-disabled', day.disabled || null);
+		this.setElementAttribute(cell, 'aria-disabled', day.disabled ? true : undefined);
 		this.setElementAttribute(cell, 'aria-selected', !day.disabled && day.selected);
-		this.setElementAttribute(cell, 'aria-current', (!day.disabled && day.today) ? 'date' : null);
+		this.setElementAttribute(cell, 'aria-current', (!day.disabled && day.today) ? 'date' : undefined);
 
 		this.setElementAttribute(cell, 'data-index', day.index);
 		this.setElementAttribute(cell, 'data-year', day.year);
@@ -338,7 +338,7 @@
 			var index = parseInt(cell.getAttribute('data-index'), 10);
 			if (index !== activeIndex) {
 				this.toggleClass(cell, 'is-active', false);
-				this.setElementAttribute(cell, 'tabindex', null);
+				this.setElementAttribute(cell, 'tabindex', undefined);
 			}
 		}
 	},
@@ -439,10 +439,6 @@
 	 */
 	setValue: function(component, value, focus) {
 		var oldValue = component.get('v.value');
-		if (this.utils.isUndefinedOrNull(oldValue)) {
-			oldValue = null;
-		}
-
 		if (this.isSameDate(value, this.utils.asDate(oldValue))) {
 			this.setActiveDate(component, value, focus);
 			this.fireEvent(component, 'onselect', {
@@ -481,7 +477,7 @@
 		if (value) {
 			value = this.utils.formatDate(value, this.valueFormat);
 		} else {
-			value = null;
+			value = undefined;
 		}
 
 		component.ignoreValueChange = true;

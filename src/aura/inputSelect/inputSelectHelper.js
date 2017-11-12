@@ -505,7 +505,7 @@
 		if (input) {
 			return input.getElement();
 		}
-		return null;
+		return undefined;
 	},
 
 	/**
@@ -526,7 +526,7 @@
 				return select.getElement();
 			}
 		}
-		return null;
+		return undefined;
 	},
 
 	/**

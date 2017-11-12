@@ -11,7 +11,7 @@
 		if (input) {
 			return input.getElement();
 		}
-		return null;
+		return undefined;
 	},
 
 	/**

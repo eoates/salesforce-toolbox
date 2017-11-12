@@ -237,7 +237,7 @@
 	 *                          string will be converted to a string before parsing
 	 * @param {Object} format - an object that contains formatting information and constraints
 	 *
-	 * @return {number} the parsed number or null if the value could not be parsed
+	 * @return {number} the parsed number or undefined if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
 		value = this.utils.asNumber(value);
@@ -246,7 +246,7 @@
 			value = parseFloat(value);
 			value = this.numberInRange(value, format.min, format.max);
 		} else {
-			value = format.nillable ? null : format.min;
+			value = format.nillable ? undefined : format.min;
 		}
 
 		return value;
@@ -254,7 +254,7 @@
 
 	/**
 	 * Formats a number using the information provided by a format object. If the value is not a
-	 * number (undefined, null, NaN, etc.) then an empty string will be returned
+	 * number then an empty string will be returned
 	 *
 	 * @param {number}  value      - the number to format
 	 * @param {Object}  format     - an object containing formatting information
@@ -307,7 +307,7 @@
 		if (input) {
 			return input.getElement();
 		}
-		return null;
+		return undefined;
 	},
 
 	/**
