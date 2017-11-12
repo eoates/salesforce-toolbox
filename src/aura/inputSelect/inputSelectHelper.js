@@ -1,19 +1,15 @@
 ({
 	/**
-	 * Returns the value as a string. If the value is already a string then it is unchanged;
-	 * otherwise, it is coerced into a string. Undefined and null are converted to an empty string
+	 * Imports modules used by the component
 	 *
-	 * @param {*} value - the value to convert
+	 * @param {Aura.Component} component - the inputSelect component
 	 *
-	 * @return {string} a string
+	 * @return {void}
 	 */
-	asString: function(value) {
-		if ($A.util.isUndefinedOrNull(value)) {
-			value = '';
-		} else if (typeof value !== 'string') {
-			value = value + '';
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
 		}
-		return value;
 	},
 
 	/**
@@ -27,20 +23,22 @@
 	createLocalOptions: function(options) {
 		var localOptions = [];
 
-		if ($A.util.isEmpty(options)) {
+		if (this.utils.isEmpty(options)) {
 			options = [];
 		}
 
 		for (var i = 0, n = options.length; i < n; i++) {
 			var option = options[i];
-			var value = this.asString(option.value);
-			var label = this.asString(option.label);
+			var value = this.utils.asString(option.value);
+			var label = this.utils.asString(option.label);
+			var title = this.utils.trim(option.title);
 			var disabled = !!option.disabled;
 
 			var localOption = {
+				className: this.getOptionClass(option),
 				value: value,
 				label: label || value,
-				className: this.getOptionClass(option),
+				title: title,
 				disabled: disabled
 			};
 
@@ -74,7 +72,7 @@
 	 * @return {string} the option's CSS class
 	 */
 	getOptionClass: function(option) {
-		return this.asString(option['class']) + ' ' + this.asString(option.className);
+		return this.utils.trim(option['class']) || this.utils.trim(option.className);
 	},
 
 	/**
@@ -260,6 +258,7 @@
 
 			optionElement.className = option.className;
 			optionElement.value = option.value;
+			optionElement.title = option.title;
 			optionElement.disabled = option.disabled;
 			optionElement.innerText = option.label;
 		}
@@ -288,7 +287,7 @@
 
 		var inputElement = this.getInputElement(component);
 
-		var value = this.asString(component.get('v.value'));
+		var value = this.utils.asString(component.get('v.value'));
 		var options = component.get('v.localOptions');
 		var selectedIndex = component.get('v.selectedIndex');
 		if (selectedIndex === -1) {
@@ -458,7 +457,7 @@
 	 */
 	setSelectedIndex: function(component, selectedIndex) {
 		var options = component.get('v.localOptions');
-		if ($A.util.isUndefinedOrNull(selectedIndex)) {
+		if (this.utils.isUndefinedOrNull(selectedIndex)) {
 			selectedIndex = -1;
 		} else if ((selectedIndex < 0) || (selectedIndex >= options.length)) {
 			selectedIndex = -1;
@@ -486,7 +485,7 @@
 	 * @return {boolean} true if the selectedIndex changed
 	 */
 	setSelectedIndexFromValue: function(component) {
-		var value = this.asString(component.get('v.value'));
+		var value = this.utils.asString(component.get('v.value'));
 		var options = component.get('v.localOptions');
 		var selectedIndex = this.indexOfOptionByValue(options, value);
 
@@ -518,7 +517,7 @@
 	getSelectElement: function(component) {
 		var select = component.find('select');
 		if (select) {
-			if ($A.util.isArray(select)) {
+			if (this.utils.isArray(select)) {
 				if (select.length > 0) {
 					return select[0].getElement();
 				}

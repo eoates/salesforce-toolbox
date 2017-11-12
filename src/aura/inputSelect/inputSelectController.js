@@ -22,6 +22,7 @@
 	 * Initializes the component
 	 */
 	init: function(component, event, helper) {
+		helper.importModules(component);
 		helper.createAndSetLocalOptions(component);
 		helper.setSelectedIndexFromValue(component);
 	},

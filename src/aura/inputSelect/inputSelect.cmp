@@ -41,6 +41,8 @@
 	<!-- /methods -->
 
 	<!-- component -->
+	<c:utils aura:id="utils" />
+
 	<c:formElement controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"
