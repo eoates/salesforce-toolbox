@@ -16,6 +16,10 @@
 	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
 	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
+	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
+	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
+	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
+	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
 	<!-- /attributes -->
 
 	<!-- events -->
@@ -39,7 +43,11 @@
 	<!-- component -->
 	<c:utils aura:id="utils" />
 
-	<c:formElement controlId="{#globalId + '_input'}"
+	<c:formElement class="{!v.elementClass}"
+	               labelClass="{!v.labelClass}"
+	               controlClass="{!v.controlClass}"
+	               errorClass="{!v.errorClass}"
+	               controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"
 	               helpText="{!v.helpText}"

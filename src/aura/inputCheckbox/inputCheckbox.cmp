@@ -12,6 +12,10 @@
 	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
 	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
+	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
+	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
+	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
+	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
 	<!-- /attributes -->
 
 	<!-- events -->
@@ -25,7 +29,10 @@
 	<!-- /methods -->
 
 	<!-- component -->
-	<c:formElement required="{!v.required}"
+	<c:formElement class="{!v.elementClass}"
+	               controlClass="{!v.controlClass}"
+	               errorClass="{!v.errorClass}"
+	               required="{!v.required}"
 	               error="{!v.error}"
 	               errors="{!v.errors}">
 		<span class="{!v.class + ' slds-checkbox'}">
@@ -41,7 +48,7 @@
 			       onblur="{!c.inputBlur}"
 			       onchange="{!c.inputChange}" />
 
-			<label for="{#globalId + '_input'}" class="slds-checkbox__label">
+			<label for="{#globalId + '_input'}" class="{!v.labelClass + ' slds-checkbox__label'}">
 				<span class="slds-checkbox_faux"></span>
 				<span class="slds-form-element__label">{!v.label}</span>
 			</label>
