@@ -3,6 +3,28 @@
 	FORMAT_ISO_8601: 'yyyy-MM-dd',
 
 	/**
+	 * Returns true if the application running on a desktop browser. This method uses the $Browser
+	 * global variable to get the device type
+	 *
+	 * @return {boolean} true if the application is running on a desktop browser or false if it is
+	 *                   running on a phone or tablet
+	 */
+	isDesktop: function() {
+		var formFactor = $A.get('$Browser.formFactor');
+		return (formFactor === 'DESKTOP');
+	},
+
+	/**
+	 * Returns true if the application is running on a phone or a table. This method will always
+	 * return the opposite of isDesktop()
+	 *
+	 * @return {boolean} true if the application is running on a phone or a table; otherwise, false
+	 */
+	isMobile: function() {
+		return !this.isDesktop();
+	},
+
+	/**
 	 * Returns true if the value is undefined; otherwise, false
 	 *
 	 * @param {*} value - the value to check
