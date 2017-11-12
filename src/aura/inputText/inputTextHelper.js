@@ -2,7 +2,8 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param  {Aura.Component} the inputText component
+	 * @param {Aura.Component} component - the inputText component
+	 *
 	 * @return {void}
 	 */
 	importModules: function(component) {

@@ -6,10 +6,7 @@
 		event.stopPropagation();
 
 		var closeEvent = component.getEvent('onclosebutton');
-		closeEvent.setParams({
-			name: 'onclosebutton',
-			args: {}
-		});
+		closeEvent.setParam('arguments', {});
 		closeEvent.fire();
 	}
 })

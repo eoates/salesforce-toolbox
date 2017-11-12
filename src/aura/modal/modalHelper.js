@@ -6,6 +6,11 @@
 
 	/**
 	 * Displays a toast in the header of the modal
+	 *
+	 * @param {Aura.Component} component - the modal component
+	 * @param {Object}         toastArgs - an object containing the toast parameters
+	 *
+	 * @return {void}
 	 */
 	showToast: function(component, toastArgs) {
 		// If there is already a toast being displayed then dismiss it
@@ -66,7 +71,8 @@
 	/**
 	 * Dismisses a toast if one is being displayed
 	 *
-	 * @param {Aura.Component} component the modal component
+	 * @param {Aura.Component} component - the modal component
+	 *
 	 * @return {void}
 	 */
 	dismissToast: function(component) {
@@ -96,8 +102,9 @@
 	 * is not one of the valid animations then the defaultAnimation is used. If defaultAnimation
 	 * is also invalid, then default to "slds-fade-in-open"
 	 *
-	 * @param {string} animation the name of the animation to use
-	 * @param {string} defaultAnimation the animation to use if animation argument is invalid
+	 * @param {string} animation        - the name of the animation to use
+	 * @param {string} defaultAnimation - the animation to use if animation argument is invalid
+	 *
 	 * @return {string} the CSS class for the specified animation
 	 */
 	getAnimationClassName: function(animation, defaultAnimation) {
@@ -113,7 +120,8 @@
 	/**
 	 * Returns all child elements for the specified parent
 	 *
-	 * @param {HTMLElement} parent the parent element
+	 * @param {HTMLElement} parent - the parent element
+	 *
 	 * @return {HTMLElement[]} the child elements
 	 */
 	getChildElements: function(parent) {
@@ -185,7 +193,8 @@
 	/**
 	 * Adds a modal to the container element
 	 *
-	 * @param {Aura.Component} component the modal component to be added to the container
+	 * @param {Aura.Component} component - the modal component to be added to the container
+	 *
 	 * @return {void}
 	 */
 	addToModalContainer: function(component) {
@@ -225,7 +234,8 @@
 	/**
 	 * Removes a modal from the container element and places it back in its original container
 	 *
-	 * @param {Aura.Component} component the modal component to remove
+	 * @param {Aura.Component} component - the modal component to remove
+	 *
 	 * @return {void}
 	 */
 	removeFromModalContainer: function(component) {
@@ -290,8 +300,9 @@
 	/**
 	 * Sets the CSS z-index property for the specified modal
 	 *
-	 * @param {string} componentId the ID of the modal component
-	 * @param {number} zIndex the value to use for the z-index property
+	 * @param {string} componentId - the ID of the modal component
+	 * @param {number} zIndex      - index property
+	 *
 	 * @return {void}
 	 */
 	setModalZIndex: function(componentId, zIndex) {
@@ -333,7 +344,8 @@
 	/**
 	 * Handle the opening of a modal
 	 *
-	 * @param {Aura.Component} component the modal component
+	 * @param {Aura.Component} component - the modal component
+	 *
 	 * @return {void}
 	 */
 	handleModalOpen: function(component) {
@@ -357,7 +369,8 @@
 	/**
 	 * Handle the closing of a modal
 	 *
-	 * @param {Aura.Component} component the modal component
+	 * @param {Aura.Component} component - the modal component
+	 *
 	 * @return {void}
 	 */
 	handleModalClose: function(component) {
@@ -379,7 +392,8 @@
 	/**
 	 * Open the specified modal
 	 *
-	 * @param {Aura.Component} component the modal component
+	 * @param {Aura.Component} component - the modal component
+	 *
 	 * @return {void}
 	 */
 	openModal: function(component) {
@@ -410,7 +424,8 @@
 	/**
 	 * Close the specified modal
 	 *
-	 * @param {Aura.Component} component the modal component
+	 * @param {Aura.Component} component - the modal component
+	 *
 	 * @return {void}
 	 */
 	closeModal: function(component) {
@@ -436,9 +451,10 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component the modal component
-	 * @param {string} name the event name
-	 * @param {Object} args optional event arguments
+	 * @param {Aura.Component} component - the modal component
+	 * @param {string}         name      - the event name
+	 * @param {Object}         args      - optional event arguments
+	 *
 	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {

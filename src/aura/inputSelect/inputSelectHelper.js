@@ -3,7 +3,8 @@
 	 * Returns the value as a string. If the value is already a string then it is unchanged;
 	 * otherwise, it is coerced into a string. Undefined and null are converted to an empty string
 	 *
-	 * @param {*} value the value to convert
+	 * @param {*} value - the value to convert
+	 *
 	 * @return {string} a string
 	 */
 	asString: function(value) {
@@ -19,8 +20,9 @@
 	 * Creates a local copy of the options so we don't modify the array passed via the component's
 	 * options attribute
 	 *
-	 * @param {Object[]} options the options to copy
-	 * @return {object[]} an array containing the copied options
+	 * @param {Object[]} options - the options to copy
+	 *
+	 * @return {Object[]} an array containing the copied options
 	 */
 	createLocalOptions: function(options) {
 		var localOptions = [];
@@ -52,8 +54,9 @@
 	 * Copies the options from the component's options attribute and stores them in a private
 	 * attribute named localOptions
 	 *
-	 * @param {Aura.Component} component the inputSelect component
-	 * @return {object[]} an array containing the copied options
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
+	 * @return {Object[]} an array containing the copied options
 	 */
 	createAndSetLocalOptions: function(component) {
 		var options = component.get('v.options');
@@ -66,7 +69,8 @@
 	 * Return the CSS class for the option. We support 2 attributes for specifying an option's
 	 * class - class and className. Since class is a keyword we have to use quotes
 	 *
-	 * @param {Object} option the option
+	 * @param {Object} option - the option
+	 *
 	 * @return {string} the option's CSS class
 	 */
 	getOptionClass: function(option) {
@@ -76,9 +80,10 @@
 	/**
 	 * Returns the index of the first element in the array that matches the predicate
 	 *
-	 * @param {*} values the array of values to search
-	 * @param {Function} predicate a function that will be called for each element in the array
-	 *                             until it returns true
+	 * @param {*}        values    - the array of values to search
+	 * @param {Function} predicate - a function that will be called for each element in the array
+	 *                               until it returns true
+	 *
 	 * @return {number} the index of the first element that matched the predicate or -1 if there
 	 *                  was no match
 	 */
@@ -98,8 +103,9 @@
 	/**
 	 * Returns the index of the first option that has the specified value
 	 *
-	 * @param {Object[]} options the options
-	 * @param {string} value the value to find
+	 * @param {Object[]} options - the options
+	 * @param {string}   value   - the value to find
+	 *
 	 * @return {number} the index of the matching option or -1
 	 */
 	indexOfOptionByValue: function(options, value) {
@@ -111,8 +117,9 @@
 	/**
 	 * Returns the index of the first option that is not disabled and has the specified label
 	 *
-	 * @param {Object[]} options the options
-	 * @param {string} label the label to find
+	 * @param {Object[]} options - the options
+	 * @param {string}   label   - the label to find
+	 *
 	 * @return {number} the index of the matching option or -1
 	 */
 	indexOfOptionByLabel: function(options, label) {
@@ -126,8 +133,9 @@
 	 * Returns the index of the first option that is not disabled and where the label starts with
 	 * the specified text
 	 *
-	 * @param {Object[]} options the options
-	 * @param {string} label the label to find
+	 * @param {Object[]} options - the options
+	 * @param {string}   label   - the label to find
+	 *
 	 * @return {number} the index of the matching option or -1
 	 */
 	indexOfOptionByLabelStartsWith: function(options, label) {
@@ -157,8 +165,9 @@
 	 * method actually selects the previous option. This method should only be called when editable
 	 * is true
 	 *
-	 * @param {Aura.Component} component the inputSelect component
-	 * @param {boolean} [reverse] true to select previous option
+	 * @param {Aura.Component} component       - the inputSelect component
+	 * @param {boolean}        [reverse=false] - true to select previous option
+	 *
 	 * @return {boolean} true if the selected option was changed; otherwise, false
 	 */
 	selectNextOptionElement: function(component, reverse) {
@@ -221,7 +230,8 @@
 	/**
 	 * Updates the select element's options
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {void}
 	 */
 	updateOptionElements: function(component) {
@@ -266,7 +276,8 @@
 	 * with the same value as the component then the input element's value is set to the label of
 	 * that option; otherwise, we just set the input element's value is set to the component value
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {void}
 	 */
 	updateInputElement: function(component) {
@@ -290,7 +301,8 @@
 	/**
 	 * Updates the selected index of the select element based on the component value
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {void}
 	 */
 	updateSelectElement: function(component) {
@@ -301,7 +313,8 @@
 	/**
 	 * Updates the input and select elements
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {void}
 	 */
 	updateInputAndSelectElements: function(component) {
@@ -317,8 +330,9 @@
 	/**
 	 * Sets the value
 	 *
-	 * @param {Aura.Component} component the inputSelect component
-	 * @param {string} value the value
+	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {string}         value     - the value
+	 *
 	 * @return {boolean} true if the value changed
 	 */
 	setValue: function(component, value) {
@@ -340,7 +354,8 @@
 	/**
 	 * Sets the value based on the selected option index
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {boolean} true if the value changed
 	 */
 	setValueFromSelectedIndex: function(component) {
@@ -358,7 +373,8 @@
 	/**
 	 * Sets the value based on the text in the input element
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {boolean} true if the value changed
 	 */
 	setValueFromInputElement: function(component) {
@@ -398,7 +414,8 @@
 	/**
 	 * Sets the value based on the option selected in the select element
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {boolean} true if the value changed
 	 */
 	setValueFromSelectElement: function(component) {
@@ -434,8 +451,9 @@
 	/**
 	 * Sets the selected index
 	 *
-	 * @param {Aura.Component} component the inputSelect component
-	 * @param {number} selectedIndex the selected index
+	 * @param {Aura.Component} component     - the inputSelect component
+	 * @param {number}         selectedIndex - the selected index
+	 *
 	 * @return {boolean} true if the selectedIndex changed
 	 */
 	setSelectedIndex: function(component, selectedIndex) {
@@ -463,7 +481,8 @@
 	/**
 	 * Sets the component's selectedIndex attribute based on its current value
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {boolean} true if the selectedIndex changed
 	 */
 	setSelectedIndexFromValue: function(component) {
@@ -477,7 +496,8 @@
 	/**
 	 * Returns the input element
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {HTMLElement} the input element
 	 */
 	getInputElement: function(component) {
@@ -491,7 +511,8 @@
 	/**
 	 * Returns the select element
 	 *
-	 * @param {Aura.Component} component the inputSelect component
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
 	 * @return {HTMLElement} the select element
 	 */
 	getSelectElement: function(component) {
@@ -511,9 +532,10 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component the inputSelect component
-	 * @param {string} name the event name
-	 * @param {Object} args optional event arguments
+	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {string}         name      - the event name
+	 * @param {Object}         args      - optional event arguments
+	 *
 	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {

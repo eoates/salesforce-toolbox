@@ -9,7 +9,8 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param {Aura.Component} component the datepicker component
+	 * @param {Aura.Component} component - the datepicker component
+	 *
 	 * @return {void}
 	 */
 	importModules: function(component) {
@@ -21,8 +22,9 @@
 	/**
 	 * Returns true if 2 date values represent the same day
 	 *
-	 * @param {Date} date1 the first date
-	 * @param {Date} date2 the second date
+	 * @param {Date} date1 - the first date
+	 * @param {Date} date2 - the second date
+	 *
 	 * @return {boolean} true if the 2 dates represent the same day; otherwise, false
 	 */
 	isSameDate: function(date1, date2) {
@@ -42,10 +44,11 @@
 	 * days in the month. Each day has information about that day such as whether it is the selected
 	 * date, whether it is disabled, etc.
 	 *
-	 * @param {number} year the year
-	 * @param {number} month the month
-	 * @param {Date} [selected] the selected date
-	 * @return {object} the calendar for the specified month
+	 * @param {number} year       - the year
+	 * @param {number} month      - the month
+	 * @param {Date}   [selected] - the selected date
+	 *
+	 * @return {Object} the calendar for the specified month
 	 */
 	getCalendar: function(year, month, selected) {
 		var today = new Date();
@@ -97,9 +100,10 @@
 	/**
 	 * Returns the first day in the calendar that matches the predicate
 	 *
-	 * @param {Object} calendar the calendar
-	 * @param {Function} predicate a function that will be called for each day in the calendar
-	 * @return {object} the first day that matched the specified predicate. If there was no match
+	 * @param {Object}   calendar  - the calendar
+	 * @param {Function} predicate - a function that will be called for each day in the calendar
+	 *
+	 * @return {Object} the first day that matched the specified predicate. If there was no match
 	 *                  then null is returned
 	 */
 	getDay: function(calendar, predicate) {
@@ -117,9 +121,10 @@
 	/**
 	 * Returns the day at the specified index
 	 *
-	 * @param {Object} calendar the calendar
-	 * @param {number} index the index of the desired day
-	 * @return {object} the day at the specified index
+	 * @param {Object} calendar - the calendar
+	 * @param {number} index    - the index of the desired day
+	 *
+	 * @return {Object} the day at the specified index
 	 */
 	getDayByIndex: function(calendar, index) {
 		return calendar.days[index];
@@ -128,9 +133,10 @@
 	/**
 	 * Returns the day for the specified date
 	 *
-	 * @param {Object} calendar the calendar
-	 * @param {Date} date the value of the day to return
-	 * @return {object} the day for the specified date
+	 * @param {Object} calendar - the calendar
+	 * @param {Date}   date     - the value of the day to return
+	 *
+	 * @return {Object} the day for the specified date
 	 */
 	getDayByValue: function(calendar, date) {
 		return this.getDay(calendar, function(day) {
@@ -142,8 +148,9 @@
 	 * Adds the rows to the calendar body. This is only called once in the afterRender() method of
 	 * the component's renderer
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {Object} calendar the calendar
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {Object}         calendar  - the calendar
+	 *
 	 * @return {void}
 	 */
 	addRows: function(component, calendar) {
@@ -186,8 +193,9 @@
 	/**
 	 * Updates all of the cells in the calendar when the month or selected date is changed
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {Object} calendar the calendar
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {Object}         calendar  - the calendar
+	 *
 	 * @return {void}
 	 */
 	updateRows: function(component, calendar) {
@@ -213,9 +221,10 @@
 	/**
 	 * Updates an individual cell in the calendar
 	 *
-	 * @param {HTMLElement} cell the cell to update
-	 * @param {Object} calendar the calendar
-	 * @param {Object} day the day that the cell represents
+	 * @param {HTMLElement} cell     - the cell to update
+	 * @param {Object}      calendar - the calendar
+	 * @param {Object}      day      - the day that the cell represents
+	 *
 	 * @return {void}
 	 */
 	updateCell: function(cell, calendar, day) {
@@ -239,8 +248,9 @@
 	/**
 	 * Updates the displayed month name whenever the month changes
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {Object} calendar the calendar
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {Object}         calendar  - the calendar
+	 *
 	 * @return {void}
 	 */
 	updateMonthName: function(component, calendar) {
@@ -256,8 +266,9 @@
 	/**
 	 * Updates the year select options when the year changes
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {Object} calendar the calendar
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {Object}         calendar  - the calendar
+	 *
 	 * @return {void}
 	 */
 	updateYearOptions: function(component, calendar) {
@@ -301,8 +312,10 @@
 	 * Updates the active cell's tabindex. Also removes the tabindex attribute from any previously
 	 * active cell(s)
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {boolean} [focus] true if the active cell should receive focus; otherwise, false
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {boolean}        [focus]   - true if the active cell should receive focus; otherwise,
+	 *                                     false
+	 *
 	 * @return {void}
 	 */
 	updateActiveCellTabIndex: function(component, focus) {
@@ -333,7 +346,8 @@
 	/**
 	 * Sets focus to the cell which represents the active day
 	 *
-	 * @param {Aura.Component} component the datepicker component
+	 * @param {Aura.Component} component - the datepicker component
+	 *
 	 * @return {void}
 	 */
 	focusActiveCell: function(component) {
@@ -350,8 +364,9 @@
 	 * dynamically in the helper and not using an aura:iteration component in the markup, we have to
 	 * have the event handler here instead of in the controller
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {MouseEvent} event the event information
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {MouseEvent}     event     - the event information
+	 *
 	 * @return {void}
 	 */
 	handleDayMouseDown: function(component, event) {
@@ -379,11 +394,13 @@
 	 * Increments or decrements the active day by a specified number of units. The units can be
 	 * years ("y"), months ("m"), or days ("d")
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {number} count the number of years/months/days to increment or decrement
-	 * @param {string} unit the unit by which to increment or decrement ("y" = years, "m" = months,
-	 *                      "d" = days)
-	 * @param {boolean} focus true if the active day should receive focus; otherwise, false
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {number}         count     - the number of years/months/days to increment or decrement
+	 * @param {string}         unit      - the unit by which to increment or decrement ("y" = years,
+	 *                                     "m" = months, "d" = days)
+	 * @param {boolean}        focus     - true if the active day should receive focus; otherwise,
+	 *                                     false
+	 *
 	 * @return {void}
 	 */
 	navigate: function(component, count, unit, focus) {
@@ -414,9 +431,10 @@
 	/**
 	 * Sets the selected value
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {Date} value the value
-	 * @param {boolean} [focus] true if the active day should receive the focus
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {Date}           value     - the value
+	 * @param {boolean}        [focus]   - true if the active day should receive the focus
+	 *
 	 * @return {void}
 	 */
 	setValue: function(component, value, focus) {
@@ -488,7 +506,8 @@
 	/**
 	 * Returns the active date
 	 *
-	 * @param {Aura.Component} component the datepicker component
+	 * @param {Aura.Component} component - the datepicker component
+	 *
 	 * @return {Date} the active date
 	 */
 	getActiveDate: function(component) {
@@ -506,10 +525,11 @@
 	/**
 	 * Sets the actively displayed day
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {Date} date the date of the active day
-	 * @param {boolean} [focus] true if the active day should receive focus
-	 * @param {Object} [calendar] the calendar
+	 * @param {Aura.Component} component  - the datepicker component
+	 * @param {Date}           date       - the date of the active day
+	 * @param {boolean}        [focus]    - true if the active day should receive focus
+	 * @param {Object}         [calendar] - the calendar
+	 *
 	 * @return {void}
 	 */
 	setActiveDate: function(component, date, focus, calendar) {
@@ -567,8 +587,9 @@
 	 * Cancels selection of a new date and resets the calendar to display the selected date or today
 	 * if no date is selected
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {boolean} [focus] true if the active day should receive focus
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {boolean}        [focus]   - true if the active day should receive focus
+	 *
 	 * @return {void}
 	 */
 	cancel: function(component, focus) {
@@ -581,10 +602,11 @@
 	/**
 	 * Adds or removes the specified CSS class
 	 *
-	 * @param {HTMLElement} element the element
-	 * @param {string} className the CSS class to add or remove
-	 * @param {boolean} [state] true to add the CSS class, false to remove it, or undefined/null to
-	 *                          toggle it
+	 * @param {HTMLElement} element   - the element
+	 * @param {string}      className - the CSS class to add or remove
+	 * @param {boolean}     [state]   - true to add the CSS class, false to remove it, or
+	 *                                  undefined/null to toggle it
+	 *
 	 * @return {void}
 	 */
 	toggleClass: function(element, className, state) {
@@ -602,9 +624,10 @@
 	/**
 	 * Sets an element attribute. If the value is undefined/null then the attribute is removed
 	 *
-	 * @param {HTMLElement} element the element
-	 * @param {string} name the attribute name
-	 * @param {*} value the attribute value
+	 * @param {HTMLElement} element - the element
+	 * @param {string}      name    - the attribute name
+	 * @param {*}           value   - the attribute value
+	 *
 	 * @return {void}
 	 */
 	setElementAttribute: function(element, name, value) {
@@ -618,9 +641,10 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component the datepicker component
-	 * @param {string} name the event name
-	 * @param {Object} args optional event arguments
+	 * @param {Aura.Component} component - the datepicker component
+	 * @param {string}         name      - the event name
+	 * @param {Object}         args      - optional event arguments
+	 *
 	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {

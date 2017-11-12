@@ -8,7 +8,8 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param  {Aura.Component} the inputNumber component
+	 * @param {Aura.Component} component - the inputNumber component
+	 *
 	 * @return {void}
 	 */
 	importModules: function(component) {
@@ -21,8 +22,9 @@
 	 * Converts a value to a number. If the specified value cannot be converted to a number then
 	 * defaultValue is returned
 	 *
-	 * @param {*} value the value to convert
-	 * @param {number} defaultValue the number to return if value cannot be converted
+	 * @param {*}      value        - the value to convert
+	 * @param {number} defaultValue - the number to return if value cannot be converted
+	 *
 	 * @return {number} the converted value as a number
 	 */
 	toNumber: function(value, defaultValue) {
@@ -33,8 +35,9 @@
 	/**
 	 * Similar to the toNumber() method, but the return value is an integer
 	 *
-	 * @param {*} value the value to convert
-	 * @param {number} defaultValue the number to return if value cannot be converted
+	 * @param {*}      value        - the value to convert
+	 * @param {number} defaultValue - the number to return if value cannot be converted
+	 *
 	 * @return {number} the converted value as an integer
 	 */
 	toInteger: function(value, defaultValue) {
@@ -46,9 +49,10 @@
 	 * will be returned. If the number is too low then min will be returned and if it is too high
 	 * then max will be returned
 	 *
-	 * @param {number} value the value to check
-	 * @param {number} min the minimum allowed value
-	 * @param {number} max the maximum allowed value
+	 * @param {number} value - the value to check
+	 * @param {number} min   - the minimum allowed value
+	 * @param {number} max   - the maximum allowed value
+	 *
 	 * @return {number} a number that is definitely within the specified range
 	 */
 	numberInRange: function(value, min, max) {
@@ -62,7 +66,8 @@
 	 * this method to get the precision instead of reading the component's precision attribute
 	 * directly as this method ensures that the returned value is within a vaid range
 	 *
-	 * @param {Aura.Component} component the inputNumber component
+	 * @param {Aura.Component} component - the inputNumber component
+	 *
 	 * @return {number} the precision
 	 */
 	getPrecision: function(component) {
@@ -77,8 +82,9 @@
 	 * this method to get the scale instead of reading the component's scale attribute directly as
 	 * this method ensures that the returned value is within a valid range
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {number} precision the maximum number of digits in the number
+	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {number}         precision - the maximum number of digits in the number
+	 *
 	 * @return {number} the scale
 	 */
 	getScale: function(component, precision) {
@@ -92,9 +98,10 @@
 	/**
 	 * Returns the minimum and maximum possible values for the given precision and scale
 	 *
-	 * @param {number} precision the maximum number of digits in the number
-	 * @param {number} scale the number of digits to the right of the decimal
-	 * @return {object} an object containing 2 properties: min and max
+	 * @param {number} precision - the maximum number of digits in the number
+	 * @param {number} scale     - the number of digits to the right of the decimal
+	 *
+	 * @return {Object} an object containing 2 properties: min and max
 	 */
 	getRange: function(precision, scale) {
 		var max = (Math.pow(10, precision) - 1) / Math.pow(10, scale);
@@ -108,8 +115,9 @@
 	/**
 	 * Gets the minimum value
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {Object} range an object containing the valid number range
+	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Object}         range     - an object containing the valid number range
+	 *
 	 * @return {number} the minimum value
 	 */
 	getMin: function(component, range) {
@@ -122,8 +130,9 @@
 	/**
 	 * Gets the maximium value
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {Object} range an object containing the valid number range
+	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Object}         range     - an object containing the valid number range
+	 *
 	 * @return {number} the maximum value
 	 */
 	getMax: function(component, range) {
@@ -137,8 +146,9 @@
 	 * Gets the amount by which the component will increment/decrement when the user presses the
 	 * ARROW UP and ARROW DOWN keys respectively
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {number} scale number of digits to the right of the decimal
+	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {number}         scale     - number of digits to the right of the decimal
+	 *
 	 * @return {number} the step value
 	 */
 	getStep: function(component, scale) {
@@ -155,8 +165,9 @@
 	/**
 	 * Returns an object containing information about the number format
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @return {object} an object containing properties for formatting the number
+	 * @param {Aura.Component} component - the inputNumber component
+	 *
+	 * @return {Object} an object containing properties for formatting the number
 	 */
 	getFormat: function(component) {
 		var precision = this.getPrecision(component);
@@ -190,7 +201,8 @@
 	/**
 	 * Returns true if the character is a special multiplier shortcut
 	 *
-	 * @param {string} value the character to check
+	 * @param {string} value - the value to test
+	 *
 	 * @return {boolean} true if value is a shortcut
 	 */
 	isMultiplier: function(value) {
@@ -201,7 +213,8 @@
 	 * Checks to see if the value ends with a special multiplier shortcut. These shortcuts include K
 	 * for thousands, M for millions, B for billions and T for trillions
 	 *
-	 * @param {string} value the value to test
+	 * @param {string} value - the value to test
+	 *
 	 * @return {boolean} true if the value ends with a multiplier; otherwise, false
 	 */
 	hasMultiplier: function(value) {
@@ -220,9 +233,10 @@
 	 * specifies a max value of 99 then 99 will be returned. Conversely, if the string "15" was
 	 * passed in with the same format object then 15 would be returned
 	 *
-	 * @param {*} value the value to be parsed. May be any type, but anything other than a string
-	 *                  will be converted to a string before parsing
-	 * @param {Object} format an object that contains formatting information and constraints
+	 * @param {*}      value  - the value to be parsed. May be any type, but anything other than a
+	 *                          string will be converted to a string before parsing
+	 * @param {Object} format - an object that contains formatting information and constraints
+	 *
 	 * @return {number} the parsed number or null if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
@@ -242,9 +256,10 @@
 	 * Formats a number using the information provided by a format object. If the value is not a
 	 * number (undefined, null, NaN, etc.) then an empty string will be returned
 	 *
-	 * @param {number} value the number to format
-	 * @param {Object} format an object containing formatting information
-	 * @param {boolean} [hasFocus] if true then the thousands separator will not be used
+	 * @param {number}  value      - the number to format
+	 * @param {Object}  format     - an object containing formatting information
+	 * @param {boolean} [hasFocus] - if true then the thousands separator will not be used
+	 *
 	 * @return {string} the formatted number
 	 */
 	formatNumber: function(value, format, hasFocus) {
@@ -259,8 +274,9 @@
 	/**
 	 * Sets the value
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {number} value the value
+	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {number}         value     - the value
+	 *
 	 * @return {boolean} true if the value changed
 	 */
 	setValue: function(component, value) {
@@ -282,7 +298,8 @@
 	/**
 	 * Returns the input HTML element
 	 *
-	 * @param {Aura.Component} component the inputNumber component
+	 * @param {Aura.Component} component - the inputNumber component
+	 *
 	 * @return {HTMLElement} the input element
 	 */
 	getInputElement: function(component) {
@@ -296,8 +313,9 @@
 	/**
 	 * Updates the input element
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {boolean} [hasFocus] true if the input element current has keyboard focus
+	 * @param {Aura.Component} component  - the inputNumber component
+	 * @param {boolean}        [hasFocus] - true if the input element current has keyboard focus
+	 *
 	 * @return {void}
 	 */
 	updateInputElement: function(component, hasFocus) {
@@ -321,7 +339,8 @@
 	/**
 	 * Sets attributes only needed when the application is running on mobile
 	 *
-	 * @param {Aura.Component} component the inputNumber component
+	 * @param {Aura.Component} component - the inputNumber component
+	 *
 	 * @return {void}
 	 */
 	setInputElementAttributesForMobile: function(component) {
@@ -337,9 +356,10 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component the inputNumber component
-	 * @param {string} name the event name
-	 * @param {Object} args optional event arguments
+	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {string}         name      - the event name
+	 * @param {Object}         args      - optional event arguments
+	 *
 	 * @return {void}
 	 */
 	fireEvent: function(component, name, args) {
