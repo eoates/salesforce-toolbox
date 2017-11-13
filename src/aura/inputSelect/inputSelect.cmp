@@ -23,8 +23,6 @@
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
 	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
 	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
-	<aura:attribute access="GLOBAL" name="left" type="Aura.Component[]" />
-	<aura:attribute access="GLOBAL" name="right" type="Aura.Component[]" />
 
 	<aura:attribute access="PRIVATE" name="localOptions" type="Object[]" />
 	<!-- /attributes -->
@@ -61,8 +59,6 @@
 	               helpText="{!v.helpText}"
 	               error="{!v.error}"
 	               errors="{!v.errors}">
-		{!v.left}
-
 		<div aura:id="container"
 		     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
 		     onfocusin="{!c.containerFocusIn}"
@@ -111,8 +107,6 @@
 				</aura:set>
 			</aura:if>
 		</div>
-
-		{!v.right}
 	</c:formElement>
 	<!-- /component -->
 </aura:component>
