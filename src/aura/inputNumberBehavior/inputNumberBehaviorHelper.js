@@ -192,7 +192,7 @@
 					var multiplier = self.hasMultiplier(value);
 					if (
 						!multiplier
-						&& (value.length > 0)
+						&& ((value.length - selectionLength) > 0)
 						&& ((selectionStart + selectionLength) === value.length)
 					) {
 						allowChar = self.isMultiplier(String.fromCharCode(which));
