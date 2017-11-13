@@ -292,6 +292,19 @@
 		var selectedIndex = component.get('v.selectedIndex');
 		if (selectedIndex === -1) {
 			inputElement.value = value;
+
+			var type = component.get('v.type');
+			if (type === 'number') {
+				var numberInputBehavior = component.find('numberInputBehavior').getModule();
+				numberInputBehavior.updateInputElement({
+					getValue: function() {
+						return value;
+					},
+					setInputValue: function(value) {
+						inputElement.value = value;
+					}
+				});
+			}
 		} else {
 			inputElement.value = options[selectedIndex].label;
 		}
@@ -428,7 +441,8 @@
 		var value = selectElement.value;
 		var selectedIndex = selectElement.selectedIndex;
 
-		var options = component.get('v.localOptions');
+		var valueChanged = this.setValue(component, value);
+		var selectedIndexChanged = this.setSelectedIndex(component, selectedIndex);
 
 		var editable = component.get('v.editable');
 		if (editable) {
@@ -436,14 +450,12 @@
 			if (selectedIndex === -1) {
 				inputElement.value = value;
 			} else {
+				var options = component.get('v.localOptions');
 				inputElement.value = options[selectedIndex].label;
 			}
 			inputElement.focus();
 			inputElement.select();
 		}
-
-		var valueChanged = this.setValue(component, value);
-		var selectedIndexChanged = this.setSelectedIndex(component, selectedIndex);
 
 		var changed = valueChanged || selectedIndexChanged;
 		if (changed) {
@@ -532,6 +544,52 @@
 			}
 		}
 		return undefined;
+	},
+
+	/**
+	 * Performs a specified behavior action when the component type is "number"
+	 *
+	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Event}          event     - the event object
+	 * @param {string}         name      - the name of the action to perform
+	 *
+	 * @return {*} varies depending on the action performed
+	 */
+	performNumberInputBehaviorAction: function(component, event, name) {
+		var editable = component.get('v.editable');
+		if (!editable) {
+			return undefined;
+		}
+
+		var inputElement = this.getInputElement(component);
+		var behavior = component.find('numberInputBehavior').getModule();
+		var action = behavior[name];
+
+		var self = this;
+		return action.call(behavior, event, {
+			select: function() {
+				inputElement.select();
+			},
+			getSelectionStart: function() {
+				return inputElement.selectionStart;
+			},
+			getSelectionEnd: function() {
+				return inputElement.selectionEnd;
+			},
+			getInputValue: function() {
+				return inputElement.value;
+			},
+			setInputValue: function(value) {
+				inputElement.value = value;
+			},
+			getValue: function() {
+				return component.get('v.value');
+			},
+			setValue: function(value) {
+				value = self.utils.asString(value);
+				return self.setValue(component, value);
+			}
+		});
 	},
 
 	/**

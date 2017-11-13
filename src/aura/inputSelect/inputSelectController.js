@@ -181,10 +181,16 @@
 	 * input element does not exist when editable is false
 	 */
 	inputFocus: function(component, event, helper) {
-		var inputElement = event.target;
-		var autoSelect = component.get('v.autoselect');
-		if (autoSelect) {
-			inputElement.select();
+		var type = component.get('v.type');
+		var selectedIndex = component.get('v.selectedIndex');
+		if ((type === 'number') && (selectedIndex === -1)) {
+			helper.performNumberInputBehaviorAction(component, event, 'onFocus');
+		} else {
+			var inputElement = event.target;
+			var autoSelect = component.get('v.autoselect');
+			if (autoSelect) {
+				inputElement.select();
+			}
 		}
 	},
 
@@ -193,9 +199,17 @@
 	 * element does not exist when editable is false
 	 */
 	inputBlur: function(component, event, helper) {
-		if (component.pendingAutocomplete) {
-			component.pendingAutocomplete = false;
-			helper.setValueFromInputElement(component);
+		var type = component.get('v.type');
+		if (type === 'number') {
+			var selectedIndex = component.get('v.selectedIndex');
+			if (selectedIndex === -1) {
+				helper.performNumberInputBehaviorAction(component, event, 'onBlur');
+			}
+		} else {
+			if (component.pendingAutocomplete) {
+				component.pendingAutocomplete = false;
+				helper.setValueFromInputElement(component);
+			}
 		}
 	},
 
@@ -204,16 +218,13 @@
 	 * input element does not exist when editable is false
 	 */
 	inputKeyDown: function(component, event, helper) {
-		var which = event.which || event.keyCode;
-
 		var handled = false;
+
+		var which = event.which || event.keyCode;
 		switch (which) {
 			case 8: // Backspace
 			case 46: // Delete
 				component.pendingAutocomplete = false;
-
-				var selectElement = helper.getSelectElement(component);
-				selectElement.selectedIndex = -1;
 				break;
 
 			case 38: // Up arrow
@@ -243,29 +254,38 @@
 	 * input element does not exist when editable is false
 	 */
 	inputKeyPress: function(component, event, helper) {
-		component.pendingAutocomplete = false;
+		var type = component.get('v.type');
+		if (type === 'number') {
+			var changed = helper.performNumberInputBehaviorAction(component, event, 'onKeyPress');
+			if (changed) {
+				var selectElement = helper.getSelectElement(component);
+				selectElement.selectedIndex = -1;
+			}
+		} else {
+			component.pendingAutocomplete = false;
 
-		var inputElement = event.target;
-		var selectElement = helper.getSelectElement(component);
+			var inputElement = event.target;
+			var selectElement = helper.getSelectElement(component);
 
-		var value = inputElement.value;
-		value = value.substring(0, inputElement.selectionStart)
-			+ value.substring(inputElement.selectionEnd)
-			+ String.fromCharCode(event.which || event.keyCode);
+			var value = inputElement.value;
+			value = value.substring(0, inputElement.selectionStart)
+				+ value.substring(inputElement.selectionEnd)
+				+ String.fromCharCode(event.which || event.keyCode);
 
-		var options = component.get('v.localOptions');
-		var index = helper.indexOfOptionByLabelStartsWith(options, value);
-		if (index !== -1) {
-			var option = options[index];
+			var options = component.get('v.localOptions');
+			var index = helper.indexOfOptionByLabelStartsWith(options, value);
+			if (index !== -1) {
+				var option = options[index];
 
-			inputElement.value = value + option.label.substring(value.length);
-			inputElement.selectionStart = value.length;
-			inputElement.selectionEnd = option.label.length;
+				inputElement.value = value + option.label.substring(value.length);
+				inputElement.selectionStart = value.length;
+				inputElement.selectionEnd = option.label.length;
+
+				component.pendingAutocomplete = true;
+				event.preventDefault();
+			}
 
 			selectElement.selectedIndex = index;
-
-			component.pendingAutocomplete = true;
-			event.preventDefault();
 		}
 	},
 
@@ -274,8 +294,25 @@
 	 * input element does not exist when editable is false
 	 */
 	inputChange: function(component, event, helper) {
-		component.pendingAutocomplete = false;
-		helper.setValueFromInputElement(component);
+		var type = component.get('v.type');
+		if (type === 'number') {
+			var valueChanged = helper.performNumberInputBehaviorAction(
+				component,
+				event,
+				'onChange'
+			);
+
+			var selectedIndexChanged = helper.setSelectedIndex(component, -1);
+			helper.updateSelectElement(component);
+
+			var changed = valueChanged || selectedIndexChanged;
+			if (changed) {
+				helper.fireEvent(component, 'onchange');
+			}
+		} else {
+			component.pendingAutocomplete = false;
+			helper.setValueFromInputElement(component);
+		}
 	},
 
 	/**

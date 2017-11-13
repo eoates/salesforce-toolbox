@@ -147,7 +147,7 @@
 			 *                                            input element
 			 * @param {Function} opts.getInputValue     - returns the value of the input element
 			 *
-			 * @return {void}
+			 * @return {boolean} true if the key was accepted or false if it was prevented
 			 */
 			onKeyPress: function(event, opts) {
 				var format = self.getFormat(component);
@@ -159,12 +159,13 @@
 				var selectionLength = selectionEnd - selectionStart;
 
 				var which = event.keyCode || event.which || 0;
+				var prevent = false;
 				if (which === 45) {
 					// 45 = minus
 					// If negative values are not allowed or if we are not at the first char then do
 					// not allow the key
 					if (!allowNegative || (selectionStart !== 0)) {
-						event.preventDefault();
+						prevent = true;
 					}
 				} else if (which === 46) {
 					// 46 = period
@@ -178,12 +179,11 @@
 
 					// Make sure the value does not already contain a period
 					if (value.indexOf('.') >= 0) {
-						event.preventDefault();
+						prevent = true;
 					}
 				} else if ((which >= 48) && (which <= 57)) {
 					// 0-9 are allowed
-				}
-				else {
+				} else {
 					// All other characters
 					var allowChar = false;
 
@@ -201,9 +201,15 @@
 					// If the character is not allowed then call preventDefault() on the event to
 					// keep it from being entered into the input
 					if (!allowChar) {
-						event.preventDefault();
+						prevent = true;
 					}
 				}
+
+				if (prevent) {
+					event.preventDefault();
+				}
+
+				return !prevent;
 			},
 
 			/**
@@ -243,9 +249,10 @@
 			updateInputElement: function(opts, hasFocus) {
 				var value = opts.getValue();
 
-				if (self.utils.isNumber(value)) {
+				var numValue = self.utils.asNumber(value);
+				if (self.utils.isNumber(numValue)) {
 					var format = self.getFormat(component);
-					value = self.formatNumber(value, format, hasFocus);
+					value = self.formatNumber(numValue, format, hasFocus);
 				} else {
 					value = self.utils.asString(value);
 				}
