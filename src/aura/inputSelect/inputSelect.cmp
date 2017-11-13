@@ -1,6 +1,5 @@
 <aura:component access="GLOBAL">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="id" type="String" />
 	<aura:attribute access="GLOBAL" name="name" type="String" />
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="containerClass" type="String" />
