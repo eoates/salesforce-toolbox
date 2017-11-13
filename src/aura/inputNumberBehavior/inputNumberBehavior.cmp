@@ -1,0 +1,23 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="min" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="max" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="step" type="Decimal" />
+	<aura:attribute access="GLOBAL" name="precision" type="Integer" />
+	<aura:attribute access="GLOBAL" name="scale" type="Integer" />
+	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<!-- /attributes -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="getModule" action="{!c.getModule}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+	<!-- /component -->
+</aura:component>

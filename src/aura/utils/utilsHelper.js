@@ -346,6 +346,23 @@
 	},
 
 	/**
+	 * Returns the possible range of values given a precision and scale
+	 *
+	 * @param {number} precision - the total number of digits in the number
+	 * @param {number} scale     - the number of digits to the right of the decimal
+	 *
+	 * @return {Object} an object containing the min and max values
+	 */
+	range: function(precision, scale) {
+		var max = (Math.pow(10, precision) - 1) / Math.pow(10, scale);
+		var min = -max;
+		return {
+			min: min,
+			max: max
+		};
+	},
+
+	/**
 	 * Ensures that a number is within a given range. If value is less than min then min is
 	 * returned. If value is greater than max then max is returned. Otherwise, value is returned.
 	 *
