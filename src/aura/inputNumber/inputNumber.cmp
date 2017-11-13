@@ -47,6 +47,14 @@
 
 	<!-- component -->
 	<c:utils aura:id="utils" />
+	<c:inputNumberBehavior aura:id="behavior"
+	                       min="{!v.min}"
+	                       max="{!v.max}"
+	                       step="{!v.step}"
+	                       precision="{!v.precision}"
+	                       scale="{!v.scale}"
+	                       nillable="{!v.nillable}"
+	                       autoselect="{!v.autoselect}" />
 
 	<c:formElement class="{!v.elementClass}"
 	               labelClass="{!v.labelClass}"
