@@ -190,7 +190,7 @@
 	 * contains only white space characters whereas isEmpty() returns true only if the string's
 	 * length is 0. In short, if isEmpty() returns true then isBlank() will return true,  but the
 	 * reverse is not always true. Calling isEmpty() with the string " " will return false, but
-	 * isEmpty() will return true
+	 * isBlank() will return true
 	 *
 	 * @param {*} value - the value to check
 	 *
