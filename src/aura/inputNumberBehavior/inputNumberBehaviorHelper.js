@@ -107,6 +107,7 @@
 				}
 
 				var newValue = (value - stepMin) - ((value - stepMin) % step) + stepMin;
+				newValue = parseFloat(newValue.toFixed(format.scale));
 
 				var which = event.keyCode || event.which || 0;
 				if (which === 38) {
@@ -403,6 +404,7 @@
 		} else {
 			step = Math.max(step, 1 / Math.pow(10, scale));
 		}
+		step = parseFloat(step.toFixed(scale));
 		return step;
 	},
 
@@ -430,6 +432,7 @@
 		// this stepMin value which will be the value from the min attribute if one was supplied or
 		// 0 otherwise
 		var stepMin = this.toNumber(component.get('v.min'), 0);
+		stepMin = parseFloat(stepMin.toFixed(scale));
 
 		return {
 			precision: precision,
