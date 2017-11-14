@@ -241,17 +241,13 @@
 			value = value.replace(/,/g, '');
 
 			var multiplier = 1;
-			if (this.endsWithIgnoreCase(value, 'k')) {
-				multiplier = 1000;
-			} else if (this.endsWithIgnoreCase(value, 'm')) {
-				multiplier = 1000000;
-			} else if (this.endsWithIgnoreCase(value, 'b')) {
-				multiplier = 1000000000;
-			} else if (this.endsWithIgnoreCase(value, 't')) {
-				multiplier = 1000000000000;
-			}
-			if (multiplier > 1) {
-				value = value.substr(0, value.length - 1);
+			var multipliers = { 'k': 1000, 'm': 1000000, 'b': 1000000000, 't': 1000000000000 };
+			for (var key in multipliers) {
+				if (this.endsWithIgnoreCase(value, key)) {
+					multiplier = multipliers[key];
+					value = value.substr(0, value.length - key.length);
+					break;
+				}
 			}
 
 			var pattern = /^[-+]?\d+(?:\.\d*)?(?:e[-+]?\d+)?$/i;
