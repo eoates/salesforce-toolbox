@@ -13,6 +13,36 @@
 	},
 
 	/**
+	 * Parses an option string. Option strings can be either a simple string such as "Option 1" or
+	 * they can contain a value and label separated by an equal sign such as "1=Value for Option 1".
+	 * In the latter example the value would be "1" and the label would be "Option 1". We do not
+	 * support equal signs within the value. If you need an equal sign in the value then you must
+	 * pass in an object with its own value and label properties
+	 *
+	 * @param {string} optionString - the string representation of an option
+	 *
+	 * @return {Object} The option object
+	 */
+	parseOptionString: function(optionString) {
+		var value = optionString;
+		var label = value;
+
+		var indexOfEqual = optionString.indexOf('=');
+		if (indexOfEqual !== -1) {
+			value = optionString.substr(0, indexOfEqual);
+			label = optionString.substr(indexOfEqual + 1);
+		}
+
+		value = this.utils.trim(value);
+		label = this.utils.trim(label);
+
+		return {
+			value: value,
+			label: label
+		};
+	},
+
+	/**
 	 * Creates a local copy of the options so we don't modify the array passed via the component's
 	 * options attribute
 	 *
@@ -29,6 +59,10 @@
 
 		for (var i = 0, n = options.length; i < n; i++) {
 			var option = options[i];
+			if (this.utils.isString(option)) {
+				option = this.parseOptionString(option);
+			}
+
 			var value = this.utils.asString(option.value);
 			var label = this.utils.asString(option.label);
 			var title = this.utils.trim(option.title);
