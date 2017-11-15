@@ -269,8 +269,8 @@
 				yearSelect.appendChild(option);
 			}
 
-			option.value = '' + i;
-			option.innerText = '' + i;
+			option.value = this.utils.asString(i);
+			option.innerText = option.value;
 
 			if (i === calendar.year) {
 				selectedIndex = index;

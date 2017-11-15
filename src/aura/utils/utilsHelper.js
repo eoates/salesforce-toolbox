@@ -403,7 +403,7 @@
 	 * @return {number} the number of digits to the right of the decimal
 	 */
 	scale: function(value) {
-		var match = ('' + value).match(/(?:\.(\d+))?(?:e([-+]?\d+))?$/i);
+		var match = this.asString(value).match(/(?:\.(\d+))?(?:e([-+]?\d+))?$/i);
 		if (!match) {
 			return 0;
 		}
