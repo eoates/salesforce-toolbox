@@ -7,6 +7,7 @@
 	<aura:attribute access="GLOBAL" name="options" type="Object[]" />
 	<aura:attribute access="GLOBAL" name="selectedIndex" type="Integer" default="-1" />
 	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
+	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
 	<aura:attribute access="GLOBAL" name="title" type="String" />
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
@@ -84,6 +85,7 @@
 				       name="{!v.name}"
 				       type="text"
 				       accesskey="{!v.accesskey}"
+				       placeholder="{!v.placeholder}"
 				       title="{!v.title}"
 				       tabindex="{!v.tabindex}"
 				       disabled="{!if(v.disabled, 'disabled', '')}"
@@ -103,7 +105,7 @@
 
 				<aura:set attribute="else">
 					<!-- non-editable -->
-					<span class="{!if(v.selectedIndex eq -1, 'faux-option', 'slds-hide')}">{!v.value}</span>
+					<span class="{!if(v.selectedIndex eq -1, 'faux-option', 'slds-hide')}">{!if(empty(v.value), v.placeholder, v.value)}</span>
 
 					<select aura:id="select"
 					        id="{#globalId + '_input'}"
