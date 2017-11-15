@@ -531,7 +531,7 @@
 	 *
 	 * @param {string} value        - the string to search
 	 * @param {string} searchString - the characters to be searched for at the start of value
-	 * @param {number} position     - the position in value at which to begin searching for
+	 * @param {number} [position=0] - the position in value at which to begin searching for
 	 *                                searchString; defaults to 0
 	 *
 	 * @return {boolean} true if the given characters are found at the beginning of the string;
