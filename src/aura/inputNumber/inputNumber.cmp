@@ -54,7 +54,9 @@
 	                       precision="{!v.precision}"
 	                       scale="{!v.scale}"
 	                       nillable="{!v.nillable}"
-	                       autoselect="{!v.autoselect}" />
+	                       autoselect="{!v.autoselect}"
+	                       disabled="{!v.disabled}"
+	                       readonly="{!v.readonly}" />
 
 	<c:formElement class="{!v.elementClass}"
 	               labelClass="{!v.labelClass}"

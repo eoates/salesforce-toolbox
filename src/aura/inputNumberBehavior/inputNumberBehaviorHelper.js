@@ -50,18 +50,29 @@
 			 * @return {void}
 			 */
 			onFocus: function(event, opts) {
+				var disabled = component.get('v.disabled');
+				var readOnly = component.get('v.readonly');
+				var autoSelect = component.get('v.autoselect');
+				if (disabled || readOnly) {
+					if (autoSelect) {
+						opts.select();
+					}
+					return;
+				}
+
 				var selectionStart = opts.getSelectionStart();
 				var selectionEnd = opts.getSelectionEnd();
 				var selectionLength = selectionEnd - selectionStart;
 
 				var oldValue = opts.getInputValue();
 
-				var value = oldValue.replace(/,/g, '');
-				value = self.utils.trim(value);
+				if (!disabled && !readOnly) {
+					var value = oldValue.replace(/,/g, '');
+					value = self.utils.trim(value);
 
-				opts.setInputValue(value);
+					opts.setInputValue(value);
+				}
 
-				var autoSelect = component.get('v.autoselect');
 				if ((selectionLength === oldValue.length) || autoSelect) {
 					opts.select();
 				}
@@ -79,6 +90,12 @@
 			 * @return {void}
 			 */
 			onBlur: function(event, opts) {
+				var disabled = component.get('v.disabled');
+				var readOnly = component.get('v.readonly');
+				if (disabled || readOnly) {
+					return;
+				}
+
 				this.updateInputElement(opts);
 			},
 
@@ -96,6 +113,12 @@
 			 * @return {boolean} true if the component value was changed
 			 */
 			onKeyDown: function(event, opts) {
+				var disabled = component.get('v.disabled');
+				var readOnly = component.get('v.readonly');
+				if (disabled || readOnly) {
+					return false;
+				}
+
 				var format = self.getFormat(component);
 				var step = format.step;
 				var stepMin = format.stepMin;
@@ -151,6 +174,12 @@
 			 * @return {boolean} true if the key was accepted or false if it was prevented
 			 */
 			onKeyPress: function(event, opts) {
+				var disabled = component.get('v.disabled');
+				var readOnly = component.get('v.readonly');
+				if (disabled || readOnly) {
+					return false;
+				}
+
 				var format = self.getFormat(component);
 				var allowNegative = format.min < 0;
 
@@ -227,6 +256,13 @@
 			 * @return {boolean} true if the component value was changed
 			 */
 			onChange: function(event, opts) {
+				var disabled = component.get('v.disabled');
+				var readOnly = component.get('v.readonly');
+				if (disabled || readOnly) {
+					this.updateInputElement(opts);
+					return false;
+				}
+
 				var format = self.getFormat(component);
 
 				var value = opts.getInputValue();
