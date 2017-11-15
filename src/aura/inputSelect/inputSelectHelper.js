@@ -14,10 +14,10 @@
 
 	/**
 	 * Parses an option string. Option strings can be either a simple string such as "Option 1" or
-	 * they can contain a value and label separated by an equal sign such as "1=Value for Option 1".
+	 * they can contain a value and label separated by a colon such as "1: Value for Option 1".
 	 * In the latter example the value would be "1" and the label would be "Option 1". We do not
-	 * support equal signs within the value. If you need an equal sign in the value then you must
-	 * pass in an object with its own value and label properties
+	 * support colons within the value. If you need a colon in the value then you must pass in an
+	 * object with its own value and label properties
 	 *
 	 * @param {string} optionString - the string representation of an option
 	 *
@@ -27,7 +27,7 @@
 		var value = optionString;
 		var label = value;
 
-		var indexOfEqual = optionString.indexOf('=');
+		var indexOfEqual = optionString.indexOf(':');
 		if (indexOfEqual !== -1) {
 			value = optionString.substr(0, indexOfEqual);
 			label = optionString.substr(indexOfEqual + 1);
