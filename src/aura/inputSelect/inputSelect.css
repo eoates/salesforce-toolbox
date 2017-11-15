@@ -1,3 +1,7 @@
+.THIS .slds-select_container:before, .THIS .slds-select_container:after {
+	pointer-events: none;
+}
+
 .THIS:not(.slds-has-error) .is-editable.has-focus select:not(:focus) {
 	border-color: #1589ee;
 	background-color: white;
