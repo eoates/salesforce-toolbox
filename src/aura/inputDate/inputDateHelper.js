@@ -1,5 +1,5 @@
 ({
-	valueFormat: 'yyyy-MM-dd',
+	VALUE_FORMAT: 'yyyy-MM-dd',
 
 	/**
 	 * Imports modules used by the component
@@ -90,7 +90,7 @@
 
 		var format = this.utils.asString(component.get('v.format'));
 		if (this.utils.isBlank(format) || this.utils.isMobile()) {
-			format = this.valueFormat;
+			format = this.VALUE_FORMAT;
 		}
 
 		var strValue = '';
@@ -120,7 +120,7 @@
 		if (value) {
 			var dateValue = this.utils.asDate(value);
 			if (dateValue) {
-				value = this.utils.formatDate(dateValue, this.valueFormat);
+				value = this.utils.formatDate(dateValue, this.VALUE_FORMAT);
 			} else {
 				value = undefined;
 			}

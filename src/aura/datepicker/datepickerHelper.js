@@ -1,7 +1,6 @@
 ({
-	valueFormat: 'yyyy-MM-dd',
-
-	monthNames: [
+	VALUE_FORMAT: 'yyyy-MM-dd',
+	MONTH_NAMES: [
 		'January', 'February', 'March', 'April', 'May', 'June', 'July',
 		'August', 'September', 'October', 'November', 'December'
 	],
@@ -71,7 +70,7 @@
 		return {
 			year: year,
 			month: month,
-			monthName: this.monthNames[month],
+			monthName: this.MONTH_NAMES[month],
 			selected: selected,
 			days: calendarDays
 		};
@@ -455,7 +454,7 @@
 
 		// Set the value
 		if (value) {
-			value = this.utils.formatDate(value, this.valueFormat);
+			value = this.utils.formatDate(value, this.VALUE_FORMAT);
 		} else {
 			value = undefined;
 		}
