@@ -30,6 +30,7 @@
 	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
 	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
 
+	<aura:attribute access="PRIVATE" name="oldValue" type="String" />
 	<aura:attribute access="PRIVATE" name="localOptions" type="Object[]" />
 	<!-- /attributes -->
 
@@ -93,6 +94,7 @@
 				       onblur="{!c.inputBlur}"
 				       onkeydown="{!c.inputKeyDown}"
 				       onkeypress="{!c.inputKeyPress}"
+				       oninput="{!c.inputInput}"
 				       onchange="{!c.inputChange}" />
 
 				<select aura:id="select"

@@ -23,6 +23,8 @@
 	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
 	<aura:attribute access="GLOBAL" name="left" type="Aura.Component[]" />
 	<aura:attribute access="GLOBAL" name="right" type="Aura.Component[]" />
+
+	<aura:attribute access="PRIVATE" name="oldValue" type="String" />
 	<!-- /attributes -->
 
 	<!-- events -->
@@ -70,6 +72,7 @@
 		       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 		       onfocus="{!c.inputFocus}"
 		       onblur="{!c.inputBlur}"
+		       oninput="{!c.inputInput}"
 		       onchange="{!c.inputChange}" />
 
 		{!v.right}

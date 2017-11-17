@@ -24,6 +24,7 @@
 	 */
 	init: function(component, event, helper) {
 		helper.importModules(component);
+		helper.setOldValue(component);
 	},
 
 	/**
@@ -34,6 +35,7 @@
 			return;
 		}
 
+		helper.setOldValue(component);
 		helper.updateInputElement(component);
 	},
 
@@ -59,18 +61,43 @@
 	},
 
 	/**
+	 * Handles the input event of the input element
+	 */
+	inputInput: function(component, event, helper) {
+		var inputElement = event.target;
+		var value = inputElement.value;
+
+		var autoTrim = component.get('v.autotrim');
+		if (autoTrim) {
+			value = helper.utils.trim(value);
+		}
+
+		helper.setValue(component, value);
+	},
+
+	/**
 	 * Handles the change event of the input element
 	 */
 	inputChange: function(component, event, helper) {
 		var inputElement = event.target;
+		var value = inputElement.value;
 
 		var autoTrim = component.get('v.autotrim');
 		if (autoTrim) {
-			inputElement.value = helper.utils.trim(inputElement.value);
+			value = helper.utils.trim(value);
+			inputElement.value = value;
 		}
 
-		var changed = helper.setValue(component, inputElement.value);
+		var oldValue = component.get('v.oldValue');
+		oldValue = helper.utils.asString(oldValue);
+
+		var changed = helper.setValue(component, value);
+		if (!changed) {
+			changed = value !== oldValue;
+		}
+
 		if (changed) {
+			helper.setOldValue(component);
 			helper.fireEvent(component, 'onchange');
 		}
 	}

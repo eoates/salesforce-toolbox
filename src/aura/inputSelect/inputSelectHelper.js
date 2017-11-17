@@ -374,6 +374,17 @@
 	},
 
 	/**
+	 * Sets the oldValue to the current value
+	 *
+	 * @param {Aura.Component} component - the inputSelect component
+	 *
+	 * @return {void}
+	 */
+	setOldValue: function(component) {
+		component.set('v.oldValue', component.get('v.value'));
+	},
+
+	/**
 	 * Sets the value
 	 *
 	 * @param {Aura.Component} component - the inputSelect component
@@ -413,7 +424,12 @@
 			value = options[selectedIndex].value;
 		}
 
-		return this.setValue(component, value);
+		var changed = this.setValue(component, value);
+		if (changed) {
+			this.setOldValue(component);
+		}
+
+		return changed;
 	},
 
 	/**
@@ -452,11 +468,19 @@
 			selectElement.selectedIndex = -1;
 		}
 
+		var oldValue = component.get('v.oldValue');
+		oldValue = this.utils.asString(oldValue);
+
 		var valueChanged = this.setValue(component, value);
 		var selectedIndexChanged = this.setSelectedIndex(component, selectedIndex);
 
 		var changed = valueChanged || selectedIndexChanged;
+		if (!changed) {
+			changed = value !== oldValue;
+		}
+
 		if (changed) {
+			this.setOldValue(component);
 			this.fireEvent(component, 'onchange');
 		}
 
@@ -493,6 +517,7 @@
 
 		var changed = valueChanged || selectedIndexChanged;
 		if (changed) {
+			this.setOldValue(component);
 			this.fireEvent(component, 'onchange');
 		}
 

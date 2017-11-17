@@ -38,6 +38,7 @@
 	 */
 	init: function(component, event, helper) {
 		helper.importModules(component);
+		helper.setOldValue(component);
 		helper.createAndSetLocalOptions(component);
 		helper.setSelectedIndexFromValue(component);
 	},
@@ -52,6 +53,7 @@
 			return;
 		}
 
+		helper.setOldValue(component);
 		helper.setSelectedIndexFromValue(component);
 		helper.updateInputAndSelectElements(component);
 	},
@@ -211,6 +213,27 @@
 				helper.setValueFromInputElement(component);
 			}
 		}
+	},
+
+	/**
+	 * Handles the input event of the input element. This only fires in editable mode since the
+	 * input element does not exist when editable is false
+	 */
+	inputInput: function(component, event, helper) {
+		var type = component.get('v.type');
+		if ((type === 'number') || component.pendingAutocomplete) {
+			return;
+		}
+
+		var inputElement = event.target;
+		var value = inputElement.value;
+
+		var autoTrim = component.get('v.autotrim');
+		if (autoTrim) {
+			value = helper.utils.trim(value);
+		}
+
+		helper.setValue(component, value);
 	},
 
 	/**
