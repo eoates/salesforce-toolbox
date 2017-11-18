@@ -208,10 +208,8 @@
 				helper.performNumberInputBehaviorAction(component, event, 'onBlur');
 			}
 		} else {
-			if (component.pendingAutocomplete) {
-				component.pendingAutocomplete = false;
-				helper.setValueFromInputElement(component);
-			}
+			component.pendingAutocomplete = false;
+			helper.setValueFromInputElement(component);
 		}
 	},
 
@@ -292,8 +290,10 @@
 
 			var value = inputElement.value;
 			value = value.substring(0, inputElement.selectionStart)
-				+ value.substring(inputElement.selectionEnd)
-				+ String.fromCharCode(event.which || event.keyCode);
+				+ String.fromCharCode(event.which || event.keyCode)
+				+ value.substring(inputElement.selectionEnd);
+
+			var selectionStart = inputElement.selectionStart + 1;
 
 			var options = component.get('v.localOptions');
 			var index = helper.indexOfOptionByLabelStartsWith(options, value);
@@ -301,7 +301,7 @@
 				var option = options[index];
 
 				inputElement.value = value + option.label.substring(value.length);
-				inputElement.selectionStart = value.length;
+				inputElement.selectionStart = selectionStart;
 				inputElement.selectionEnd = option.label.length;
 
 				component.pendingAutocomplete = true;
