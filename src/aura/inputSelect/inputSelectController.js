@@ -239,6 +239,9 @@
 	 * input element does not exist when editable is false
 	 */
 	inputKeyDown: function(component, event, helper) {
+		var inputElement = event.target;
+		var selectElement = helper.getSelectElement(component);
+
 		var handled = false;
 
 		var which = event.which || event.keyCode;
@@ -246,6 +249,7 @@
 			case 8: // Backspace
 			case 46: // Delete
 				component.pendingAutocomplete = false;
+				selectElement.selectedIndex = -1;
 				break;
 
 			case 38: // Up arrow
