@@ -331,6 +331,9 @@
 			if (type === 'number') {
 				var numberInputBehavior = component.find('numberInputBehavior').getModule();
 				numberInputBehavior.updateInputElement({
+					hasFocus: function() {
+						return (inputElement === document.activeElement);
+					},
 					getValue: function() {
 						return value;
 					},
@@ -628,6 +631,9 @@
 		return action.call(behavior, event, {
 			select: function() {
 				inputElement.select();
+			},
+			hasFocus: function() {
+				return (inputElement === document.activeElement);
 			},
 			getSelectionStart: function() {
 				return inputElement.selectionStart;

@@ -30,6 +30,9 @@
 			select: function() {
 				inputElement.select();
 			},
+			hasFocus: function() {
+				return (inputElement === document.activeElement);
+			},
 			getSelectionStart: function() {
 				return inputElement.selectionStart;
 			},
@@ -93,12 +96,11 @@
 	/**
 	 * Updates the input element
 	 *
-	 * @param {Aura.Component} component  - the inputNumber component
-	 * @param {boolean}        [hasFocus] - true if the input element current has keyboard focus
+	 * @param {Aura.Component} component - the inputNumber component
 	 *
 	 * @return {void}
 	 */
-	updateInputElement: function(component, hasFocus) {
+	updateInputElement: function(component) {
 		var inputElement = this.getInputElement(component);
 		if (!inputElement) {
 			return;
@@ -106,13 +108,16 @@
 
 		var behavior = component.find('behavior').getModule();
 		behavior.updateInputElement({
+			hasFocus: function() {
+				return (inputElement === document.activeElement);
+			},
 			getValue: function() {
 				return component.get('v.value');
 			},
 			setInputValue: function(value) {
 				inputElement.value = value;
 			}
-		}, hasFocus);
+		});
 	},
 
 	/**

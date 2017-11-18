@@ -84,6 +84,7 @@
 			 * @param {Event}    event              - the event object
 			 * @param {Object}   opts               - an object containing methods for retrieving
 			 *                                        and updating component state
+			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
 			 * @param {Function} opts.getValue      - returns the component value
 			 * @param {Function} opts.setInputValue - sets the value of the input element
 			 *
@@ -105,6 +106,7 @@
 			 * @param {Event}    event              - the event object
 			 * @param {Object}   opts               - an object containing methods for retrieving
 			 *                                        and updating component state
+			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
 			 * @param {Function} opts.getValue      - returns the component value
 			 * @param {Function} opts.setValue      - sets the component value
 			 * @param {Function} opts.getInputValue - returns the value of the input element
@@ -152,7 +154,7 @@
 				newValue = parseFloat(newValue);
 
 				var changed = opts.setValue(newValue);
-				this.updateInputElement(opts, true);
+				this.updateInputElement(opts);
 
 				event.preventDefault();
 
@@ -213,6 +215,8 @@
 					}
 				} else if ((which >= 48) && (which <= 57)) {
 					// 0-9 are allowed
+				} else if (which === 13) {
+					// Enter is allowed
 				} else {
 					// All other characters
 					var allowChar = false;
@@ -248,6 +252,7 @@
 			 * @param {Event}    event              - the event object
 			 * @param {Object}   opts               - an object containing methods for retrieving
 			 *                                        and updating component state
+			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
 			 * @param {Function} opts.getValue      - returns the component value
 			 * @param {Function} opts.setValue      - sets the component value
 			 * @param {Function} opts.getInputValue - returns the value of the input element
@@ -277,13 +282,16 @@
 			/**
 			 * Update input element value with the formatted value
 			 *
-			 * @param {Object}  opts       - an object containing methods for retrieving and
-			 *                               updating component state
-			 * @param {boolean} [hasFocus] - true if the input element currently has keyboard focus
+			 * @param {Object}   opts               - an object containing methods for retrieving
+			 *                                        and updating component state
+			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
+			 * @param {Function} opts.getValue      - returns the component value
+			 * @param {Function} opts.setInputValue - sets the value of the input element
 			 *
 			 * @return {void}
 			 */
-			updateInputElement: function(opts, hasFocus) {
+			updateInputElement: function(opts) {
+				var hasFocus = opts.hasFocus();
 				var value = opts.getValue();
 
 				var numValue = self.utils.asNumber(value);
