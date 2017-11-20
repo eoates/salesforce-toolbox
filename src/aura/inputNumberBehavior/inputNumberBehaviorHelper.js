@@ -20,6 +20,18 @@
 	},
 
 	/**
+	 * Destroys the instance for the specified component
+	 *
+	 * @param {Aura.Component} component - The inputNumberBehavior component
+	 */
+	destroy: function(component) {
+		var componentId = component.getGlobalId();
+		if (this.INSTANCES[componentId]) {
+			this.INSTANCES[componentId] = undefined;
+		}
+	},
+
+	/**
 	 * Returns a module which can be used to add the inputNumber behavior
 	 *
 	 * @param {Aura.Component} component - The inputNumberBehavior component
