@@ -1,5 +1,42 @@
 ({
 	/**
+	 * Imports modules used by the component
+	 *
+	 * @param {Aura.Component} component - The inputCheckbox component
+	 *
+	 * @return {void}
+	 */
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
+		}
+	},
+
+	/**
+	 * Sets the value
+	 *
+	 * @param {Aura.Component} component - The inputText component
+	 * @param {boolean}        value     - The value
+	 *
+	 * @return {boolean} true if the value changed
+	 */
+	setValue: function(component, value) {
+		var oldValue = component.get('v.value');
+		if (value === oldValue) {
+			return false;
+		}
+
+		component.ignoreValueChange = true;
+		try {
+			component.set('v.value', value);
+		} finally {
+			component.ignoreValueChange = false;
+		}
+
+		return true;
+	},
+
+	/**
 	 * Returns the input HTML element
 	 *
 	 * @param {Aura.Component} component - The inputCheckbox component
@@ -12,6 +49,24 @@
 			return input.getElement();
 		}
 		return undefined;
+	},
+
+	/**
+	 * Updates the input element
+	 *
+	 * @param {Aura.Component} component - The inputCheckbox component
+	 *
+	 * @return {void}
+	 */
+	updateInputElement: function(component) {
+		var inputElement = this.getInputElement(component);
+		if (!inputElement) {
+			return;
+		}
+
+		var value = component.get('v.value');
+		inputElement.checked = this.utils.asBoolean(value);
+		inputElement.indeterminate = this.utils.isUndefinedOrNull(value);
 	},
 
 	/**

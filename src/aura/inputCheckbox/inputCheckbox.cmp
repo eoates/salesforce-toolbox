@@ -24,11 +24,18 @@
 	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
 	<!-- /events -->
 
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<!-- /handlers -->
+
 	<!-- methods -->
 	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
 	<!-- /methods -->
 
 	<!-- component -->
+	<c:utils aura:id="utils" />
+
 	<c:formElement class="{!v.elementClass}"
 	               controlClass="{!v.controlClass}"
 	               errorClass="{!v.errorClass}"
@@ -39,7 +46,6 @@
 			<input aura:id="input"
 			       id="{#globalId + '_input'}"
 			       type="checkbox"
-			       checked="{!if(v.value, 'checked', '')}"
 			       accesskey="{!v.accesskey}"
 			       title="{!v.title}"
 			       tabindex="{!v.tabindex}"

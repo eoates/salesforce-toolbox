@@ -10,6 +10,23 @@
 	},
 
 	/**
+	 * Initializes the component
+	 */
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
+	 * Handles change to the value attribute
+	 */
+	valueChange: function(component, event, helper) {
+		if (component.ignoreValueChange) {
+			return;
+		}
+		helper.updateInputElement(component);
+	},
+
+	/**
 	 * Handles the focus event of the input element
 	 */
 	inputFocus: function(component, event, helper) {
@@ -28,8 +45,12 @@
 	 */
 	inputChange: function(component, event, helper) {
 		var inputElement = event.target;
+		var value = inputElement.checked;
 
-		component.set('v.value', inputElement.checked);
-		helper.fireEvent(component, 'onchange');
+		var changed = helper.setValue(component, value);
+
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
+		}
 	}
 })
