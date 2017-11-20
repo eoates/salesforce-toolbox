@@ -6,7 +6,7 @@
 	 * Returns the number of toasts that can be displayed simultaneously on the current device. On
 	 * phones we only want to display a single toast at a time. On other devices we display 3
 	 *
-	 * @return {number} the number of toasts to display simultaneously
+	 * @return {number} The number of toasts to display simultaneously
 	 */
 	getMaxToasts: function() {
 		var formFactor = $A.get('$Browser.formFactor');
@@ -18,13 +18,16 @@
 	 * is displayed immediately; otherwise, the toast is added to a queue and will be displayed once
 	 * any other toasts in the queue have been displayed
 	 *
-	 * @param {Aura.Component} component the component
-	 * @param {string} type the toast type, which can be error, warning, success, or info
-	 * @param {string} key specifies an icon when the toast type is other
-	 * @param {string} title specifies the toast title in bold
-	 * @param {string} message specifies the message to display
-	 * @param {string} mode the toast mode, which can be dismissible, pester, or sticky
-	 * @param {number} duration toast duration in milliseconds
+	 * @param {Aura.Component} component - The component
+	 * @param {string}         type      - The toast type, which can be error, warning, success, or
+	 *                                     info
+	 * @param {string}         key       - Specifies an icon when the toast type is other
+	 * @param {string}         title     - Specifies the toast title in bold
+	 * @param {string}         message   - Specifies the message to display
+	 * @param {string}         mode      - The toast mode, which can be dismissible, pester, or
+	 *                                     sticky
+	 * @param {number}         duration  - Toast duration in milliseconds
+	 *
 	 * @return {void}
 	 */
 	createToast: function(component, type, key, title, message, mode, duration) {
@@ -72,8 +75,9 @@
 	/**
 	 * Removes the toast with the specified name
 	 *
-	 * @param {Aura.Component} component the component
-	 * @param {string} name the name of the toast to remove
+	 * @param {Aura.Component} component - The component
+	 * @param {string}         name      - The name of the toast to remove
+	 *
 	 * @return {void}
 	 */
 	removeToast: function(component, name) {
@@ -96,7 +100,8 @@
 	 * Displays the next toast in the queue. If there are no toasts in the queue then this function
 	 * does nothing
 	 *
-	 * @param {Aura.Component} component the component
+	 * @param {Aura.Component} component - The component
+	 *
 	 * @return {void}
 	 */
 	showNextToastInQueue: function(component) {

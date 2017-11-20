@@ -2,7 +2,7 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param {Aura.Component} component - the inputText component
+	 * @param {Aura.Component} component - The inputText component
 	 *
 	 * @return {void}
 	 */
@@ -15,7 +15,7 @@
 	/**
 	 * Sets the oldValue to the current value
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputText component
 	 *
 	 * @return {void}
 	 */
@@ -26,8 +26,8 @@
 	/**
 	 * Sets the value
 	 *
-	 * @param {Aura.Component} component - the inputText component
-	 * @param {string}         value     - the value
+	 * @param {Aura.Component} component - The inputText component
+	 * @param {string}         value     - The value
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -50,9 +50,9 @@
 	/**
 	 * Returns the input HTML element
 	 *
-	 * @param {Aura.Component} component - the inputText component
+	 * @param {Aura.Component} component - The inputText component
 	 *
-	 * @return {HTMLElement} the input element
+	 * @return {HTMLElement} The input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -65,7 +65,7 @@
 	/**
 	 * Updates the value of the input element so it displays the formatted value
 	 *
-	 * @param {Aura.Component} component - the inputText component
+	 * @param {Aura.Component} component - The inputText component
 	 *
 	 * @return {void}
 	 */
@@ -82,9 +82,9 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component - the inputText component
-	 * @param {string}         name      - the event name
-	 * @param {Object}         args      - optional event arguments
+	 * @param {Aura.Component} component - The inputText component
+	 * @param {string}         name      - The event name
+	 * @param {Object}         args      - Optional event arguments
 	 *
 	 * @return {void}
 	 */

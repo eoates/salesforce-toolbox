@@ -2,9 +2,9 @@
 	/**
 	 * Returns the input HTML element
 	 *
-	 * @param {Aura.Component} component - the inputCheckbox component
+	 * @param {Aura.Component} component - The inputCheckbox component
 	 *
-	 * @return {HTMLElement} the input element
+	 * @return {HTMLElement} The input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -17,9 +17,9 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component - the inputCheckbox component
-	 * @param {string}         name      - the event name
-	 * @param {Object}         args      - optional event arguments
+	 * @param {Aura.Component} component - The inputCheckbox component
+	 * @param {string}         name      - The event name
+	 * @param {Object}         args      - Optional event arguments
 	 *
 	 * @return {void}
 	 */

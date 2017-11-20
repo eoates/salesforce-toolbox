@@ -27,7 +27,7 @@
 	/**
 	 * Returns true if the value is undefined; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is undefined; otherwise, false
 	 */
@@ -38,7 +38,7 @@
 	/**
 	 * Returns true if the value is null; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is null; otherwise, false
 	 */
@@ -49,7 +49,7 @@
 	/**
 	 * Returns true if the value is undefined or null; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is undefined or null; otherwise, false
 	 */
@@ -60,7 +60,7 @@
 	/**
 	 * Returns true if the value is a boolean; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is a boolean; otherwise, false
 	 */
@@ -71,7 +71,7 @@
 	/**
 	 * Returns true if the value is a number; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is a number; otherwise, false
 	 */
@@ -82,7 +82,7 @@
 	/**
 	 * Returns true if the value is an integer; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is an integer; otherwise, false
 	 */
@@ -93,7 +93,7 @@
 	/**
 	 * Returns true if the value is a string; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is a string; otherwise, false
 	 */
@@ -104,7 +104,7 @@
 	/**
 	 * Returns true if the value is a date; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is a date; otherwise, false
 	 */
@@ -115,7 +115,7 @@
 	/**
 	 * Returns true if the value is an array; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is an array; otherwise, false
 	 */
@@ -131,7 +131,7 @@
 	 * following types as objects even though the typeof operator returns "object": null, Array,
 	 * Date
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is an object; otherwise, false
 	 */
@@ -147,7 +147,7 @@
 	/**
 	 * Returns true if the value is a function; otherwise, false
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is a function; otherwise, false
 	 */
@@ -160,7 +160,7 @@
 	 * values as empty: undefined, null, arrays with a length of 0, empty strings, objects with no
 	 * keys
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is empty; otherwise, false
 	 */
@@ -192,7 +192,7 @@
 	 * reverse is not always true. Calling isEmpty() with the string " " will return false, but
 	 * isBlank() will return true
 	 *
-	 * @param {*} value - the value to check
+	 * @param {*} value - The value to check
 	 *
 	 * @return {boolean} true if the value is a blank string; otherwise, false
 	 */
@@ -209,9 +209,9 @@
 	 * Returns the value as a boolean. This method contains special logic for converting strings.
 	 * The following strings are converted to true: "y", "yes", "t", "true" - case does not matter
 	 *
-	 * @param {*} value - the value to convert
+	 * @param {*} value - The value to convert
 	 *
-	 * @return {boolean} the boolean value
+	 * @return {boolean} The boolean value
 	 */
 	asBoolean: function(value) {
 		if (this.isString(value)) {
@@ -227,9 +227,9 @@
 	 * This method can handle strings which contain special characters such as commas, exponentials
 	 * (e.g. "e+8"), and multiplier shortcuts at the end of the string (e.g. "20k", "1.5m", etc.)
 	 *
-	 * @param {*} value - the value to convert
+	 * @param {*} value - The value to convert
 	 *
-	 * @return {number} the number value
+	 * @return {number} The number value
 	 */
 	asNumber: function(value) {
 		if ((typeof value === 'number') && !isFinite(value)) {
@@ -273,9 +273,9 @@
 	 *
 	 * @see  asNumber
 	 *
-	 * @param {*} value - the value to convert
+	 * @param {*} value - The value to convert
 	 *
-	 * @return {number} the integer value
+	 * @return {number} The integer value
 	 */
 	asInteger: function(value) {
 		return this.trunc(this.asNumber(value));
@@ -284,9 +284,9 @@
 	/**
 	 * Returns the value as a string. Undefined and null are converted to an empty string
 	 *
-	 * @param {*} value - the value to convert
+	 * @param {*} value - The value to convert
 	 *
-	 * @return {string} the string value
+	 * @return {string} The string value
 	 */
 	asString: function(value) {
 		if (this.isUndefinedOrNull(value)) {
@@ -309,9 +309,9 @@
 	 * value is a string then this method attempts to parse the date using
 	 * $A.localizationService.parseDateTime()
 	 *
-	 * @param {*} value - the value to convert
+	 * @param {*} value - The value to convert
 	 *
-	 * @return {Date} the date value
+	 * @return {Date} The date value
 	 */
 	asDate: function(value) {
 		if (this.isUndefinedOrNull(value)) {
@@ -344,10 +344,10 @@
 	/**
 	 * Returns the possible range of values given a precision and scale
 	 *
-	 * @param {number} precision - the total number of digits in the number
-	 * @param {number} scale     - the number of digits to the right of the decimal
+	 * @param {number} precision - The total number of digits in the number
+	 * @param {number} scale     - The number of digits to the right of the decimal
 	 *
-	 * @return {Object} an object containing the min and max values
+	 * @return {Object} An object containing the min and max values
 	 */
 	range: function(precision, scale) {
 		var max = (Math.pow(10, precision) - 1) / Math.pow(10, scale);
@@ -362,11 +362,11 @@
 	 * Ensures that a number is within a given range. If value is less than min then min is
 	 * returned. If value is greater than max then max is returned. Otherwise, value is returned.
 	 *
-	 * @param {number} value - the value
-	 * @param {number} min   - the minimimum value or undefined if there is no minimum
-	 * @param {number} max   - the maximium value or undefined if there is no maximum
+	 * @param {number} value - The value
+	 * @param {number} min   - The minimimum value or undefined if there is no minimum
+	 * @param {number} max   - The maximium value or undefined if there is no maximum
 	 *
-	 * @return {number} the value
+	 * @return {number} The value
 	 */
 	minmax: function(value, min, max) {
 		if (!this.isNumber(value)) {
@@ -398,9 +398,9 @@
 	 * then this will not happen. As an example, calling this method with the number 9.900 will
 	 * return 1 whereas calling it with the string "9.900" will return 3
 	 *
-	 * @param {number|string} value - the value to check
+	 * @param {number|string} value - The value to check
 	 *
-	 * @return {number} the number of digits to the right of the decimal
+	 * @return {number} The number of digits to the right of the decimal
 	 */
 	scale: function(value) {
 		var match = this.asString(value).match(/(?:\.(\d+))?(?:e([-+]?\d+))?$/i);
@@ -417,9 +417,9 @@
 	/**
 	 * Returns the integer part of a number by removing any fractional digits
 	 *
-	 * @param {number} value - a number
+	 * @param {number} value - A number
 	 *
-	 * @return {number} the integer part of the given number
+	 * @return {number} The integer part of the given number
 	 */
 	trunc: function(value) {
 		if (Math.trunc) {
@@ -433,9 +433,9 @@
 	/**
 	 * Escapes special regular expression characters
 	 *
-	 * @param {string} value - the string to escape
+	 * @param {string} value - The string to escape
 	 *
-	 * @return {string} the escaped string
+	 * @return {string} The escaped string
 	 */
 	escapeRegExp: function(value) {
 		return this.asString(value).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -445,9 +445,9 @@
 	 * Removes leading and trailing white space. If value is not a string it will be converted.
 	 * Undefined and null will be converted to an empty string
 	 *
-	 * @param {*} value - the value to trim
+	 * @param {*} value - The value to trim
 	 *
-	 * @return {string} the trimmed string
+	 * @return {string} The trimmed string
 	 */
 	trim: function(value) {
 		value = this.asString(value);
@@ -464,12 +464,12 @@
 	/**
 	 * Returns a formatted number. If value is not a number then an empty string is returned
 	 *
-	 * @param {number} value         - the number to format
-	 * @param {number} [scale]       - the number of digits to display to the right of the decimal
-	 * @param {string} [thousands=,] - the thousands separator
-	 * @param {string} [decimal=.]   - the decimal
+	 * @param {number} value         - The number to format
+	 * @param {number} [scale]       - The number of digits to display to the right of the decimal
+	 * @param {string} [thousands=,] - The thousands separator
+	 * @param {string} [decimal=.]   - The decimal
 	 *
-	 * @return {string} the formatted number
+	 * @return {string} The formatted number
 	 */
 	formatNumber: function(value, scale, thousands, decimal) {
 		if (!this.isNumber(value)) {
@@ -505,10 +505,10 @@
 	 * Returns a formatted date. If value is not a date then an empty string is returned. This
 	 * method uses $A.localizationService.formatDateTime() to format the date
 	 *
-	 * @param {Date}   value               - the date to format
-	 * @param {string} [format=yyyy-MM-dd] - the format to use
+	 * @param {Date}   value               - The date to format
+	 * @param {string} [format=yyyy-MM-dd] - The format to use
 	 *
-	 * @return {string} the formatted date
+	 * @return {string} The formatted date
 	 */
 	formatDate: function(value, format) {
 		if (!this.isDate(value)) {
@@ -529,9 +529,9 @@
 	 * string, returning true or false as appropriate. This method uses the native
 	 * String.protottype.startsWith() if available
 	 *
-	 * @param {string} value        - the string to search
-	 * @param {string} searchString - the characters to be searched for at the start of value
-	 * @param {number} [position=0] - the position in value at which to begin searching for
+	 * @param {string} value        - The string to search
+	 * @param {string} searchString - The characters to be searched for at the start of value
+	 * @param {number} [position=0] - The position in value at which to begin searching for
 	 *                                searchString; defaults to 0
 	 *
 	 * @return {boolean} true if the given characters are found at the beginning of the string;
@@ -561,9 +561,9 @@
 	 *
 	 * @see startsWith
 	 *
-	 * @param {string} value        - the string to search
-	 * @param {string} searchString - the characters to be searched for at the start of value
-	 * @param {number} [position=0] - the position in value at which to begin searching for
+	 * @param {string} value        - The string to search
+	 * @param {string} searchString - The characters to be searched for at the start of value
+	 * @param {number} [position=0] - The position in value at which to begin searching for
 	 *                                searchString; defaults to 0
 	 *
 	 * @return {boolean} true if the given characters are found at the beginning of the string;
@@ -582,9 +582,9 @@
 	 * string, returning true or false as appropriate. This method uses the native
 	 * String.prototype.endsWith if it is available
 	 *
-	 * @param {string} value        - the string to search
-	 * @param {string} searchString - the characters to be searched for at the end of value
-	 * @param {number} [length]     - if provided overwrites the considered length of the string to
+	 * @param {string} value        - The string to search
+	 * @param {string} searchString - The characters to be searched for at the end of value
+	 * @param {number} [length]     - If provided overwrites the considered length of the string to
 	 *                                search in. If omitted, the default value is the length of the
 	 *                                string
 	 *
@@ -622,9 +622,9 @@
 	 *
 	 * @see endsWith
 	 *
-	 * @param {string} value        - the string to search
-	 * @param {string} searchString - the characters to be searched for at the end of value
-	 * @param {number} [length]     - if provided overwrites the considered length of the string to
+	 * @param {string} value        - The string to search
+	 * @param {string} searchString - The characters to be searched for at the end of value
+	 * @param {number} [length]     - If provided overwrites the considered length of the string to
 	 *                                search in. If omitted, the default value is the length of the
 	 *                                string
 	 *
@@ -642,10 +642,10 @@
 	/**
 	 * Returns the first day of the specified month
 	 *
-	 * @param {number} year  - the year
-	 * @param {month}  month - the month
+	 * @param {number} year  - The year
+	 * @param {month}  month - The month
 	 *
-	 * @return {Date} the first day of the specified month
+	 * @return {Date} The first day of the specified month
 	 */
 	firstDayOfMonth: function(year, month) {
 		if (!this.isNumber(year) || !this.isNumber(month)) {
@@ -664,10 +664,10 @@
 	/**
 	 * Returns the last day of the specified month
 	 *
-	 * @param {number} year  - the year
-	 * @param {number} month - the month
+	 * @param {number} year  - The year
+	 * @param {number} month - The month
 	 *
-	 * @return {Date} the last day of the specified month
+	 * @return {Date} The last day of the specified month
 	 */
 	lastDayOfMonth: function(year, month) {
 		if (!this.isNumber(year) || !this.isNumber(month)) {
@@ -694,10 +694,10 @@
 	 * Adds a specified number of days to a date. Use a negative value for count to subtract that
 	 * number of days
 	 *
-	 * @param {Date}   date  - the date
-	 * @param {number} count - the number of days to add
+	 * @param {Date}   date  - The date
+	 * @param {number} count - The number of days to add
 	 *
-	 * @return {Date} a date
+	 * @return {Date} A date
 	 */
 	addDays: function(date, count) {
 		if (!this.isDate(date)) {
@@ -722,10 +722,10 @@
 	 * Adds a specified number of months to a date. Use a negative value for count to subtract
 	 * that number of months
 	 *
-	 * @param {Date}   date  - the date
-	 * @param {number} count - the number of months to add
+	 * @param {Date}   date  - The date
+	 * @param {number} count - The number of months to add
 	 *
-	 * @return {Date} a date
+	 * @return {Date} A date
 	 */
 	addMonths: function(date, count) {
 		if (!this.isDate(date)) {
@@ -770,10 +770,10 @@
 	 * Adds a specified number of years to a date. Use a negative value for count to subtract that
 	 * number of years
 	 *
-	 * @param {Date}   date  - the date
-	 * @param {number} count - the number of years to add
+	 * @param {Date}   date  - The date
+	 * @param {number} count - The number of years to add
 	 *
-	 * @return {Date} a date
+	 * @return {Date} A date
 	 */
 	addYears: function(date, count) {
 		if (!this.isDate(date)) {
@@ -809,10 +809,10 @@
 	/**
 	 * Returns the number of days between two dates
 	 *
-	 * @param {Date} date1 - the first date
-	 * @param {Date} date2 - the second date
+	 * @param {Date} date1 - The first date
+	 * @param {Date} date2 - The second date
 	 *
-	 * @return {number} the number of days between the dates
+	 * @return {number} The number of days between the dates
 	 */
 	daysBetween: function(date1, date2) {
 		if (!this.isDate(date1) || !this.isDate(date2)) {
@@ -827,8 +827,8 @@
 	/**
 	 * Returns true if two dates represent the same day
 	 *
-	 * @param {Date} date1 - the first date
-	 * @param {Date} date2 - the second date
+	 * @param {Date} date1 - The first date
+	 * @param {Date} date2 - The second date
 	 *
 	 * @return {boolean} true if the two dates represent the same day
 	 */
@@ -844,9 +844,9 @@
 	/**
 	 * Treat a date like a UTC date without actually converting it. Useful in certain calculations
 	 *
-	 * @param {Date} date - the date
+	 * @param {Date} date - The date
 	 *
-	 * @return {Date} the date adjusted by its timezone offset
+	 * @return {Date} The date adjusted by its timezone offset
 	 */
 	treatAsUTC: function(date) {
 		var result = new Date(date);

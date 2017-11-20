@@ -4,7 +4,7 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 *
 	 * @return {void}
 	 */
@@ -17,7 +17,7 @@
 	/**
 	 * Returns true if the dropdown is open
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 *
 	 * @return {boolean} true if the dropdown is open; otherwise, false
 	 */
@@ -29,7 +29,7 @@
 	/**
 	 * Opens the dropdown
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 * @param {boolean}        [focus]   - true if the datepicker should receive focus
 	 *
 	 * @return {void}
@@ -55,7 +55,7 @@
 	/**
 	 * Closes the dropdown
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 * @param {boolean}        [focus]   - true if the input element should recieve focus
 	 *
 	 * @return {void}
@@ -81,9 +81,9 @@
 	/**
 	 * Returns the value as a formatted string
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 *
-	 * @return {string} the formatted value
+	 * @return {string} The formatted value
 	 */
 	getFormattedValue: function(component) {
 		var value = component.get('v.value');
@@ -109,8 +109,8 @@
 	/**
 	 * Sets the value
 	 *
-	 * @param {Aura.Component} component - the inputDate component
-	 * @param {string}         value     - the value
+	 * @param {Aura.Component} component - The inputDate component
+	 * @param {string}         value     - The value
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -148,9 +148,9 @@
 	/**
 	 * Returns the input HTML element
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 *
-	 * @return {HTMLElement} the input element
+	 * @return {HTMLElement} The input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -163,7 +163,7 @@
 	/**
 	 * Updates the value of the input element so it displays the formatted value
 	 *
-	 * @param {Aura.Component} component - the inputDate component
+	 * @param {Aura.Component} component - The inputDate component
 	 *
 	 * @return {void}
 	 */
@@ -177,9 +177,9 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component - the inputDate component
-	 * @param {string}         name      - the event name
-	 * @param {Object}         args      - optional event arguments
+	 * @param {Aura.Component} component - The inputDate component
+	 * @param {string}         name      - The event name
+	 * @param {Object}         args      - Optional event arguments
 	 *
 	 * @return {void}
 	 */

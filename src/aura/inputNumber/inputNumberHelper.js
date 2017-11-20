@@ -2,7 +2,7 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Aura.Component} component - The inputNumber component
 	 *
 	 * @return {void}
 	 */
@@ -15,10 +15,11 @@
 	/**
 	 * Performs a specified behavior action
 	 *
-	 * @param  {Aura.Component} component the inputNumber component
-	 * @param  {Event} event the event object
-	 * @param  {string} name the name of the action to perform
-	 * @return {*} varies depending on the action performed
+	 * @param {Aura.Component} component - The inputNumber component
+	 * @param {Event}          event     - The event object
+	 * @param {string}         name      - The name of the action to perform
+	 *
+	 * @return {*} Varies depending on the action performed
 	 */
 	performBehaviorAction: function(component, event, name) {
 		var inputElement = this.getInputElement(component);
@@ -57,8 +58,8 @@
 	/**
 	 * Sets the value
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
-	 * @param {number}         value     - the value
+	 * @param {Aura.Component} component - The inputNumber component
+	 * @param {number}         value     - The value
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -81,9 +82,9 @@
 	/**
 	 * Returns the input HTML element
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Aura.Component} component - The inputNumber component
 	 *
-	 * @return {HTMLElement} the input element
+	 * @return {HTMLElement} The input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -96,7 +97,7 @@
 	/**
 	 * Updates the input element
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Aura.Component} component - The inputNumber component
 	 *
 	 * @return {void}
 	 */
@@ -123,7 +124,7 @@
 	/**
 	 * Sets attributes only needed when the application is running on mobile
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Aura.Component} component - The inputNumber component
 	 *
 	 * @return {void}
 	 */
@@ -140,9 +141,9 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
-	 * @param {string}         name      - the event name
-	 * @param {Object}         args      - optional event arguments
+	 * @param {Aura.Component} component - The inputNumber component
+	 * @param {string}         name      - The event name
+	 * @param {Object}         args      - Optional event arguments
 	 *
 	 * @return {void}
 	 */

@@ -2,7 +2,7 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {void}
 	 */
@@ -19,7 +19,7 @@
 	 * support colons within the value. If you need a colon in the value then you must pass in an
 	 * object with its own value and label properties
 	 *
-	 * @param {string} optionString - the string representation of an option
+	 * @param {string} optionString - The string representation of an option
 	 *
 	 * @return {Object} The option object
 	 */
@@ -46,9 +46,9 @@
 	 * Creates a local copy of the options so we don't modify the array passed via the component's
 	 * options attribute
 	 *
-	 * @param {Object[]} options - the options to copy
+	 * @param {Object[]} options - The options to copy
 	 *
-	 * @return {Object[]} an array containing the copied options
+	 * @return {Object[]} An array containing the copied options
 	 */
 	createLocalOptions: function(options) {
 		var localOptions = [];
@@ -86,9 +86,9 @@
 	 * Copies the options from the component's options attribute and stores them in a private
 	 * attribute named localOptions
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
-	 * @return {Object[]} an array containing the copied options
+	 * @return {Object[]} An array containing the copied options
 	 */
 	createAndSetLocalOptions: function(component) {
 		var options = component.get('v.options');
@@ -101,9 +101,9 @@
 	 * Return the CSS class for the option. We support 2 attributes for specifying an option's
 	 * class - class and className. Since class is a keyword we have to use quotes
 	 *
-	 * @param {Object} option - the option
+	 * @param {Object} option - The option
 	 *
-	 * @return {string} the option's CSS class
+	 * @return {string} The option's CSS class
 	 */
 	getOptionClass: function(option) {
 		return this.utils.trim(option['class']) || this.utils.trim(option.className);
@@ -112,11 +112,11 @@
 	/**
 	 * Returns the index of the first element in the array that matches the predicate
 	 *
-	 * @param {*}        values    - the array of values to search
-	 * @param {Function} predicate - a function that will be called for each element in the array
+	 * @param {*}        values    - The array of values to search
+	 * @param {Function} predicate - A function that will be called for each element in the array
 	 *                               until it returns true
 	 *
-	 * @return {number} the index of the first element that matched the predicate or -1 if there
+	 * @return {number} The index of the first element that matched the predicate or -1 if there
 	 *                  was no match
 	 */
 	indexOf: function(values, predicate) {
@@ -135,10 +135,10 @@
 	/**
 	 * Returns the index of the first option that has the specified value
 	 *
-	 * @param {Object[]} options - the options
-	 * @param {string}   value   - the value to find
+	 * @param {Object[]} options - The options
+	 * @param {string}   value   - The value to find
 	 *
-	 * @return {number} the index of the matching option or -1
+	 * @return {number} The index of the matching option or -1
 	 */
 	indexOfOptionByValue: function(options, value) {
 		return this.indexOf(options, function(option) {
@@ -149,10 +149,10 @@
 	/**
 	 * Returns the index of the first option that is not disabled and has the specified label
 	 *
-	 * @param {Object[]} options - the options
-	 * @param {string}   label   - the label to find
+	 * @param {Object[]} options - The options
+	 * @param {string}   label   - The label to find
 	 *
-	 * @return {number} the index of the matching option or -1
+	 * @return {number} The index of the matching option or -1
 	 */
 	indexOfOptionByLabel: function(options, label) {
 		var labelLower = label.toLowerCase();
@@ -165,10 +165,10 @@
 	 * Returns the index of the first option that is not disabled and where the label starts with
 	 * the specified text
 	 *
-	 * @param {Object[]} options - the options
-	 * @param {string}   label   - the label to find
+	 * @param {Object[]} options - The options
+	 * @param {string}   label   - The label to find
 	 *
-	 * @return {number} the index of the matching option or -1
+	 * @return {number} The index of the matching option or -1
 	 */
 	indexOfOptionByLabelStartsWith: function(options, label) {
 		if (!label) {
@@ -197,7 +197,7 @@
 	 * method actually selects the previous option. This method should only be called when editable
 	 * is true
 	 *
-	 * @param {Aura.Component} component       - the inputSelect component
+	 * @param {Aura.Component} component       - The inputSelect component
 	 * @param {boolean}        [reverse=false] - true to select previous option
 	 *
 	 * @return {boolean} true if the selected option was changed; otherwise, false
@@ -262,7 +262,7 @@
 	/**
 	 * Updates the select element's options
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {void}
 	 */
@@ -309,7 +309,7 @@
 	 * with the same value as the component then the input element's value is set to the label of
 	 * that option; otherwise, we just set the input element's value is set to the component value
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {void}
 	 */
@@ -350,7 +350,7 @@
 	/**
 	 * Updates the selected index of the select element based on the component value
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {void}
 	 */
@@ -362,7 +362,7 @@
 	/**
 	 * Updates the input and select elements
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {void}
 	 */
@@ -379,7 +379,7 @@
 	/**
 	 * Sets the oldValue to the current value
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {void}
 	 */
@@ -390,8 +390,8 @@
 	/**
 	 * Sets the value
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
-	 * @param {string}         value     - the value
+	 * @param {Aura.Component} component - The inputSelect component
+	 * @param {string}         value     - The value
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -414,7 +414,7 @@
 	/**
 	 * Sets the value based on the selected option index
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -438,7 +438,7 @@
 	/**
 	 * Sets the value based on the text in the input element
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -493,7 +493,7 @@
 	/**
 	 * Sets the value based on the option selected in the select element
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {boolean} true if the value changed
 	 */
@@ -530,8 +530,8 @@
 	/**
 	 * Sets the selected index
 	 *
-	 * @param {Aura.Component} component     - the inputSelect component
-	 * @param {number}         selectedIndex - the selected index
+	 * @param {Aura.Component} component     - The inputSelect component
+	 * @param {number}         selectedIndex - The selected index
 	 *
 	 * @return {boolean} true if the selectedIndex changed
 	 */
@@ -560,7 +560,7 @@
 	/**
 	 * Sets the component's selectedIndex attribute based on its current value
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
 	 * @return {boolean} true if the selectedIndex changed
 	 */
@@ -575,9 +575,9 @@
 	/**
 	 * Returns the input element
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
-	 * @return {HTMLElement} the input element
+	 * @return {HTMLElement} The input element
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
@@ -590,9 +590,9 @@
 	/**
 	 * Returns the select element
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
+	 * @param {Aura.Component} component - The inputSelect component
 	 *
-	 * @return {HTMLElement} the select element
+	 * @return {HTMLElement} The select element
 	 */
 	getSelectElement: function(component) {
 		var select = component.find('select');
@@ -611,11 +611,11 @@
 	/**
 	 * Performs a specified behavior action when the component type is "number"
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
-	 * @param {Event}          event     - the event object
-	 * @param {string}         name      - the name of the action to perform
+	 * @param {Aura.Component} component - The inputSelect component
+	 * @param {Event}          event     - The event object
+	 * @param {string}         name      - The name of the action to perform
 	 *
-	 * @return {*} varies depending on the action performed
+	 * @return {*} Varies depending on the action performed
 	 */
 	performNumberInputBehaviorAction: function(component, event, name) {
 		var editable = component.get('v.editable');
@@ -660,9 +660,9 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component - the inputSelect component
-	 * @param {string}         name      - the event name
-	 * @param {Object}         args      - optional event arguments
+	 * @param {Aura.Component} component - The inputSelect component
+	 * @param {string}         name      - The event name
+	 * @param {Object}         args      - Optional event arguments
 	 *
 	 * @return {void}
 	 */

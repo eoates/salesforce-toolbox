@@ -9,7 +9,8 @@
 	/**
 	 * Imports modules used by the component
 	 *
-	 * @param  {Aura.Component} component the inputNumberBehavior component
+	 * @param {Aura.Component} component - The inputNumberBehavior component
+	 *
 	 * @return {void}
 	 */
 	importModules: function(component) {
@@ -21,9 +22,9 @@
 	/**
 	 * Returns a module which can be used to add the inputNumber behavior
 	 *
-	 * @param {Aura.Component} component - the inputNumberBehavior component
+	 * @param {Aura.Component} component - The inputNumberBehavior component
 	 *
-	 * @return {Object} and object which has methods that implement the behavior
+	 * @return {Object} An object which has methods that implement the behavior
 	 */
 	getModule: function(component) {
 		var componentId = component.getGlobalId();
@@ -37,15 +38,15 @@
 			/**
 			 * Invoke this method in your input element's onfocus event listener
 			 *
-			 * @param {Event}    event                  - the event object
-			 * @param {Object}   opts                   - an object containing methods for
+			 * @param {Event}    event                  - The event object
+			 * @param {Object}   opts                   - An object containing methods for
 			 *                                            retrieving and updating component state
-			 * @param {Function} opts.getSelectionStart - returns the selectionStart property of the
+			 * @param {Function} opts.getSelectionStart - Returns the selectionStart property of the
 			 *                                            input element
-			 * @param {Function} opts.getSelectionEnd   - returns the selectionEnd property of the
+			 * @param {Function} opts.getSelectionEnd   - Returns the selectionEnd property of the
 			 *                                            input element
-			 * @param {Function} opts.getInputValue     - returns the value of the input element
-			 * @param {Function} opts.setInputValue     - sets the value of the input element
+			 * @param {Function} opts.getInputValue     - Returns the value of the input element
+			 * @param {Function} opts.setInputValue     - Sets the value of the input element
 			 *
 			 * @return {void}
 			 */
@@ -81,12 +82,12 @@
 			/**
 			 * Invoke this method in your input element's onblur event listener
 			 *
-			 * @param {Event}    event              - the event object
-			 * @param {Object}   opts               - an object containing methods for retrieving
+			 * @param {Event}    event              - The event object
+			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
-			 * @param {Function} opts.getValue      - returns the component value
-			 * @param {Function} opts.setInputValue - sets the value of the input element
+			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
+			 * @param {Function} opts.getValue      - Returns the component value
+			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
 			 * @return {void}
 			 */
@@ -103,14 +104,14 @@
 			/**
 			 * Invoke this method in your input element's onkeydown event listener
 			 *
-			 * @param {Event}    event              - the event object
-			 * @param {Object}   opts               - an object containing methods for retrieving
+			 * @param {Event}    event              - The event object
+			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
-			 * @param {Function} opts.getValue      - returns the component value
-			 * @param {Function} opts.setValue      - sets the component value
-			 * @param {Function} opts.getInputValue - returns the value of the input element
-			 * @param {Function} opts.setInputValue - sets the value of the input element
+			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
+			 * @param {Function} opts.getValue      - Returns the component value
+			 * @param {Function} opts.setValue      - Sets the component value
+			 * @param {Function} opts.getInputValue - Returns the value of the input element
+			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
 			 * @return {boolean} true if the component value was changed
 			 */
@@ -164,14 +165,14 @@
 			/**
 			 * Invoke this method in your input element's onkeypress event listener
 			 *
-			 * @param {Event}    event                  - the event object
-			 * @param {Object}   opts                   - an object containing methods for
+			 * @param {Event}    event                  - The event object
+			 * @param {Object}   opts                   - An object containing methods for
 			 *                                            retrieving and updating component state
-			 * @param {Function} opts.getSelectionStart - returns the selectionStart property of the
+			 * @param {Function} opts.getSelectionStart - Returns the selectionStart property of the
 			 *                                            input element
-			 * @param {Function} opts.getSelectionEnd   - returns the selectionEnd property of the
+			 * @param {Function} opts.getSelectionEnd   - Returns the selectionEnd property of the
 			 *                                            input element
-			 * @param {Function} opts.getInputValue     - returns the value of the input element
+			 * @param {Function} opts.getInputValue     - Returns the value of the input element
 			 *
 			 * @return {boolean} true if the key was accepted or false if it was prevented
 			 */
@@ -249,14 +250,14 @@
 			/**
 			 * Invoke this method in your input element's onchange event listener
 			 *
-			 * @param {Event}    event              - the event object
-			 * @param {Object}   opts               - an object containing methods for retrieving
+			 * @param {Event}    event              - The event object
+			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
-			 * @param {Function} opts.getValue      - returns the component value
-			 * @param {Function} opts.setValue      - sets the component value
-			 * @param {Function} opts.getInputValue - returns the value of the input element
-			 * @param {Function} opts.setInputValue - sets the value of the input element
+			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
+			 * @param {Function} opts.getValue      - Returns the component value
+			 * @param {Function} opts.setValue      - Sets the component value
+			 * @param {Function} opts.getInputValue - Returns the value of the input element
+			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
 			 * @return {boolean} true if the component value was changed
 			 */
@@ -282,11 +283,11 @@
 			/**
 			 * Update input element value with the formatted value
 			 *
-			 * @param {Object}   opts               - an object containing methods for retrieving
+			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - returns true if the input element has focus
-			 * @param {Function} opts.getValue      - returns the component value
-			 * @param {Function} opts.setInputValue - sets the value of the input element
+			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
+			 * @param {Function} opts.getValue      - Returns the component value
+			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
 			 * @return {void}
 			 */
@@ -308,7 +309,7 @@
 			/**
 			 * Returns the minimum value
 			 *
-			 * @return {number} the minimum value
+			 * @return {number} The minimum value
 			 */
 			getMin: function() {
 				var format = self.getFormat(component);
@@ -318,7 +319,7 @@
 			/**
 			 * Returns the maximum value
 			 *
-			 * @return {number} the maximum value
+			 * @return {number} The maximum value
 			 */
 			getMax: function() {
 				var format = self.getFormat(component);
@@ -328,7 +329,7 @@
 			/**
 			 * Returns the step value
 			 *
-			 * @return {number} the step value
+			 * @return {number} The step value
 			 */
 			getStep: function() {
 				var format = self.getFormat(component);
@@ -345,10 +346,10 @@
 	 * Converts a value to a number. If the specified value cannot be converted to a number then
 	 * defaultValue is returned
 	 *
-	 * @param {*}      value        - the value to convert
-	 * @param {number} defaultValue - the number to return if value cannot be converted
+	 * @param {*}      value        - The value to convert
+	 * @param {number} defaultValue - The number to return if value cannot be converted
 	 *
-	 * @return {number} the converted value as a number
+	 * @return {number} The converted value as a number
 	 */
 	toNumber: function(value, defaultValue) {
 		value = this.utils.asNumber(value);
@@ -358,10 +359,10 @@
 	/**
 	 * Similar to the toNumber() method, but the return value is an integer
 	 *
-	 * @param {*}      value        - the value to convert
-	 * @param {number} defaultValue - the number to return if value cannot be converted
+	 * @param {*}      value        - The value to convert
+	 * @param {number} defaultValue - The number to return if value cannot be converted
 	 *
-	 * @return {number} the converted value as an integer
+	 * @return {number} The converted value as an integer
 	 */
 	toInteger: function(value, defaultValue) {
 		return this.utils.asInteger(this.toNumber(value, defaultValue));
@@ -372,9 +373,9 @@
 	 * this method to get the precision instead of reading the component's precision attribute
 	 * directly as this method ensures that the returned value is within a vaid range
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Aura.Component} component - The inputNumberBehavior component
 	 *
-	 * @return {number} the precision
+	 * @return {number} The precision
 	 */
 	getPrecision: function(component) {
 		var precision = component.get('v.precision');
@@ -388,10 +389,10 @@
 	 * this method to get the scale instead of reading the component's scale attribute directly as
 	 * this method ensures that the returned value is within a valid range
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
-	 * @param {number}         precision - the maximum number of digits in the number
+	 * @param {Aura.Component} component - The inputNumberBehavior component
+	 * @param {number}         precision - The maximum number of digits in the number
 	 *
-	 * @return {number} the scale
+	 * @return {number} The scale
 	 */
 	getScale: function(component, precision) {
 		var scale = component.get('v.scale');
@@ -404,10 +405,10 @@
 	/**
 	 * Gets the minimum value
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
-	 * @param {Object}         range     - an object containing the valid number range
+	 * @param {Aura.Component} component - The inputNumberBehavior component
+	 * @param {Object}         range     - An object containing the valid number range
 	 *
-	 * @return {number} the minimum value
+	 * @return {number} The minimum value
 	 */
 	getMin: function(component, range) {
 		var min = component.get('v.min');
@@ -419,10 +420,10 @@
 	/**
 	 * Gets the maximium value
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
-	 * @param {Object}         range     - an object containing the valid number range
+	 * @param {Aura.Component} component - The inputNumberBehavior component
+	 * @param {Object}         range     - An object containing the valid number range
 	 *
-	 * @return {number} the maximum value
+	 * @return {number} The maximum value
 	 */
 	getMax: function(component, range) {
 		var max = component.get('v.max');
@@ -435,10 +436,10 @@
 	 * Gets the amount by which the component will increment/decrement when the user presses the
 	 * ARROW UP and ARROW DOWN keys respectively
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
-	 * @param {number}         scale     - number of digits to the right of the decimal
+	 * @param {Aura.Component} component - The inputNumberBehavior component
+	 * @param {number}         scale     - Number of digits to the right of the decimal
 	 *
-	 * @return {number} the step value
+	 * @return {number} The step value
 	 */
 	getStep: function(component, scale) {
 		var step = component.get('v.step');
@@ -455,9 +456,9 @@
 	/**
 	 * Returns an object containing information about the number format
 	 *
-	 * @param {Aura.Component} component - the inputNumber component
+	 * @param {Aura.Component} component - The inputNumberBehavior component
 	 *
-	 * @return {Object} an object containing properties for formatting the number
+	 * @return {Object} An object containing properties for formatting the number
 	 */
 	getFormat: function(component) {
 		var precision = this.getPrecision(component);
@@ -492,7 +493,7 @@
 	/**
 	 * Returns true if the character is a special multiplier shortcut
 	 *
-	 * @param {string} value - the value to test
+	 * @param {string} value - The value to test
 	 *
 	 * @return {boolean} true if value is a shortcut
 	 */
@@ -504,7 +505,7 @@
 	 * Checks to see if the value ends with a special multiplier shortcut. These shortcuts include K
 	 * for thousands, M for millions, B for billions and T for trillions
 	 *
-	 * @param {string} value - the value to test
+	 * @param {string} value - The value to test
 	 *
 	 * @return {boolean} true if the value ends with a multiplier; otherwise, false
 	 */
@@ -524,11 +525,11 @@
 	 * specifies a max value of 99 then 99 will be returned. Conversely, if the string "15" was
 	 * passed in with the same format object then 15 would be returned
 	 *
-	 * @param {*}      value  - the value to be parsed. May be any type, but anything other than a
+	 * @param {*}      value  - The value to be parsed. May be any type, but anything other than a
 	 *                          string will be converted to a string before parsing
-	 * @param {Object} format - an object that contains formatting information and constraints
+	 * @param {Object} format - An object that contains formatting information and constraints
 	 *
-	 * @return {number} the parsed number or undefined if the value could not be parsed
+	 * @return {number} The parsed number or undefined if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
 		value = this.utils.asNumber(value);
@@ -549,11 +550,11 @@
 	 * Formats a number using the information provided by a format object. If the value is not a
 	 * number then an empty string will be returned
 	 *
-	 * @param {number}  value      - the number to format
-	 * @param {Object}  format     - an object containing formatting information
-	 * @param {boolean} [hasFocus] - if true then the thousands separator will not be used
+	 * @param {number}  value      - The number to format
+	 * @param {Object}  format     - An object containing formatting information
+	 * @param {boolean} [hasFocus] - If true then the thousands separator will not be used
 	 *
-	 * @return {string} the formatted number
+	 * @return {string} The formatted number
 	 */
 	formatNumber: function(value, format, hasFocus) {
 		var thousands = ',';

@@ -7,8 +7,8 @@
 	/**
 	 * Displays a toast in the header of the modal
 	 *
-	 * @param {Aura.Component} component - the modal component
-	 * @param {Object}         toastArgs - an object containing the toast parameters
+	 * @param {Aura.Component} component - The modal component
+	 * @param {Object}         toastArgs - An object containing the toast parameters
 	 *
 	 * @return {void}
 	 */
@@ -71,7 +71,7 @@
 	/**
 	 * Dismisses a toast if one is being displayed
 	 *
-	 * @param {Aura.Component} component - the modal component
+	 * @param {Aura.Component} component - The modal component
 	 *
 	 * @return {void}
 	 */
@@ -102,10 +102,10 @@
 	 * is not one of the valid animations then the defaultAnimation is used. If defaultAnimation
 	 * is also invalid, then default to "slds-fade-in-open"
 	 *
-	 * @param {string} animation        - the name of the animation to use
-	 * @param {string} defaultAnimation - the animation to use if animation argument is invalid
+	 * @param {string} animation        - The name of the animation to use
+	 * @param {string} defaultAnimation - The animation to use if animation argument is invalid
 	 *
-	 * @return {string} the CSS class for the specified animation
+	 * @return {string} The CSS class for the specified animation
 	 */
 	getAnimationClassName: function(animation, defaultAnimation) {
 		if (this.animations.indexOf(animation) < 0) {
@@ -120,9 +120,9 @@
 	/**
 	 * Returns all child elements for the specified parent
 	 *
-	 * @param {HTMLElement} parent - the parent element
+	 * @param {HTMLElement} parent - The parent element
 	 *
-	 * @return {HTMLElement[]} the child elements
+	 * @return {HTMLElement[]} The child elements
 	 */
 	getChildElements: function(parent) {
 		var children = [];
@@ -138,7 +138,7 @@
 	/**
 	 * Returns the body element
 	 *
-	 * @return {HTMLElement} the body element
+	 * @return {HTMLElement} The body element
 	 */
 	getBodyElement: function() {
 		var body = document.body;
@@ -154,7 +154,7 @@
 	/**
 	 * Returns the modal container element
 	 *
-	 * @return {HTMLElement} the element which contains all modals
+	 * @return {HTMLElement} The element which contains all modals
 	 */
 	getModalContainer: function() {
 		return document.getElementById(this.modalContainerId);
@@ -163,7 +163,7 @@
 	/**
 	 * Creates the modal container element
 	 *
-	 * @return {HTMLElement} an element which will be used to contain all of the modals
+	 * @return {HTMLElement} An element which will be used to contain all of the modals
 	 */
 	createModalContainer: function() {
 		var container;
@@ -193,7 +193,7 @@
 	/**
 	 * Adds a modal to the container element
 	 *
-	 * @param {Aura.Component} component - the modal component to be added to the container
+	 * @param {Aura.Component} component - The modal component to be added to the container
 	 *
 	 * @return {void}
 	 */
@@ -234,7 +234,7 @@
 	/**
 	 * Removes a modal from the container element and places it back in its original container
 	 *
-	 * @param {Aura.Component} component - the modal component to remove
+	 * @param {Aura.Component} component - The modal component to remove
 	 *
 	 * @return {void}
 	 */
@@ -300,8 +300,8 @@
 	/**
 	 * Sets the CSS z-index property for the specified modal
 	 *
-	 * @param {string} componentId - the ID of the modal component
-	 * @param {number} zIndex      - index property
+	 * @param {string} componentId - The ID of the modal component
+	 * @param {number} zIndex      - Index property
 	 *
 	 * @return {void}
 	 */
@@ -344,7 +344,7 @@
 	/**
 	 * Handle the opening of a modal
 	 *
-	 * @param {Aura.Component} component - the modal component
+	 * @param {Aura.Component} component - The modal component
 	 *
 	 * @return {void}
 	 */
@@ -369,7 +369,7 @@
 	/**
 	 * Handle the closing of a modal
 	 *
-	 * @param {Aura.Component} component - the modal component
+	 * @param {Aura.Component} component - The modal component
 	 *
 	 * @return {void}
 	 */
@@ -392,7 +392,7 @@
 	/**
 	 * Open the specified modal
 	 *
-	 * @param {Aura.Component} component - the modal component
+	 * @param {Aura.Component} component - The modal component
 	 *
 	 * @return {void}
 	 */
@@ -424,7 +424,7 @@
 	/**
 	 * Close the specified modal
 	 *
-	 * @param {Aura.Component} component - the modal component
+	 * @param {Aura.Component} component - The modal component
 	 *
 	 * @return {void}
 	 */
@@ -451,9 +451,9 @@
 	/**
 	 * Fire the named event
 	 *
-	 * @param {Aura.Component} component - the modal component
-	 * @param {string}         name      - the event name
-	 * @param {Object}         args      - optional event arguments
+	 * @param {Aura.Component} component - The modal component
+	 * @param {string}         name      - The event name
+	 * @param {Object}         args      - Optional event arguments
 	 *
 	 * @return {void}
 	 */
