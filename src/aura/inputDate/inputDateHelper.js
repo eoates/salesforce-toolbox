@@ -29,12 +29,12 @@
 	/**
 	 * Opens the dropdown
 	 *
-	 * @param {Aura.Component} component - The inputDate component
-	 * @param {boolean}        [focus]   - true if the datepicker should receive focus
+	 * @param {Aura.Component} component     - The inputDate component
+	 * @param {boolean}        [focus=false] - true if the datepicker should receive focus
 	 *
 	 * @return {void}
 	 */
-	open: function(component) {
+	open: function(component, focus) {
 		var datepicker = component.find('datepicker');
 
 		if (!this.isOpen(component)) {
@@ -55,8 +55,8 @@
 	/**
 	 * Closes the dropdown
 	 *
-	 * @param {Aura.Component} component - The inputDate component
-	 * @param {boolean}        [focus]   - true if the input element should recieve focus
+	 * @param {Aura.Component} component     - The inputDate component
+	 * @param {boolean}        [focus=false] - true if the input element should recieve focus
 	 *
 	 * @return {void}
 	 */
