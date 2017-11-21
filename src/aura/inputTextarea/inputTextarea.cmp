@@ -1,0 +1,83 @@
+<aura:component access="GLOBAL">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="name" type="String" />
+	<aura:attribute access="GLOBAL" name="class" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="String" />
+	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
+	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
+	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="maxlength" type="Integer" />
+	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="autotrim" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="showRemaining" type="Boolean" default="true" />
+	<aura:attribute access="GLOBAL" name="label" type="String" />
+	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
+	<aura:attribute access="GLOBAL" name="helpText" type="String" />
+	<aura:attribute access="GLOBAL" name="error" type="String" />
+	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
+	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
+	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
+	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
+	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
+
+	<aura:attribute access="PRIVATE" name="oldValue" type="String" />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<!-- /events -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
+	<!-- /handlers -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="select" action="{!c.select}" />
+	<!-- /methods -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+
+	<c:formElement class="{!v.elementClass}"
+	               labelClass="{!v.labelClass}"
+	               controlClass="{!v.controlClass}"
+	               errorClass="{!v.errorClass}"
+	               controlId="{#globalId + '_input'}"
+	               label="{!v.label}"
+	               required="{!v.required}"
+	               helpText="{!v.helpText}"
+	               error="{!v.error}"
+	               errors="{!v.errors}">
+		<div class="slds-grid slds-grid_vertical">
+			<!-- input -->
+			<textarea aura:id="input"
+			          id="{#globalId + '_input'}"
+			          name="{!v.name}"
+			          class="{!v.class + ' slds-textarea'}"
+			          accesskey="{!v.accesskey}"
+			          placeholder="{!v.placeholder}"
+			          title="{!v.title}"
+			          maxlength="{!v.maxlength}"
+			          tabindex="{!v.tabindex}"
+			          disabled="{!if(v.disabled, 'disabled', '')}"
+			          readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
+			          onfocus="{!c.inputFocus}"
+			          onblur="{!c.inputBlur}"
+			          oninput="{!c.inputInput}"
+			          onchange="{!c.inputChange}"></textarea>
+			<!-- /input -->
+
+			<!-- counter -->
+			<span aura:id="counter" class="{!if(empty(v.maxlength) || v.disabled || v.readonly || not(v.showRemaining), 'slds-hide', 'slds-text-color_weak slds-truncate')}"></span>
+			<!-- /counter -->
+		</div>
+	</c:formElement>
+	<!-- /component -->
+</aura:component>
