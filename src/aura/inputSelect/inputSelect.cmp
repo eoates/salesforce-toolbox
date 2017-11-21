@@ -9,6 +9,7 @@
 	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
 	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
 	<aura:attribute access="GLOBAL" name="title" type="String" />
+	<aura:attribute access="GLOBAL" name="maxlength" type="Integer" />
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="editable" type="Boolean" default="false" />
@@ -88,6 +89,7 @@
 				       accesskey="{!v.accesskey}"
 				       placeholder="{!v.placeholder}"
 				       title="{!v.title}"
+				       maxlength="{!if(v.type ne 'number', v.maxlength, undefined)}"
 				       tabindex="{!v.tabindex}"
 				       disabled="{!if(v.disabled, 'disabled', '')}"
 				       onfocus="{!c.inputFocus}"
