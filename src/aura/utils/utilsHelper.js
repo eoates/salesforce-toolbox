@@ -349,6 +349,37 @@
 	},
 
 	/**
+	 * Changes undefined values to null. If value is an array then changeUndefinedToNull() is called
+	 * for each element in the array. If value is an object then changeUndefinedToNull() is called
+	 * for each property
+	 *
+	 * The main purpose of this method is to be called on an object before calling JSON.stringify()
+	 * to convert it to JSON. This is because JSON.stringify() omits properties with a value of
+	 * undefined which can cause problems when sending the data to the server if it expects those
+	 * properties to be present
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {*} The original value if it was not undefined; otherwise, null
+	 */
+	changeUndefinedToNull: function(value) {
+		if (this.isUndefined(value)) {
+			value = null;
+		} else if (this.isArray(value)) {
+			for (var i = 0, n = value.length; i < n; i++) {
+				value[i] = this.changeUndefinedToNull(value[i]);
+			}
+		} else if (this.isObject(value)) {
+			for (var key in value) {
+				if (value.hasOwnProperty(key) && !this.isFunction(value[key])) {
+					value[key] = this.changeUndefinedToNull(value[key]);
+				}
+			}
+		}
+		return value;
+	},
+
+	/**
 	 * Returns the possible range of values given a precision and scale
 	 *
 	 * @param {number} precision - The total number of digits in the number
