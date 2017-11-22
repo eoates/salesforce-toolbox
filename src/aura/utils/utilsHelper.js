@@ -91,6 +91,17 @@
 	},
 
 	/**
+	 * Returns true if the value is infinity; otherwise, false
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {boolean} true if the value is infinity; otherwise, false
+	 */
+	isInfinity: function(value) {
+		return (typeof value === 'number') && !isFinite(value);
+	},
+
+	/**
 	 * Returns true if the value is a string; otherwise, false
 	 *
 	 * @param {*} value - The value to check
@@ -232,7 +243,7 @@
 	 * @return {number} The number value
 	 */
 	asNumber: function(value) {
-		if ((typeof value === 'number') && !isFinite(value)) {
+		if (this.isUndefinedOrNull(value) || this.isInfinity(value)) {
 			return NaN;
 		}
 
@@ -289,11 +300,7 @@
 	 * @return {string} The string value
 	 */
 	asString: function(value) {
-		if (this.isUndefinedOrNull(value)) {
-			return '';
-		}
-
-		if ((typeof value === 'number') && !isFinite(value)) {
+		if (this.isUndefinedOrNull(value) || this.isInfinity(value)) {
 			return '';
 		}
 
