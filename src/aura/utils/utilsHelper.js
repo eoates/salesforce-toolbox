@@ -380,6 +380,99 @@
 	},
 
 	/**
+	 * Merge the contents of two or more objects together into the first object. This code was
+	 * shamelessly taken from [jQuery]{@link https://api.jquery.com/jquery.extend/}
+	 *
+	 * @param {boolean}   [deep=false] - If true, the merge becomes recursive (aka. deep copy)
+	 * @param {Object}    [target]     - The object to extend. It will receive the new properties.
+	 *                                   If omitted an empty object will be used
+	 * @param {Object}    object1      - An object containing additional properties to merge in
+	 * @param {...Object} [objectN]    - Additional objects containing properties to merge in
+	 *
+	 * @return {Object} The extended object
+	 */
+	extend: function() {
+		var target = arguments[0];
+		var i = 1, length = arguments.length;
+		var deep = false;
+		var options, name, src, copy, copyIsObject, copyIsArray, clone;
+
+		// Handle a deep copy situation
+		if (this.isBoolean(target)) {
+			deep = target;
+
+			target = arguments[i] || {};
+			i++;
+		} else {
+			target = target || {};
+		}
+
+		// Handle case when target is a string or something (possible in deep copy)
+		if (!this.isObject(target) && !this.isArray(target) && !this.isFunction(target)) {
+			target = {};
+		}
+
+		// Extend an empty object if only one argument is passed
+		if (i === length) {
+			target = {};
+			i--;
+		}
+
+		for (; i < length; i++) {
+			options = arguments[i];
+			if (options !== null) {
+				// Extend the base object
+				for (name in options) {
+					src = target[name];
+					copy = options[name];
+
+					// Prevent never-ending loop
+					if (target === copy) {
+						continue;
+					}
+
+					// Recurse if we're merging plain objects or arrays
+					copyIsObject = this.isObject(copy);
+					copyIsArray = this.isArray(copy);
+					if (deep && copy && (copyIsObject || copyIsArray)) {
+						if (copyIsArray) {
+							clone = src && this.isArray(src) ? src : [];
+						} else {
+							clone = src && this.isObject(src) ? src : {};
+						}
+
+						// Never move original objects, clone them
+						target[name] = this.extend(deep, clone, copy);
+					} else if (!this.isUndefined(copy)) {
+						// Don't bring in undefined values
+						target[name] = copy;
+					}
+				}
+			}
+		}
+
+		// Return the modified object
+		return target;
+	},
+
+	/**
+	 * Clones an object or array. If you pass a value that is not an object or array then this
+	 * method will simply return that same value unmodified
+	 *
+	 * @param {Object|Array} value - The object or array to be cloned
+	 *
+	 * @return {Object|Array} The cloned object or array
+	 */
+	clone: function(value) {
+		if (this.isArray(value)) {
+			value = this.extend(true, [], value);
+		} else if (this.isObject(value)) {
+			value = this.extend(true, {}, value);
+		}
+		return value;
+	},
+
+	/**
 	 * Returns the possible range of values given a precision and scale
 	 *
 	 * @param {number} precision - The total number of digits in the number
