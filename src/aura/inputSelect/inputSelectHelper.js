@@ -65,14 +65,13 @@
 
 			var value = this.utils.asString(option.value);
 			var label = this.utils.asString(option.label);
-			var title = this.utils.trim(option.title);
 			var disabled = !!option.disabled;
 
 			var localOption = {
 				className: this.getOptionClass(option),
 				value: value,
 				label: label || value,
-				title: title,
+				title: this.getOptionTitle(option),
 				disabled: disabled
 			};
 
@@ -98,15 +97,39 @@
 	},
 
 	/**
-	 * Return the CSS class for the option. We support 2 attributes for specifying an option's
-	 * class - class and className. Since class is a keyword we have to use quotes
+	 * Returns the CSS class for the option. We support 2 attributes for specifying an option's
+	 * class - class and className. Since class is a keyword we have to use quotes. Additionally, if
+	 * the option's valid property is false then "slds-text-color_error" is appended to the class
 	 *
 	 * @param {Object} option - The option
 	 *
 	 * @return {string} The option's CSS class
 	 */
 	getOptionClass: function(option) {
-		return this.utils.trim(option['class']) || this.utils.trim(option.className);
+		var className = this.utils.trim(option['class']) + ' ' + this.utils.trim(option.className);
+		if (option.valid === false) {
+			className += ' slds-text-color_error';
+		}
+		return className;
+	},
+
+	/**
+	 * Returns the string to use for the option's title attribute. If the option's valid property is
+	 * false then the option's message property is used instead of title unless message is blank
+	 *
+	 * @param {Object} option - The option
+	 *
+	 * @return {string} The option's title
+	 */
+	getOptionTitle: function(option) {
+		var title = this.utils.trim(option.title);
+		if (option.valid === false) {
+			var message = this.utils.trim(option.message);
+			if (message !== '') {
+				title = message;
+			}
+		}
+		return title;
 	},
 
 	/**
