@@ -9,7 +9,6 @@
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="label" type="String" />
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
-	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
 	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
@@ -56,10 +55,6 @@
 				<span class="slds-checkbox_faux"></span>
 				<span class="slds-form-element__label">{!v.label}</span>
 			</label>
-
-			<aura:if isTrue="{!not(empty(v.helpText))}">
-				<lightning:helptext class="help-text" content="{!v.helpText}" />
-			</aura:if>
 		</span>
 	</c:formElement>
 	<!-- /component -->

@@ -23,7 +23,6 @@
 	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="label" type="String" />
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
-	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
 	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
@@ -72,7 +71,6 @@
 	               controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"
-	               helpText="{!v.helpText}"
 	               error="{!v.error}">
 		<div aura:id="container"
 		     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
