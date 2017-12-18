@@ -9,11 +9,10 @@
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
-	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
 	<!-- /attributes -->
 
 	<!-- component -->
-	<div class="{!v.class + ' slds-form-element' + if(and(empty(v.error), empty(v.errors)), '', ' slds-has-error')}">
+	<div class="{!v.class + ' slds-form-element' + if(empty(v.error), '', ' slds-has-error')}">
 
 		<!-- label -->
 		<aura:if isTrue="{!empty(v.controlId)}">
@@ -43,21 +42,11 @@
 		</div>
 		<!-- /control -->
 
-		<!-- errors -->
-		<div class="{!v.errorClass + ' slds-form-element__help' + if(and(empty(v.error), empty(v.errors)), ' slds-hide', '')}">
-			<aura:if isTrue="{!v.errors.length gt 1}">
-				<ul>
-					<aura:iteration items="{!v.errors}" var="error">
-						<li>{!error}</li>
-					</aura:iteration>
-				</ul>
-
-				<aura:set attribute="else">
-					{!if(empty(v.errors), v.error, v.errors[0])}
-				</aura:set>
-			</aura:if>
+		<!-- error -->
+		<div class="{!v.errorClass + ' slds-form-element__help' + if(empty(v.error), ' slds-hide', '')}">
+			{!v.error}
 		</div>
-		<!-- /errors -->
+		<!-- /error -->
 
 	</div>
 	<!-- /component -->

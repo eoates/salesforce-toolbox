@@ -11,7 +11,6 @@
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
 	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
-	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
 	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
 	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
@@ -40,8 +39,7 @@
 	               controlClass="{!v.controlClass}"
 	               errorClass="{!v.errorClass}"
 	               required="{!v.required}"
-	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               error="{!v.error}">
 		<span class="{!v.class + ' slds-checkbox'}">
 			<input aura:id="input"
 			       id="{#globalId + '_input'}"

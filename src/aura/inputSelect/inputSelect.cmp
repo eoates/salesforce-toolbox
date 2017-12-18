@@ -25,7 +25,6 @@
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
 	<aura:attribute access="GLOBAL" name="helpText" type="String" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
-	<aura:attribute access="GLOBAL" name="errors" type="String[]" />
 	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
 	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
 	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
@@ -74,8 +73,7 @@
 	               label="{!v.label}"
 	               required="{!v.required}"
 	               helpText="{!v.helpText}"
-	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               error="{!v.error}">
 		<div aura:id="container"
 		     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
 		     onfocusin="{!c.containerFocusIn}"
