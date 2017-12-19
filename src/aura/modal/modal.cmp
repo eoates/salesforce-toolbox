@@ -49,8 +49,8 @@
 	<!-- /events -->
 
 	<!-- component -->
-	<div id="{!globalId + '_root'}" class="modal-root">
-		<section id="{!globalId + '_modal'}"
+	<div id="{#globalId + '_root'}" class="modal-root">
+		<section id="{#globalId + '_modal'}"
 		        role="dialog"
 		        aria-modal="true"
 		        aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
@@ -74,7 +74,7 @@
 						                      onclick="{!c.closeButtonClick}" />
 					</aura:if>
 
-					<h2 id="{!globalId + '_title'}"
+					<h2 id="{#globalId + '_title'}"
 					    class="{!'slds-text-heading_medium' + if(empty(v.title), ' slds-hide', '')}">{!v.title}</h2>
 
 					{!v.header}
@@ -84,7 +84,7 @@
 				<!-- /header -->
 
 				<!-- content -->
-				<div id="{!globalId + '_content'}" class="{!v.contentClass + ' slds-modal__content'}">
+				<div id="{#globalId + '_content'}" class="{!v.contentClass + ' slds-modal__content'}">
 					<c:spinnerPanel showSpinner="{!v.busy}">
 						{!v.body}
 					</c:spinnerPanel>
