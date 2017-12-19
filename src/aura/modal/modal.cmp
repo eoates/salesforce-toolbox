@@ -50,17 +50,19 @@
 
 	<!-- component -->
 	<div id="{!globalId + '_root'}" class="modal-root">
-		<div id="{!globalId + '_modal'}"
-		     role="dialog"
-		     aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
-		     class="{!v.modalClass + ' slds-modal' + if(v.visible, ' ' + v.currentAnimation, '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}"
-		     onkeydown="{!c.modalKeyDown}">
+		<section id="{!globalId + '_modal'}"
+		        role="dialog"
+		        aria-modal="true"
+		        aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
+		        aria-describedby="{!globalId + '_content'}"
+		        class="{!v.modalClass + ' slds-modal' + if(v.visible, ' ' + v.currentAnimation, '') + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}"
+		        onkeydown="{!c.modalKeyDown}">
 
 			<!-- container -->
 			<div class="{!v.containerClass + ' slds-modal__container'}">
 
 				<!-- header -->
-				<div class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
+				<header class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
 					<aura:if isTrue="{!v.closeButton}">
 						<lightning:buttonIcon aura:id="closeButton"
 						                      class="slds-modal__close"
@@ -78,11 +80,11 @@
 					{!v.header}
 
 					<div aura:id="toastContainer"></div>
-				</div>
+				</header>
 				<!-- /header -->
 
 				<!-- content -->
-				<div class="{!v.contentClass + ' slds-modal__content'}">
+				<div id="{!globalId + '_content'}" class="{!v.contentClass + ' slds-modal__content'}">
 					<c:spinnerPanel showSpinner="{!v.busy}">
 						{!v.body}
 					</c:spinnerPanel>
@@ -91,16 +93,16 @@
 
 				<!-- footer -->
 				<aura:if isTrue="{!not(empty(v.footer))}">
-					<div class="{!v.footerClass + ' slds-modal__footer' + if(v.directional, ' slds-modal__footer_directional', '')}">
+					<footer class="{!v.footerClass + ' slds-modal__footer' + if(v.directional, ' slds-modal__footer_directional', '')}">
 						{!v.footer}
-					</div>
+					</footer>
 				</aura:if>
 				<!-- /footer -->
 
 			</div>
 			<!-- /container -->
 
-		</div>
+		</section>
 	</div>
 	<!-- /component -->
 </aura:component>
