@@ -983,5 +983,52 @@
 		var result = new Date(date);
 		result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
 		return result;
+	},
+
+	/**
+	 * The findIndex() method returns the index of the first element in the array that satisfies
+	 * the provided testing function. Otherwise -1 is returned
+	 *
+	 * @param {Array}    array     - The array to search
+	 * @param {Function} predicate - Function to execute on each value in the array
+	 * @param {*}        thisArg   - Object to use as this when executing predicate
+	 *
+	 * @return {*} An index in the array if an element passes the test; otherwise, -1
+	 */
+	findIndex: function(array, predicate, thisArg) {
+		if (!array) {
+			throw new TypeError('array is undefined or null');
+		}
+		if (!this.isFunction(predicate)) {
+			throw new TypeError('predicate must be a function');
+		}
+
+		var length = array.length;
+		for (var i = 0; i < length; i++) {
+			var value = array[i];
+			if (predicate.call(thisArg, value, i, array)) {
+				return i;
+			}
+		}
+
+		return -1;
+	},
+
+	/**
+	 * The find() method returns the value of the first element in the array that satisfies the
+	 * provided testing function. Otherwise undefined is returned
+	 *
+	 * @param {Array}    array     - The array to search
+	 * @param {Function} predicate - Function to execute on each value in the array
+	 * @param {*}        thisArg   - Object to use as this when executing predicate
+	 *
+	 * @return {*} A value in the array if an element passes the test; otherwise, undefined
+	 */
+	find: function(array, predicate, thisArg) {
+		var index = this.findIndex(array, predicate, thisArg);
+		if (index !== -1) {
+			return array[index];
+		}
+		return undefined;
 	}
 })
