@@ -1,0 +1,18 @@
+.THIS .slds-listbox_object-switcher .slds-dropdown__item.slds-is-selected,
+.THIS .slds-listbox .slds-listbox__item.slds-is-selected {
+	background-color: #f3f2f2;
+}
+
+/**
+ * This is important. We set pointer-events to none for ALL elements within our slds-media__figure
+ * element in the object switcher dropdown. If we didn't do this then if a user clicks on the actual
+ * lightning:icon component we won't be able to figure out which item was clicked. This is because
+ * in the event handler event.target will be undefined due to Lightning's use of CSP
+ */
+.THIS .slds-listbox_object-switcher .slds-dropdown__item .slds-media__figure * {
+	pointer-events: none !important;
+}
+
+.THIS .slds-combobox .slds-listbox .slds-listbox__item .slds-media__figure * {
+	pointer-events: none !important;
+}
