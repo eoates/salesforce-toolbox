@@ -6,6 +6,7 @@
 		this.superAfterRender();
 
 		helper.updateOptionElements(component);
+		helper.setSelectedIndexFromValue(component);
 		helper.updateInputAndSelectElements(component);
 	}
 })
