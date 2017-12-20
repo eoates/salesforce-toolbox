@@ -14,19 +14,10 @@
 	<div class="{!v.class + ' slds-form-element' + if(empty(v.error), '', ' slds-has-error')}">
 
 		<!-- label -->
-		<aura:if isTrue="{!empty(v.controlId)}">
-			<span class="{!v.labelClass + ' slds-form-element__label' + if(empty(v.label), ' slds-hide', '')}">
-				<abbr class="{!'slds-required' + if(v.required, '', ' slds-hide')}" title="Required">*</abbr>
-				{!v.label}
-			</span>
-
-			<aura:set attribute="else">
-				<label class="{!v.labelClass + ' slds-form-element__label' + if(empty(v.label), ' slds-hide', '')}" for="{!v.controlId}">
-					<abbr class="{!'slds-required' + if(v.required, '', ' slds-hide')}" title="Required">*</abbr>
-					{!v.label}
-				</label>
-			</aura:set>
-		</aura:if>
+		<label class="{!v.labelClass + ' slds-form-element__label' + if(empty(v.label), ' slds-hide', '')}" for="{!v.controlId}">
+			<abbr class="{!'slds-required' + if(v.required, '', ' slds-hide')}" title="Required">*</abbr>
+			{!v.label}
+		</label>
 		<!-- /label -->
 
 		<!-- control -->
