@@ -272,7 +272,7 @@ public with sharing class LtngSearchController {
 				context,
 				recordIdsByType.get(typeToken),
 				searchObject.getFieldNames(),
-				searchObject.filter
+				null
 			));
 		}
 
