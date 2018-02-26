@@ -21,8 +21,6 @@
 	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
 	<aura:attribute access="GLOBAL" name="left" type="Aura.Component[]" />
 	<aura:attribute access="GLOBAL" name="right" type="Aura.Component[]" />
-
-	<aura:attribute access="PRIVATE" name="oldValue" type="String" />
 	<!-- /attributes -->
 
 	<!-- events -->

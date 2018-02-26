@@ -13,6 +13,17 @@
 	},
 
 	/**
+	 * Gets the previous value of the component
+	 *
+	 * @param {Aura.Component} component - The inputSelect component
+	 *
+	 * @return {string} The previous value
+	 */
+	getOldValue: function(component) {
+		return component.oldValue;
+	},
+
+	/**
 	 * Sets the oldValue to the current value
 	 *
 	 * @param {Aura.Component} component - The inputText component
@@ -20,7 +31,7 @@
 	 * @return {void}
 	 */
 	setOldValue: function(component) {
-		component.set('v.oldValue', component.get('v.value'));
+		component.oldValue = component.get('v.value');
 	},
 
 	/**

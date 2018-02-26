@@ -92,7 +92,7 @@
 
 		helper.updateCounterElement(component);
 
-		var oldValue = component.get('v.oldValue');
+		var oldValue = helper.getOldValue(component);
 		oldValue = helper.utils.asString(oldValue);
 
 		var changed = helper.setValue(component, value);

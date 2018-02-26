@@ -82,6 +82,19 @@
 	},
 
 	/**
+	 * Gets the list of local options. Local options are the options created and managed by the
+	 * component based on the options attribute. The component creates and manages its own, separate
+	 * array of options in order to prevent needing to modify the value of the options attribute
+	 *
+	 * @param {Aura.Component} component - The inputSelect component
+	 *
+	 * @return {Object[]} An array containing the local options
+	 */
+	getLocalOptions: function(component) {
+		return component.localOptions;
+	},
+
+	/**
 	 * Copies the options from the component's options attribute and stores them in a private
 	 * attribute named localOptions
 	 *
@@ -92,7 +105,7 @@
 	createAndSetLocalOptions: function(component) {
 		var options = component.get('v.options');
 		var localOptions = this.createLocalOptions(options);
-		component.set('v.localOptions', localOptions);
+		component.localOptions = localOptions;
 		return localOptions;
 	},
 
@@ -231,7 +244,7 @@
 			return false;
 		}
 
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 
 		var inputElement = this.getInputElement(component);
 		var selectElement = this.getSelectElement(component);
@@ -297,7 +310,7 @@
 		}
 
 		// Update the options
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 		for (var i = 0, n = options.length; i < n; i++) {
 			// Get option info
 			var option = options[i];
@@ -345,7 +358,7 @@
 		var inputElement = this.getInputElement(component);
 
 		var value = this.utils.asString(component.get('v.value'));
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 		var selectedIndex = component.get('v.selectedIndex');
 		if (selectedIndex === -1) {
 			inputElement.value = value;
@@ -400,6 +413,17 @@
 	},
 
 	/**
+	 * Gets the previous value of the component
+	 *
+	 * @param {Aura.Component} component - The inputSelect component
+	 *
+	 * @return {string} The previous value
+	 */
+	getOldValue: function(component) {
+		return component.oldValue;
+	},
+
+	/**
 	 * Sets the oldValue to the current value
 	 *
 	 * @param {Aura.Component} component - The inputSelect component
@@ -407,7 +431,7 @@
 	 * @return {void}
 	 */
 	setOldValue: function(component) {
-		component.set('v.oldValue', component.get('v.value'));
+		component.oldValue = component.get('v.value');
 	},
 
 	/**
@@ -442,7 +466,7 @@
 	 * @return {boolean} true if the value changed
 	 */
 	setValueFromSelectedIndex: function(component) {
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 		var selectedIndex = component.get('v.selectedIndex');
 
 		var value = '';
@@ -476,7 +500,7 @@
 
 		var value = inputElement.value;
 
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 		var selectedIndex = this.indexOfOptionByLabel(options, value);
 		if (selectedIndex !== -1) {
 			var option = options[selectedIndex];
@@ -494,7 +518,7 @@
 			selectElement.selectedIndex = -1;
 		}
 
-		var oldValue = component.get('v.oldValue');
+		var oldValue = this.getOldValue(component);
 		oldValue = this.utils.asString(oldValue);
 
 		var valueChanged = this.setValue(component, value);
@@ -534,7 +558,7 @@
 			if (selectedIndex === -1) {
 				inputElement.value = value;
 			} else {
-				var options = component.get('v.localOptions');
+				var options = this.getLocalOptions(component);
 				inputElement.value = options[selectedIndex].label;
 			}
 			inputElement.focus();
@@ -559,7 +583,7 @@
 	 * @return {boolean} true if the selectedIndex changed
 	 */
 	setSelectedIndex: function(component, selectedIndex) {
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 		if (this.utils.isUndefinedOrNull(selectedIndex)) {
 			selectedIndex = -1;
 		} else if ((selectedIndex < 0) || (selectedIndex >= options.length)) {
@@ -589,7 +613,7 @@
 	 */
 	setSelectedIndexFromValue: function(component) {
 		var value = this.utils.asString(component.get('v.value'));
-		var options = component.get('v.localOptions');
+		var options = this.getLocalOptions(component);
 		var selectedIndex = this.indexOfOptionByValue(options, value);
 
 		return this.setSelectedIndex(component, selectedIndex);

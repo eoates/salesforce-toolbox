@@ -299,7 +299,7 @@
 
 			var selectionStart = inputElement.selectionStart + 1;
 
-			var options = component.get('v.localOptions');
+			var options = helper.getLocalOptions(component);
 			var index = helper.indexOfOptionByLabelStartsWith(options, value);
 			if (index !== -1) {
 				var option = options[index];
