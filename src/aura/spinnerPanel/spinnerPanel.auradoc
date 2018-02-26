@@ -1,0 +1,88 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>spinnerPanel</code> component is used to display a spinner overlay on a
+			block of content. This is useful when loading or saving data to the server. For example,
+			you can place your form inside of a <code>spinnerPanel</code> component and when the
+			user submits the form you can set the <code>showSpinner</code> attribute to
+			<code>true</code> to indicate that the data is being saved. Just make sure to set
+			<code>showSpinner</code> back to <code>false</code> to hide the spinner.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>This example will demonstrate basic usage of the <code>spinnerPanel</code> component.</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre>&lt;!-- CreateContact.cmp --&gt;
+&lt;aura:component controller=&quot;ContactController&quot;&gt;
+  &lt;aura:attribute name=&quot;firstName&quot; type=&quot;String&quot; /&gt;
+  &lt;aura:attribute name=&quot;lastName&quot; type=&quot;String&quot; /&gt;
+  &lt;aura:attribute name=&quot;saving&quot; type=&quot;Boolean&quot;
+    default=&quot;false&quot; /&gt;
+
+  &lt;c:apex aura:id=&quot;apex&quot; /&gt;
+
+  &lt;c:spinnerPanel showSpinner=&quot;{!v.saving}&quot;&gt;
+    &lt;ui:inputText label=&quot;First Name&quot; value=&quot;{!v.firstName}&quot; /&gt;
+    &lt;ui:inputText label=&quot;Last Name&quot; value=&quot;{!v.lastName}&quot; /&gt;
+    &lt;button onclick=&quot;{!c.saveButtonClick}&quot;&gt;Save&lt;/button&gt;
+  &lt;/c:spinnerPanel&gt;
+&lt;/aura:component&gt;
+</pre>
+
+		<h4 class="slds-text-heading_small">Component Controller</h4>
+<pre>// CreateContactController.js
+({
+  saveButtonClick: function(component, event, helper) {
+    // The spinnerPanel component's showSpinner attribute is bound to our
+    // saving attribute. Set saving to true to begin showing the spinner
+    component.set('v.saving', true);
+
+    // Get input
+    var firstName = component.get('v.firstName');
+    var lastName = component.get('v.lastName');
+
+    // Send data to server
+    var apex = component.find('apex');
+    apex.execute(component, 'createContact', {
+      params: {
+        firstName: firstName,
+        lastName: lastName
+      },
+      success: function(result, state) {
+        // Make sure to set saving back to false to hide the spinner
+        component.set('v.saving', false);
+        console.log('Contact created', result);
+      },
+      failure: function(error, state) {
+        // Make sure to set saving back to false to hide the spinner
+        component.set('v.saving', false);
+        console.error('Failed to create contact', error);
+      }
+    });
+  }
+})
+</pre>
+
+		<h4 class="slds-text-heading_small">Apex Class</h4>
+<pre>// ContactController.cls
+public class ContactController {
+  // Creates a new contact and returns its ID
+  @AuraEnabled
+  public static String createContact(String firstName, String lastName) {
+    Contact c = new Contact();
+    c.FirstName = firstName;
+    c.LastName = lastName;
+    insert c;
+
+    return c.Id;
+  }
+}
+</pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>

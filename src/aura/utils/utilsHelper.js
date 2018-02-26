@@ -25,6 +25,26 @@
 	},
 
 	/**
+	 * Returns true if the application is running on a phone
+	 *
+	 * @return {boolean} true if the application is running on a phone; otherwise, false
+	 */
+	isPhone: function() {
+		var formFactor = $A.get('$Browser.formFactor');
+		return (formFactor === 'PHONE');
+	},
+
+	/**
+	 * Returns true if the application is running on a tablet
+	 *
+	 * @return {boolean} true if the application is running on a tablet; otherwise, false
+	 */
+	isTablet: function() {
+		var formFactor = $A.get('$Browser.formFactor');
+		return (formFactor === 'TABLET');
+	},
+
+	/**
 	 * Returns true if the value is undefined; otherwise, false
 	 *
 	 * @param {*} value - The value to check
@@ -282,7 +302,7 @@
 	 * asNumber(). The key difference between asNumber() and asInteger() is that the latter drops
 	 * any digits after the decimal
 	 *
-	 * @see  asNumber
+	 * @see asNumber
 	 *
 	 * @param {*} value - The value to convert
 	 *

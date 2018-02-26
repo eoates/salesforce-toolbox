@@ -1,0 +1,58 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>utils</code> component provides a module of common JavaScript methods to
+			promote code reuse across components. This component has no attributes and does not
+			render any user interface (UI) elements.
+		</p>
+
+		<p>
+			Use the component's <code>getModule()</code> method to obtain a reference to the
+			code module. For a list of all of the methods provided by the returned module and to
+			view documentation on each method refer to the code in the component's helper resource
+			(/aura/utils/utilsHelper.js).
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>This example will demonstrate basic usage of the <code>utils</code> component.</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre>&lt;!-- MyComponent.cmp --&gt;
+&lt;aura:component&gt;
+  &lt;aura:handler value=&quot;this&quot; name=&quot;init&quot;
+    action=&quot;{!c.init}&quot; /&gt;
+
+  &lt;c:utils aura:id=&quot;utils&quot; /&gt;
+  &lt;button onclick=&quot;{!c.testButtonClick}&quot;&gt;Test&lt;/button&gt;
+&lt;/aura:component&gt;
+</pre>
+
+		<h4 class="slds-text-heading_small">Component Controller</h4>
+<pre>// MyComponentController.js
+({
+  init: function(component, event, helper) {
+    // It is recommended to get a reference to the module only once during your
+    // component's initialization and store it in the helper. This is only a
+    // recommendation, however. You can call the utils component's getModule()
+    // method as many times as you like as it will always return a reference to
+    // the same object
+    if (!helper.utils) {
+      helper.utils = component.find('utils').getModule();
+    }
+  },
+
+  testButtonClick: function(component, event, helper) {
+    // Call the trim() method in the utils module
+    var str = '   Hello world!!!   ';
+    str = helper.utils.trim(str);
+    console.log('the trimmed string = &quot;' + str '&quot;');
+  }
+})
+</pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>

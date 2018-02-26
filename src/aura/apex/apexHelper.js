@@ -18,7 +18,6 @@
 	 * @return {void}
 	 */
 	execute: function(component, name, opts) {
-		var self = this;
 		var beginTime, endTime, duration;
 
 		var action = component.get('c.' + name);
@@ -37,7 +36,7 @@
 			context = opts.context;
 		}
 
-		action.setCallback(self, function(response) {
+		action.setCallback(this, function(response) {
 			// Do nothing if the component is not valid
 			if (!component.isValid()) {
 				return;

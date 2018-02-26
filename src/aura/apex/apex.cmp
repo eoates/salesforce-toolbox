@@ -1,9 +1,21 @@
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL"
+                description="A reusable component for executing Apex methods.">
 	<!-- methods -->
-	<aura:method access="GLOBAL" name="execute" action="{!c.execute}">
-		<aura:attribute name="component" type="Aura.Component" required="true" />
-		<aura:attribute name="name" type="String" required="true" />
-		<aura:attribute name="opts" type="Object" />
+	<aura:method access="GLOBAL"
+	             name="execute"
+	             action="{!c.execute}"
+	             description="Executes an Apex method.">
+		<aura:attribute name="component"
+		                type="Aura.Component"
+		                required="true"
+		                description="The component that is executing the Apex method." />
+		<aura:attribute name="name"
+		                type="String"
+		                required="true"
+		                description="The name of the Apex method to execute." />
+		<aura:attribute name="opts"
+		                type="Object"
+		                description="Optional. An object used to specify execution options." />
 	</aura:method>
 	<!-- /methods -->
 </aura:component>
