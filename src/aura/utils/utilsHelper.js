@@ -493,6 +493,40 @@
 	},
 
 	/**
+	 * Generates a random number between min (included) and max (excluded)
+	 *
+	 * @param {number} min - The minimum value
+	 * @param {number} max - The maximum value
+	 *
+	 * @return {number} A random number
+	 */
+	randomNumber: function(min, max) {
+		if (!this.isNumber(min) || !this.isNumber(max)) {
+			return NaN;
+		}
+
+		if (max < min) {
+			var tempValue = min;
+			min = max;
+			max = tempValue;
+		}
+
+		return (Math.random() * (max - min)) + min
+	},
+
+	/**
+	 * Generates a random integer between min (included) and max (excluded)
+	 *
+	 * @param {number} min - The minimum value
+	 * @param {number} max - The maximum value
+	 *
+	 * @return {number} A random integer
+	 */
+	randomInteger: function(min, max) {
+		return this.asInteger(this.randomNumber(min, max));
+	},
+
+	/**
 	 * Returns the possible range of values given a precision and scale
 	 *
 	 * @param {number} precision - The total number of digits in the number
