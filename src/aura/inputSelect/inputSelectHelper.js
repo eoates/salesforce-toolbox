@@ -146,29 +146,6 @@
 	},
 
 	/**
-	 * Returns the index of the first element in the array that matches the predicate
-	 *
-	 * @param {*}        values    - The array of values to search
-	 * @param {Function} predicate - A function that will be called for each element in the array
-	 *                               until it returns true
-	 *
-	 * @return {number} The index of the first element that matched the predicate or -1 if there
-	 *                  was no match
-	 */
-	indexOf: function(values, predicate) {
-		if (values && values.length) {
-			for (var i = 0, n = values.length; i < n; i++) {
-				var value = values[i];
-				var match = predicate.call(this, value, i, values);
-				if (match) {
-					return i;
-				}
-			}
-		}
-		return -1;
-	},
-
-	/**
 	 * Returns the index of the first option that has the specified value
 	 *
 	 * @param {Object[]} options - The options
@@ -177,9 +154,9 @@
 	 * @return {number} The index of the matching option or -1
 	 */
 	indexOfOptionByValue: function(options, value) {
-		return this.indexOf(options, function(option) {
+		return this.utils.findIndex(options, function(option) {
 			return (option.value === value);
-		});
+		}, this);
 	},
 
 	/**
@@ -192,9 +169,9 @@
 	 */
 	indexOfOptionByLabel: function(options, label) {
 		var labelLower = label.toLowerCase();
-		return this.indexOf(options, function(option) {
+		return this.utils.findIndex(options, function(option) {
 			return !option.disabled && (option.label.toLowerCase() === labelLower);
-		});
+		}, this);
 	},
 
 	/**
@@ -213,7 +190,7 @@
 
 		var labelLower = label.toLowerCase();
 		var labelLength = label.length;
-		return this.indexOf(options, function(option) {
+		return this.utils.findIndex(options, function(option) {
 			if (option.disabled) {
 				return false;
 			}
@@ -225,7 +202,7 @@
 			}
 
 			return (optionLabelLower.substring(0, labelLength) === labelLower);
-		});
+		}, this);
 	},
 
 	/**
