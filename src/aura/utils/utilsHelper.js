@@ -985,7 +985,7 @@
 		}
 
 		if (!this.isNumber(count)) {
-			return undefined;
+			return date;
 		}
 
 		count = this.asInteger(count);
