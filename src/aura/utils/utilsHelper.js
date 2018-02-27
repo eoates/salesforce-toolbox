@@ -493,16 +493,59 @@
 	},
 
 	/**
+	 * Compares two values and returns true if they are equal. Compaison uses strict equality so the
+	 * types must also match. The deepEquals() method is useful when comparing arrays or objects.
+	 * For arrays deepEquals() is called recursively for each element in the array. For objects
+	 * deepEquals() is called for each property in the object
+	 *
+	 * @param {*} a - The first value to compare
+	 * @param {*} b - The second value to compare
+	 *
+	 * @return {boolean} true if the values are equal; otherwise, false
+	 */
+	deepEquals: function(a, b) {
+		// If the values are the same then just return true immediately
+		if (a === b) {
+			return true;
+		}
+
+		if (this.isArray(a) && this.isArray(b) && (a.length === b.length)) {
+			// Compare arrays of equal length
+			for (var i = 0, n = a.length; i < n; i++) {
+				if (!this.deepEquals(a[i], b[i])) {
+					return false;
+				}
+			}
+			return true;
+		} else if (this.isObject(a) && this.isObject(b)) {
+			// Compare objects
+			var keysInA = this.keys(a);
+			var keysInB = this.keys(b);
+			var keysInBoth = this.distinct(keysInA.concat(keysInB));
+			for (var i = 0, n = keysInBoth.length; i < n; i++) {
+				var key = keysInBoth[i];
+				if (!this.deepEquals(a[key], b[key])) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		// If we reach this point then assume the values are not equal
+		return false;
+	},
+
+	/**
 	 * The keys() method returns an array of a given object's own enumerable properties, in the same
 	 * order as that provided by a for...in loop (the difference being that a for-in loop enumerates
-	 * properties in the prototype chain as well).
+	 * properties in the prototype chain as well)
 	 *
-	 * Note that this is a polyfill for Object.keys(). Object.keys() will be used if available.
+	 * Note that this is a polyfill for Object.keys(). Object.keys() will be used if available
 	 *
-	 * @param {*} obj - The object of which the enumerable own properties are to be returned.
+	 * @param {*} obj - The object of which the enumerable own properties are to be returned
 	 *
 	 * @return {string[]} An array of strings that represent all the enumerable properties of the
-	 *                    given object.
+	 *                    given object
 	 */
 	keys: function(obj) {
 		// Must be an object or a function
@@ -1111,9 +1154,11 @@
 
 		var length = array.length;
 		for (var i = 0; i < length; i++) {
-			var value = array[i];
-			if (predicate.call(thisArg, value, i, array)) {
-				return i;
+			if (i in array) {
+				var value = array[i];
+				if (predicate.call(thisArg, value, i, array)) {
+					return i;
+				}
 			}
 		}
 
@@ -1136,5 +1181,93 @@
 			return array[index];
 		}
 		return undefined;
+	},
+
+	/**
+	 * The filter() method creates a new array with all elements that pass the test implemented by
+	 * the provided function
+	 *
+	 * Note that this is a polyfill for Array.prototype.filter(). Array.prototype.filter() will be
+	 * used if available
+	 *
+	 * @param {Array}    array     - The array to filter
+	 * @param {Function} predicate - Function to execute on each value in the array
+	 * @param {*}        [thisArg] - Object to use as this when executing predicate
+	 *
+	 * @return {Array} A new array with the elements that pass the test. If no elements pass the
+	 *                 test, an empty array will be returned
+	 */
+	filter: function(array, predicate, thisArg) {
+		if (!array) {
+			throw new TypeError('array is undefined or null');
+		}
+		if (!this.isFunction(predicate)) {
+			throw new TypeError('predicate must be a function');
+		}
+
+		if (Array.prototype.filter) {
+			return array.filter(predicate, thisArg);
+		}
+
+		var length = array.length;
+		var result = new Array(length);
+		var numMatches = 0;
+
+		for (var i = 0; i < length; i++) {
+			if (i in array) {
+				var match = predicate.call(thisArg, array[i], i, array);
+				if (match) {
+					result[numMatches++] = array[i];
+				}
+			}
+		}
+
+		result.length = numMatches;
+		return result;
+	},
+
+	/**
+	 * The distinct() method creates a new array containing the unique elements from the source
+	 * array
+	 *
+	 * @param {Array}    array      - The source array
+	 * @param {Function} [equality] - Optional function to implement custom equality logic. If a
+	 *                                function is not provided then Array.prototype.indexOf() will
+	 *                                be used
+	 * @param {*}        [thisArg]  - Object to use as this when executing equality
+	 *
+	 * @return {Array} A new array with the unique elements from the source array
+	 */
+	distinct: function(array, equality, thisArg) {
+		if (!array) {
+			throw new TypeError('array is undefined or null');
+		}
+		if (equality && !this.isFunction(equality)) {
+			throw new TypeError('equality must be a function');
+		}
+
+		var length = array.length;
+		var result = new Array(length);
+		var numDistinct = 0;
+
+		for (var i = 0; i < length; i++) {
+			if (i in array) {
+				var index;
+				if (equality) {
+					index = this.findIndex(result, function(value) {
+						return equality.call(thisArg, array[i], value);
+					});
+				} else {
+					index = result.indexOf(array[i]);
+				}
+
+				if (index < 0) {
+					result[numDistinct++] = array[i];
+				}
+			}
+		}
+
+		result.length = numDistinct;
+		return result;
 	}
 })
