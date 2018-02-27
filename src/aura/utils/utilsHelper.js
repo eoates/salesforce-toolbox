@@ -205,10 +205,8 @@
 		}
 
 		if (this.isObject(value)) {
-			for (var key in value) {
-				return false;
-			}
-			return true;
+			var keys = this.keys(value);
+			return (keys.length === 0);
 		}
 
 		return false;
@@ -390,8 +388,10 @@
 				value[i] = this.changeUndefinedToNull(value[i]);
 			}
 		} else if (this.isObject(value)) {
-			for (var key in value) {
-				if (value.hasOwnProperty(key) && !this.isFunction(value[key])) {
+			var keys = this.keys(value);
+			for (var i = 0, n = keys.length; i < n; i++) {
+				var key = keys[i];
+				if (!this.isFunction(value[key])) {
 					value[key] = this.changeUndefinedToNull(value[key]);
 				}
 			}
@@ -490,6 +490,58 @@
 			value = this.extend(true, {}, value);
 		}
 		return value;
+	},
+
+	/**
+	 * The keys() method returns an array of a given object's own enumerable properties, in the same
+	 * order as that provided by a for...in loop (the difference being that a for-in loop enumerates
+	 * properties in the prototype chain as well).
+	 *
+	 * Note that this is a polyfill for Object.keys(). Object.keys() will be used if available.
+	 *
+	 * @param {*} obj - The object of which the enumerable own properties are to be returned.
+	 *
+	 * @return {string[]} An array of strings that represent all the enumerable properties of the
+	 *                    given object.
+	 */
+	keys: function(obj) {
+		// Must be an object or a function
+		if ((typeof obj !== 'function') && ((typeof obj !== 'object') || (obj === null))) {
+			throw new TypeError('keys() called on non-object');
+		}
+
+		// Use Object.keys() if available
+		if (Object.keys) {
+			return Object.keys(obj);
+		}
+
+		var hasOwnProperty = Object.prototype.hasOwnProperty;
+		var hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString');
+		var dontEnums = [
+			'toString',
+			'toLocaleString',
+			'valueOf',
+			'hasOwnProperty',
+			'isPrototypeOf',
+			'propertyIsEnumerable',
+			'constructor'
+		];
+		var dontEnumsLength = dontEnums.length;
+
+		var result = [];
+		for (var key in o) {
+			if (hasOwnProperty.call(o, key)) {
+				result.push(key);
+			}
+		}
+		if (hasDontEnumBug) {
+			for (var i = 0; i < dontEnumsLength; i++) {
+				if (hasOwnProperty.call(o, dontEnums[i])) {
+					result.push(dontEnums[i]);
+				}
+			}
+		}
+		return result;
 	},
 
 	/**
