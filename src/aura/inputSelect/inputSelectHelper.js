@@ -265,7 +265,6 @@
 			if (selectedIndex !== -1) {
 				inputElement.value = options[selectedIndex].label;
 				inputElement.focus();
-				inputElement.select();
 			}
 		}
 
@@ -539,7 +538,6 @@
 				inputElement.value = options[selectedIndex].label;
 			}
 			inputElement.focus();
-			inputElement.select();
 		}
 
 		var changed = valueChanged || selectedIndexChanged;

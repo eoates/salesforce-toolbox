@@ -43,13 +43,6 @@
 	 * Handles the focus event of the input element
 	 */
 	inputFocus: function(component, event, helper) {
-		var inputElement = event.target;
-
-		var autoSelect = component.get('v.autoselect');
-		if (autoSelect) {
-			inputElement.select();
-		}
-
 		helper.fireEvent(component, 'onfocus');
 	},
 

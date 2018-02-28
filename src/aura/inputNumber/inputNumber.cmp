@@ -15,7 +15,6 @@
 	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="label" type="String" />
 	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
 	<aura:attribute access="GLOBAL" name="error" type="String" />
@@ -52,7 +51,6 @@
 	                       precision="{!v.precision}"
 	                       scale="{!v.scale}"
 	                       nillable="{!v.nillable}"
-	                       autoselect="{!v.autoselect}"
 	                       disabled="{!v.disabled}"
 	                       readonly="{!v.readonly}" />
 

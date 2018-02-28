@@ -14,7 +14,6 @@
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="editable" type="Boolean" default="false" />
 	<aura:attribute access="GLOBAL" name="autotrim" type="Boolean" default="true" />
-	<aura:attribute access="GLOBAL" name="autoselect" type="Boolean" default="true" />
 	<aura:attribute access="GLOBAL" name="type" type="String" default="text" />
 	<aura:attribute access="GLOBAL" name="min" type="Decimal" />
 	<aura:attribute access="GLOBAL" name="max" type="Decimal" />
@@ -58,7 +57,6 @@
 	                       precision="{!v.precision}"
 	                       scale="{!v.scale}"
 	                       nillable="{!v.nillable}"
-	                       autoselect="{!v.autoselect}"
 	                       disabled="{!v.disabled}" />
 
 	<c:formElement class="{!v.elementClass}"

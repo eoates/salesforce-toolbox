@@ -94,14 +94,7 @@
 	 * Handles the focus event of the input element
 	 */
 	inputFocus: function(component, event, helper) {
-		if (helper.utils.isDesktop()) {
-			var inputElement = event.target;
-
-			var autoSelect = component.get('v.autoselect');
-			if (autoSelect) {
-				inputElement.select();
-			}
-		} else {
+		if (!helper.utils.isDesktop()) {
 			helper.fireEvent(component, 'onfocus');
 		}
 	},

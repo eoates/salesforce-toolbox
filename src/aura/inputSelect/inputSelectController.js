@@ -187,12 +187,6 @@
 		var selectedIndex = component.get('v.selectedIndex');
 		if ((type === 'number') && (selectedIndex === -1)) {
 			helper.performNumberInputBehaviorAction(component, event, 'onFocus');
-		} else {
-			var inputElement = event.target;
-			var autoSelect = component.get('v.autoselect');
-			if (autoSelect) {
-				inputElement.select();
-			}
 		}
 	},
 

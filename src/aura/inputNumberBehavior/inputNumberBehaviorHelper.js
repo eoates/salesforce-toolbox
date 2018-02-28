@@ -65,11 +65,7 @@
 			onFocus: function(event, opts) {
 				var disabled = component.get('v.disabled');
 				var readOnly = component.get('v.readonly');
-				var autoSelect = component.get('v.autoselect');
 				if (disabled || readOnly) {
-					if (autoSelect) {
-						opts.select();
-					}
 					return;
 				}
 
@@ -86,7 +82,7 @@
 					opts.setInputValue(value);
 				}
 
-				if ((selectionLength === oldValue.length) || autoSelect) {
+				if (selectionLength === oldValue.length) {
 					opts.select();
 				}
 			},
