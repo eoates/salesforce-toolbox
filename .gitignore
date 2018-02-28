@@ -2,3 +2,5 @@ config/
 debug/
 *.sublime-project
 *.sublime-workspace
+src/aura/testApplication/**
+src/aura/testComponent/**
