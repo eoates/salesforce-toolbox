@@ -1,8 +1,34 @@
-<aura:event access="GLOBAL" type="APPLICATION">
-	<aura:attribute access="GLOBAL" name="type" type="String" default="other" />
-	<aura:attribute access="GLOBAL" name="key" type="String" />
-	<aura:attribute access="GLOBAL" name="title" type="String" />
-	<aura:attribute access="GLOBAL" name="message" type="String" />
-	<aura:attribute access="GLOBAL" name="mode" type="String" default="dismissible" />
-	<aura:attribute access="GLOBAL" name="duration" type="Integer" default="5000" />
+<aura:event access="GLOBAL"
+            type="APPLICATION"
+            description="Displays page-level toasts.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL"
+	                name="type"
+	                type="String"
+	                default="other"
+	                description="The toast type, which can be 'error', 'warning', 'success', or 'info'. The default is 'other', which is styled like an 'info' toast and doesn’t display an icon, unless specified by the key attribute." />
+	<aura:attribute access="GLOBAL"
+	                name="key"
+	                type="String"
+	                description="Icon to use when toast type is 'other'." />
+	<aura:attribute access="GLOBAL"
+	                name="title"
+	                type="String"
+	                description="Specifies the title for a message to display. The title is shown above the message in a slightly larger font." />
+	<aura:attribute access="GLOBAL"
+	                name="message"
+	                type="String"
+	                required="true"
+	                description="The message to display in the toast." />
+	<aura:attribute access="GLOBAL"
+	                name="mode"
+	                type="String"
+	                default="dismissible"
+	                description="The toast mode, which controls how users can dismiss the toast. Valid values are 'pester' and 'sticky'. The default is 'dismissible', which displays the close button." />
+	<aura:attribute access="GLOBAL"
+	                name="duration"
+	                type="Integer"
+	                default="5000"
+	                description="Length of time the toast is visible for, in milliseconds. Applies to 'dismissible' or 'pester' toast modes. The default is 5000ms if the provided value is less than 5000ms." />
+	<!-- /attributes -->
 </aura:event>

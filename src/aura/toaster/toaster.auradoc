@@ -1,0 +1,64 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>toaster</code> component provides a custom, fallback implementation for
+			displaying toast messages in your application.
+		</p>
+
+		<p>
+			Normally, attempting to fire the standard
+			<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/ref_force_showToast.htm">force:showToast</a>
+			event when your component is running outside of the one.app container (for example, as a
+			stand-alone app or embedded within a Visualforce page) results in an exception as the
+			<code>force:showToast</code> event is not available. The <code>toaster</code> component
+			solves this problem by providing a fallback implementation for displaying toasts when
+			the standard functionality is unavailable. In order to ensure toasts are displayed
+			correctly from your component simply include a <code>toaster</code> component and fire
+			the <code>showToast</code> event instead of <code>force:showToast</code>.
+		</p>
+
+		<p>
+			The <code>toaster</code> component works by listening for and handling the
+			<code>showToast</code> event. If the standard <code>force:showToast</code> event is
+			available then the <code>toaster</code> constructs and fires a
+			<code>force:showToast</code> event with the same data. If <code>force:showToast</code>
+			is not available, however, then <code>toaster</code> provides its own implementation for
+			displaying toasts which attempts to replicate the standard behavior as closely as
+			possible.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>This example will demonstrate basic usage of the <code>toaster</code> component.</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre>&lt;!-- MyComponent.cmp --&gt;
+&lt;aura:component controller=&quot;MyApexClass&quot;&gt;
+  &lt;aura:dependency type=&quot;EVENT&quot; resource=&quot;c:showToast&quot; />
+
+  &lt;c:toaster /&gt;
+  &lt;button onclick=&quot;{!c.testButtonClick}&quot;&gt;Test&lt;/button&gt;
+&lt;/aura:component&gt;
+</pre>
+
+		<h4 class="slds-text-heading_small">Component Controller</h4>
+<pre>// MyComponentController.js
+({
+  testButtonClick: function(component, event, helper) {
+    // Fire c:showToast event to display the toast
+    var toastEvent = $A.get('e.c:showToast');
+    toastEvent.setParams({
+      type: 'info',
+      title: 'Test',
+      message: 'This is a test message'
+    });
+    toastEvent.fire();
+  }
+})
+</pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>

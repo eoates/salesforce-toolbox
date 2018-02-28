@@ -1,3 +1,10 @@
-<aura:event access="GLOBAL" type="COMPONENT">
-	<aura:attribute access="GLOBAL" name="arguments" type="Object" />
+<aura:event access="GLOBAL"
+            type="COMPONENT"
+            description="A generic component event that can be used by any component.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL"
+	                name="arguments"
+	                type="Object"
+	                description="An object which contains information about the event." />
+	<!-- /attributes -->
 </aura:event>

@@ -3,6 +3,26 @@
 	toasters: [],
 
 	/**
+	 * Returns the first valid toaster component. An application may contain multiple toaster
+	 * components, but we only want one of them to actually handle showToast events. In order to
+	 * enforce this behavior each toaster adds a reference to itself to the toasters array when it
+	 * is rendered and removes it when it is destroyed. This method simply returns the first toaster
+	 * in the toasters array that is available and can be used to handle showToast events
+	 *
+	 * @return {Aura.Component} A reference to the first available, valid toaster component that
+	 *                          can process showToast events
+	 */
+	getFirstToaster: function() {
+		for (var i = 0, n = this.toasters.length; i < n; i++) {
+			var toaster = this.toasters[i];
+			if (toaster && toaster.isValid()) {
+				return toaster;
+			}
+		}
+		return undefined;
+	},
+
+	/**
 	 * Returns the number of toasts that can be displayed simultaneously on the current device. On
 	 * phones we only want to display a single toast at a time. On other devices we display 3
 	 *
@@ -49,11 +69,7 @@
 
 		var toasts = component.get('v.toasts');
 		if (toasts.length < this.getMaxToasts()) {
-			if (toasts.length > 0) {
-				toasts.splice(0, 0, toast);
-			} else {
-				toasts.push(toast);
-			}
+			toasts.unshift(toast);
 			component.set('v.toasts', toasts);
 
 			if (mode !== 'sticky') {
@@ -66,9 +82,8 @@
 		} else {
 			var args = Array.prototype.slice.call(arguments, 1);
 
-			var queue = component.get('v.queue');
+			var queue = component.queue || [];
 			queue.push(args);
-			component.set('v.queue', queue);
 		}
 	},
 
@@ -109,13 +124,10 @@
 			return;
 		}
 
-		var queue = component.get('v.queue');
+		var queue = component.queue || [];
 		if (queue.length > 0) {
-			var args = queue[0];
+			var args = queue.shift();
 			args.splice(0, 0, component);
-
-			queue.splice(0, 1);
-			component.set('v.queue', queue);
 
 			this.createToast.apply(this, args);
 		}

@@ -5,7 +5,9 @@
 	 * event with the same parameter values as the c:showToast event
 	 */
 	showToast: function(component, event, helper) {
-		if (component !== helper.toasters[0]) {
+		// We only want one toaster component to handle showToast events. If this toaster is not the
+		// first toaster then do nothing. The event will be handled by the first toaster
+		if (component !== helper.getFirstToaster()) {
 			return;
 		}
 
