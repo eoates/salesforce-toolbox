@@ -8,10 +8,18 @@
 	pointer-events: none;
 }
 
+.THIS.toasts_mobile {
+	width: 100%;
+}
+
 .THIS.toasts .toast-container {
 	font-size: 0.8125rem;
 }
 
 .THIS.toasts .toast-container .slds-notify_toast {
 	pointer-events: auto;
+}
+
+.THIS.toasts_mobile .toast-container .slds-notify_toast {
+	min-width: 90%;
 }
