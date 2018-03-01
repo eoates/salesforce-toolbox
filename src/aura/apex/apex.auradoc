@@ -118,19 +118,19 @@
 		<p>This example will demonstrate basic usage of the <code>apex</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
-<pre>&lt;!-- MyComponent.cmp --&gt;
-&lt;aura:component controller=&quot;MyApexClass&quot;&gt;
-  &lt;aura:attribute name=&quot;message&quot; type=&quot;String&quot; /&gt;
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component controller="MyApexClass">
+  <aura:attribute name="message" type="String" />
 
-  &lt;c:apex aura:id=&quot;apex&quot; /&gt;
-  &lt;button onclick=&quot;{!c.testButtonClick}&quot;&gt;Test&lt;/button&gt;
+  <c:apex aura:id="apex" />
+  <button onclick="{!c.testButtonClick}">Test</button>
 
-  &lt;p&gt;{!v.message}!&lt;/p&gt;
-&lt;/aura:component&gt;
-</pre>
+  <p>{!v.message}!</p>
+</aura:component>
+]]></pre>
 
 		<h4 class="slds-text-heading_small">Component Controller</h4>
-<pre>// MyComponentController.js
+<pre><![CDATA[// MyComponentController.js
 ({
   testButtonClick: function(component, event, helper) {
     // Begin by obtaining a reference to the apex component
@@ -154,10 +154,10 @@
     });
   }
 })
-</pre>
+]]></pre>
 
 		<h4 class="slds-text-heading_small">Apex Class</h4>
-<pre>// MyApexClass.cls
+<pre><![CDATA[// MyApexClass.cls
 public class MyApexClass {
   // A simple method which simply returns the input with some text added
   @AuraEnabled
@@ -165,7 +165,7 @@ public class MyApexClass {
     return 'Message from server: ' + message;
   }
 }
-</pre>
+]]></pre>
 		<!-- /example -->
 	</aura:description>
 </aura:documentation>

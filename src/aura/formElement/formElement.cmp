@@ -3,19 +3,26 @@
 	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="class" type="String"
 	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
+
 	<aura:attribute access="GLOBAL" name="labelClass" type="String"
 	                description="A CSS style to be attached to the form element label. This style is in added in adition to base styles output by the component." />
+
 	<aura:attribute access="GLOBAL" name="controlClass" type="String"
 	                description="A CSS style to be attached to the form element control. This style is in added in adition to base styles output by the component." />
+
 	<aura:attribute access="GLOBAL" name="errorClass" type="String"
 	                description="A CSS style to be attached to the error message. This style is in added in adition to base styles output by the component." />
+
 	<aura:attribute access="GLOBAL" name="controlId" type="String"
 	                description="The ID of the control element. This is used to associate the label with the input element. You must use the client-side ID of the control element which is different from its aura:id attribute." />
+
 	<aura:attribute access="GLOBAL" name="label" type="String"
 	                description="The text displayed in the label." />
+
 	<aura:attribute access="GLOBAL" name="required" type="Boolean"
 	                default="false"
 	                description="Specifies whether the field is required. Setting this to true only affects the appearance of the component." />
+
 	<aura:attribute access="GLOBAL" name="error" type="String"
 	                description="An error message to be displayed next to the component." />
 	<!-- /attributes -->

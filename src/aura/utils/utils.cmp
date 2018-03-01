@@ -1,9 +1,7 @@
 <aura:component access="GLOBAL"
                 description="A component which contains common utility methods.">
 	<!-- methods -->
-	<aura:method access="GLOBAL"
-	             name="getModule"
-	             action="{!c.getModule}"
+	<aura:method access="GLOBAL" name="getModule" action="{!c.getModule}"
 	             description="Returns an object which has the utility methods." />
 	<!-- /methods -->
 </aura:component>

@@ -35,17 +35,17 @@
 		<p>This example will demonstrate basic usage of the <code>toaster</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
-<pre>&lt;!-- MyComponent.cmp --&gt;
-&lt;aura:component controller=&quot;MyApexClass&quot;&gt;
-  &lt;aura:dependency type=&quot;EVENT&quot; resource=&quot;c:showToast&quot; />
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component controller="MyApexClass">
+  <aura:dependency type="EVENT" resource="c:showToast" />
 
-  &lt;c:toaster /&gt;
-  &lt;button onclick=&quot;{!c.testButtonClick}&quot;&gt;Test&lt;/button&gt;
-&lt;/aura:component&gt;
-</pre>
+  <c:toaster />
+  <button onclick="{!c.testButtonClick}">Test</button>
+</aura:component>
+]]></pre>
 
 		<h4 class="slds-text-heading_small">Component Controller</h4>
-<pre>// MyComponentController.js
+<pre><![CDATA[// MyComponentController.js
 ({
   testButtonClick: function(component, event, helper) {
     // Fire c:showToast event to display the toast
@@ -58,7 +58,7 @@
     toastEvent.fire();
   }
 })
-</pre>
+]]></pre>
 		<!-- /example -->
 	</aura:description>
 </aura:documentation>

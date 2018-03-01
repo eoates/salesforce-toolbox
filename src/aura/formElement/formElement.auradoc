@@ -38,6 +38,7 @@
       <lightning:button label="Save" />
     </c:formElement>
   </div>
-</aura:component>]]></pre>
+</aura:component>
+]]></pre>
 	</aura:description>
 </aura:documentation>

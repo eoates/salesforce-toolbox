@@ -17,25 +17,25 @@
 		<p>This example will demonstrate basic usage of the <code>spinnerPanel</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
-<pre>&lt;!-- CreateContact.cmp --&gt;
-&lt;aura:component controller=&quot;ContactController&quot;&gt;
-  &lt;aura:attribute name=&quot;firstName&quot; type=&quot;String&quot; /&gt;
-  &lt;aura:attribute name=&quot;lastName&quot; type=&quot;String&quot; /&gt;
-  &lt;aura:attribute name=&quot;saving&quot; type=&quot;Boolean&quot;
-    default=&quot;false&quot; /&gt;
+<pre><![CDATA[<!-- CreateContact.cmp -->
+<aura:component controller="ContactController">
+  <aura:attribute name="firstName" type="String" />
+  <aura:attribute name="lastName" type="String" />
+  <aura:attribute name="saving" type="Boolean"
+    default="false" />
 
-  &lt;c:apex aura:id=&quot;apex&quot; /&gt;
+  <c:apex aura:id="apex" />
 
-  &lt;c:spinnerPanel showSpinner=&quot;{!v.saving}&quot;&gt;
-    &lt;ui:inputText label=&quot;First Name&quot; value=&quot;{!v.firstName}&quot; /&gt;
-    &lt;ui:inputText label=&quot;Last Name&quot; value=&quot;{!v.lastName}&quot; /&gt;
-    &lt;button onclick=&quot;{!c.saveButtonClick}&quot;&gt;Save&lt;/button&gt;
-  &lt;/c:spinnerPanel&gt;
-&lt;/aura:component&gt;
-</pre>
+  <c:spinnerPanel showSpinner="{!v.saving}">
+    <ui:inputText label="First Name" value="{!v.firstName}" />
+    <ui:inputText label="Last Name" value="{!v.lastName}" />
+    <button onclick="{!c.saveButtonClick}">Save</button>
+  </c:spinnerPanel>
+</aura:component>
+]]></pre>
 
 		<h4 class="slds-text-heading_small">Component Controller</h4>
-<pre>// CreateContactController.js
+<pre><![CDATA[// CreateContactController.js
 ({
   saveButtonClick: function(component, event, helper) {
     // The spinnerPanel component's showSpinner attribute is bound to our
@@ -66,10 +66,10 @@
     });
   }
 })
-</pre>
+]]></pre>
 
 		<h4 class="slds-text-heading_small">Apex Class</h4>
-<pre>// ContactController.cls
+<pre><![CDATA[// ContactController.cls
 public class ContactController {
   // Creates a new contact and returns its ID
   @AuraEnabled
@@ -82,7 +82,7 @@ public class ContactController {
     return c.Id;
   }
 }
-</pre>
+]]></pre>
 		<!-- /example -->
 	</aura:description>
 </aura:documentation>

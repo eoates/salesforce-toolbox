@@ -1,9 +1,7 @@
 <aura:component access="GLOBAL"
                 description="Manages the display of toasts. The toaster component uses a custom solution for displaying toasts if the standard functionality is unavailable.">
 	<!-- attributes -->
-	<aura:attribute access="PRIVATE"
-	                name="toasts"
-	                type="Object[]"
+	<aura:attribute access="PRIVATE" name="toasts" type="Object[]"
 	                description="The list of displayed toasts." />
 	<!-- /attributes -->
 

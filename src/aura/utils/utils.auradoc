@@ -21,18 +21,18 @@
 		<p>This example will demonstrate basic usage of the <code>utils</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
-<pre>&lt;!-- MyComponent.cmp --&gt;
-&lt;aura:component&gt;
-  &lt;aura:handler value=&quot;this&quot; name=&quot;init&quot;
-    action=&quot;{!c.init}&quot; /&gt;
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:handler value="this" name="init"
+    action="{!c.init}" />
 
-  &lt;c:utils aura:id=&quot;utils&quot; /&gt;
-  &lt;button onclick=&quot;{!c.testButtonClick}&quot;&gt;Test&lt;/button&gt;
-&lt;/aura:component&gt;
-</pre>
+  <c:utils aura:id="utils" />
+  <button onclick="{!c.testButtonClick}">Test</button>
+</aura:component>
+]]></pre>
 
 		<h4 class="slds-text-heading_small">Component Controller</h4>
-<pre>// MyComponentController.js
+<pre><![CDATA[// MyComponentController.js
 ({
   init: function(component, event, helper) {
     // It is recommended to get a reference to the module only once during your
@@ -52,7 +52,7 @@
     console.log('the trimmed string = &quot;' + str '&quot;');
   }
 })
-</pre>
+]]></pre>
 		<!-- /example -->
 	</aura:description>
 </aura:documentation>
