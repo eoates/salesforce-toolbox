@@ -1,23 +1,35 @@
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL"
+                description="Represents a form element.">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="class" type="String" />
-	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
-	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
-	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
-	<aura:attribute access="GLOBAL" name="controlId" type="String" />
-	<aura:attribute access="GLOBAL" name="label" type="String" />
-	<aura:attribute access="GLOBAL" name="required" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="error" type="String" />
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
+	<aura:attribute access="GLOBAL" name="labelClass" type="String"
+	                description="A CSS style to be attached to the form element label. This style is in added in adition to base styles output by the component." />
+	<aura:attribute access="GLOBAL" name="controlClass" type="String"
+	                description="A CSS style to be attached to the form element control. This style is in added in adition to base styles output by the component." />
+	<aura:attribute access="GLOBAL" name="errorClass" type="String"
+	                description="A CSS style to be attached to the error message. This style is in added in adition to base styles output by the component." />
+	<aura:attribute access="GLOBAL" name="controlId" type="String"
+	                description="The ID of the control element. This is used to associate the label with the input element. You must use the client-side ID of the control element which is different from its aura:id attribute." />
+	<aura:attribute access="GLOBAL" name="label" type="String"
+	                description="The text displayed in the label." />
+	<aura:attribute access="GLOBAL" name="required" type="Boolean"
+	                default="false"
+	                description="Specifies whether the field is required. Setting this to true only affects the appearance of the component." />
+	<aura:attribute access="GLOBAL" name="error" type="String"
+	                description="An error message to be displayed next to the component." />
 	<!-- /attributes -->
 
 	<!-- component -->
 	<div class="{!v.class + ' slds-form-element' + if(empty(v.error), '', ' slds-has-error')}">
 
 		<!-- label -->
-		<label class="{!v.labelClass + ' slds-form-element__label' + if(empty(v.label), ' slds-hide', '')}" for="{!v.controlId}">
-			<abbr class="{!'slds-required' + if(v.required, '', ' slds-hide')}" title="Required">*</abbr>
-			{!v.label}
-		</label>
+		<aura:if isTrue="{!not(empty(v.label))}">
+			<label class="{!v.labelClass + ' slds-form-element__label'}" for="{!v.controlId}">
+				<abbr class="{!if(v.required, 'slds-required', 'slds-hide')}" title="Required">*</abbr>
+				{!v.label}
+			</label>
+		</aura:if>
 		<!-- /label -->
 
 		<!-- control -->
@@ -27,7 +39,7 @@
 		<!-- /control -->
 
 		<!-- error -->
-		<div class="{!v.errorClass + ' slds-form-element__help' + if(empty(v.error), ' slds-hide', '')}">
+		<div class="{!if(empty(v.error), 'slds-hide', v.errorClass + ' slds-form-element__help')}">
 			{!v.error}
 		</div>
 		<!-- /error -->

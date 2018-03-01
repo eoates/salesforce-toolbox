@@ -1,0 +1,43 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>formElement</code> component is used to represent an HTML form element. For
+			more information on form elements refer to the documentation in the
+			<a href="https://www.lightningdesignsystem.com/components/form-element">Lightning Design
+			System</a>.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>This example will demonstrate basic usage of the <code>formElement</code> component.</p>
+
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <!-- You must place formElement components within a slds-form -->
+  <div class="slds-form slds-form_stacked">
+    <!-- Using a native input. This allows us to properly associate the label
+      with the input -->
+    <c:formElement label="First Name" controlId="{!globalId + '_fname'}">
+      <input id="{!globalId + '_fname'}" type="text" class="slds-input" />
+    </c:formElement>
+
+    <!-- Using non-native input. If we do not know or cannot know the input
+      element's client-side ID then the label will not be associated to the
+      input element though it will still be displayed -->
+    <c:formElement label="Last Name">
+      <ui:inputText class="slds-input" />
+    </c:formElement>
+
+    <!-- Using without a label. If you don't specify a value for the label then
+      no label element will be rendered. This is useful for adding buttons and
+      other items to your form which do not need a label -->
+    <c:formElement>
+      <lightning:button label="Save" />
+    </c:formElement>
+  </div>
+</aura:component>]]></pre>
+	</aura:description>
+</aura:documentation>
