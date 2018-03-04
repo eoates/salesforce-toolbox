@@ -30,8 +30,7 @@
 	 * @return {boolean} true if the application is running on a phone; otherwise, false
 	 */
 	isPhone: function() {
-		var formFactor = $A.get('$Browser.formFactor');
-		return (formFactor === 'PHONE');
+		return $A.get('$Browser.isPhone');
 	},
 
 	/**
@@ -40,8 +39,26 @@
 	 * @return {boolean} true if the application is running on a tablet; otherwise, false
 	 */
 	isTablet: function() {
-		var formFactor = $A.get('$Browser.formFactor');
-		return (formFactor === 'TABLET');
+		return $A.get('$Browser.isTablet');
+	},
+
+	/**
+	 * Returns true if the application is running on an Android device
+	 *
+	 * @return {boolean} true if the application is running on an Android device; otherwise, false
+	 */
+	isAndroid: function() {
+		return $A.get('$Browser.isAndroid');
+	},
+
+	/**
+	 * Returns true if the application is running on an iOS device. Not available in all
+	 * implementations. For more information refer to the Lightning Components Developer Guide
+	 *
+	 * @return {boolean} true if the application is running on an iOS device; otherwise, false
+	 */
+	isIOS: function() {
+		return $A.get('$Browser.isIOS');
 	},
 
 	/**
