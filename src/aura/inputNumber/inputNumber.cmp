@@ -78,7 +78,7 @@
 		       onfocus="{!c.inputFocus}"
 		       onblur="{!c.inputBlur}"
 		       onkeydown="{!c.inputKeyDown}"
-		       onkeypress="{!c.inputKeyPress}"
+		       oninput="{!c.inputInput}"
 		       onchange="{!c.inputChange}" />
 
 		{!v.right}

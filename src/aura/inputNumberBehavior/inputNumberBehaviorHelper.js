@@ -3,7 +3,6 @@
 	MAX_PRECISION: 15,
 	MIN_SCALE: 0,
 	MAX_SCALE: 14,
-	MULTIPLIERS: [ 'k', 'm', 'b', 't' ],
 	INSTANCES: {},
 
 	/**
@@ -48,53 +47,13 @@
 		var self = this;
 		instance = {
 			/**
-			 * Invoke this method in your input element's onfocus event listener
-			 *
-			 * @param {Event}    event                  - The event object
-			 * @param {Object}   opts                   - An object containing methods for
-			 *                                            retrieving and updating component state
-			 * @param {Function} opts.getSelectionStart - Returns the selectionStart property of the
-			 *                                            input element
-			 * @param {Function} opts.getSelectionEnd   - Returns the selectionEnd property of the
-			 *                                            input element
-			 * @param {Function} opts.getInputValue     - Returns the value of the input element
-			 * @param {Function} opts.setInputValue     - Sets the value of the input element
-			 *
-			 * @return {void}
-			 */
-			onFocus: function(event, opts) {
-				var disabled = component.get('v.disabled');
-				var readOnly = component.get('v.readonly');
-				if (disabled || readOnly) {
-					return;
-				}
-
-				var selectionStart = opts.getSelectionStart();
-				var selectionEnd = opts.getSelectionEnd();
-				var selectionLength = selectionEnd - selectionStart;
-
-				var oldValue = opts.getInputValue();
-
-				if (!disabled && !readOnly) {
-					var value = oldValue.replace(/,/g, '');
-					value = self.utils.trim(value);
-
-					opts.setInputValue(value);
-				}
-
-				if (selectionLength === oldValue.length) {
-					opts.select();
-				}
-			},
-
-			/**
 			 * Invoke this method in your input element's onblur event listener
 			 *
 			 * @param {Event}    event              - The event object
 			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
 			 * @param {Function} opts.getValue      - Returns the component value
+			 * @param {Function} opts.getInputType  - Gets the input element's type
 			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
 			 * @return {void}
@@ -106,6 +65,11 @@
 					return;
 				}
 
+				if (this.formatTimeout) {
+					clearTimeout(this.formatTimeout);
+					this.formatTimeout = undefined;
+				}
+
 				this.updateInputElement(opts);
 			},
 
@@ -115,9 +79,9 @@
 			 * @param {Event}    event              - The event object
 			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
 			 * @param {Function} opts.getValue      - Returns the component value
 			 * @param {Function} opts.setValue      - Sets the component value
+			 * @param {Function} opts.getInputType  - Gets the input element's type
 			 * @param {Function} opts.getInputValue - Returns the value of the input element
 			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
@@ -127,6 +91,19 @@
 				var disabled = component.get('v.disabled');
 				var readOnly = component.get('v.readonly');
 				if (disabled || readOnly) {
+					return false;
+				}
+
+				// This handling is not needed on mobile devices as phones and tablets do not
+				// typically have up or down keys
+				if (self.utils.isMobile()) {
+					return false;
+				}
+
+				// This handling is not needed for number inputs as they provide up/down arrow
+				// support natively
+				var type = opts.getInputType();
+				if (type === 'number') {
 					return false;
 				}
 
@@ -171,88 +148,51 @@
 			},
 
 			/**
-			 * Invoke this method in your input element's onkeypress event listener
+			 * Invoke this method in your input element's oninput event listener
 			 *
 			 * @param {Event}    event                  - The event object
 			 * @param {Object}   opts                   - An object containing methods for
 			 *                                            retrieving and updating component state
-			 * @param {Function} opts.getSelectionStart - Returns the selectionStart property of the
-			 *                                            input element
-			 * @param {Function} opts.getSelectionEnd   - Returns the selectionEnd property of the
-			 *                                            input element
-			 * @param {Function} opts.getInputValue     - Returns the value of the input element
+			 * @param {Function} opts.getInputType      - Gets the input element's type
+			 * @param {Function} opts.getInputValue     - Gets the value of the input element
+			 * @param {Function} opts.setInputValue     - Sets the value of the input element
+			 * @param {Function} opts.getSelectionEnd   - Returns the zero based index of end of the
+			 *                                            selected portion of the input element
+			 * @param {Function} opts.setSelectionRange - Sets the start and end positions of the
+			 *                                            current selection in the input element
 			 *
-			 * @return {boolean} true if the key was accepted or false if it was prevented
+			 * @return {void}
 			 */
-			onKeyPress: function(event, opts) {
+			onInput: function(event, opts) {
 				var disabled = component.get('v.disabled');
 				var readOnly = component.get('v.readonly');
 				if (disabled || readOnly) {
-					return false;
+					return;
 				}
 
-				var format = self.getFormat(component);
-				var allowNegative = format.min < 0;
+				// Do not perform real-time formatting for number inputs
+				var type = opts.getInputType();
+				if (type === 'number') {
+					return;
+				}
 
-				var value = opts.getInputValue();
-				var selectionStart = opts.getSelectionStart();
-				var selectionEnd = opts.getSelectionEnd();
-				var selectionLength = selectionEnd - selectionStart;
-
-				var which = event.keyCode || event.which || 0;
-				var prevent = false;
-				if (which === 45) {
-					// 45 = minus
-					// If negative values are not allowed or if we are not at the first char then do
-					// not allow the key
-					if (!allowNegative || (selectionStart !== 0)) {
-						prevent = true;
+				// Check whether we are running on an Android device
+				if (self.utils.isAndroid()) {
+					// Due to some strange behavior with the selectionStart and selectionEnd
+					// properties on Android devices we use setTimeout() to wait a very small amount
+					// of time before applying our formatting
+					var that = this;
+					if (that.formatTimeout) {
+						clearTimeout(that.formatTimeout);
+						that.formatTimeout = undefined;
 					}
-				} else if (which === 46) {
-					// 46 = period
-					// If one or more characters are selected then we remove the selected substring
-					// from the value as it will be overwritten with the period
-					if (selectionLength > 0) {
-						var left = value.substr(0, selectionStart);
-						var right = value.substr(selectionEnd);
-						value = left + right;
-					}
-
-					// Make sure the value does not already contain a period
-					if (value.indexOf('.') >= 0) {
-						prevent = true;
-					}
-				} else if ((which >= 48) && (which <= 57)) {
-					// 0-9 are allowed
-				} else if (which === 13) {
-					// Enter is allowed
+					that.formatTimeout = setTimeout($A.getCallback(function() {
+						that.formatOnInput(opts);
+					}), 10);
 				} else {
-					// All other characters
-					var allowChar = false;
-
-					// Check for special multipliers, but only at the very end and only if a
-					// multiplier shortcut is not already present
-					var multiplier = self.hasMultiplier(value);
-					if (
-						!multiplier
-						&& ((value.length - selectionLength) > 0)
-						&& ((selectionStart + selectionLength) === value.length)
-					) {
-						allowChar = self.isMultiplier(String.fromCharCode(which));
-					}
-
-					// If the character is not allowed then call preventDefault() on the event to
-					// keep it from being entered into the input
-					if (!allowChar) {
-						prevent = true;
-					}
+					// Handling for all other devices is the same
+					this.formatOnInput(opts);
 				}
-
-				if (prevent) {
-					event.preventDefault();
-				}
-
-				return !prevent;
 			},
 
 			/**
@@ -261,9 +201,9 @@
 			 * @param {Event}    event              - The event object
 			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
 			 * @param {Function} opts.getValue      - Returns the component value
 			 * @param {Function} opts.setValue      - Sets the component value
+			 * @param {Function} opts.getInputType  - Gets the input element's type
 			 * @param {Function} opts.getInputValue - Returns the value of the input element
 			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
@@ -275,6 +215,11 @@
 				if (disabled || readOnly) {
 					this.updateInputElement(opts);
 					return false;
+				}
+
+				if (this.formatTimeout) {
+					clearTimeout(this.formatTimeout);
+					this.formatTimeout = undefined;
 				}
 
 				var format = self.getFormat(component);
@@ -293,20 +238,20 @@
 			 *
 			 * @param {Object}   opts               - An object containing methods for retrieving
 			 *                                        and updating component state
-			 * @param {Function} opts.hasFocus      - Returns true if the input element has focus
 			 * @param {Function} opts.getValue      - Returns the component value
+			 * @param {Function} opts.getInputType  - Gets the input element's type
 			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
 			 * @return {void}
 			 */
 			updateInputElement: function(opts) {
-				var hasFocus = opts.hasFocus();
+				var type = opts.getInputType();
 				var value = opts.getValue();
 
 				var numValue = self.utils.asNumber(value);
 				if (self.utils.isNumber(numValue)) {
 					var format = self.getFormat(component);
-					value = self.formatNumber(numValue, format, hasFocus);
+					value = self.formatNumber(numValue, format, type);
 				} else {
 					value = self.utils.asString(value);
 				}
@@ -342,6 +287,191 @@
 			getStep: function() {
 				var format = self.getFormat(component);
 				return format.step;
+			},
+
+			/**
+			 * Formats the input
+			 *
+			 * @param {Object}   opts                   - An object containing methods for
+			 *                                            retrieving and updating component state
+			 * @param {Function} opts.getInputType      - Gets the input element's type
+			 * @param {Function} opts.getInputValue     - Gets the value of the input element
+			 * @param {Function} opts.setInputValue     - Sets the value of the input element
+			 * @param {Function} opts.getSelectionEnd   - Returns the zero based index of end of the
+			 *                                            selected portion of the input element
+			 * @param {Function} opts.setSelectionRange - Sets the start and end positions of the
+			 *                                            current selection in the input element
+			 */
+			formatOnInput: function(opts) {
+				var format = self.getFormat(component);
+				var value = opts.getInputValue();
+				var length = value.length;
+				var hasMultiplier = false;
+				var originalValue = value;
+				var selectionStart = opts.getSelectionEnd();
+				var leadingWhitespace, trailingWhitespace;
+				var indexOfDecimal = -1;
+				var i, charCode;
+				var tempValue, tempSelectionStart, tempCounter, tempChar;
+
+				// Make sure the input is not blank
+				if (!value) {
+					return;
+				}
+
+				// Remove leading whitespace
+				leadingWhitespace = this.getLeadingWhitespace(value);
+				if (leadingWhitespace.length > 0) {
+					value = value.substring(leadingWhitespace.length);
+					length = value.length;
+					if (selectionStart <= leadingWhitespace.length) {
+						selectionStart = 0;
+					} else {
+						selectionStart -= leadingWhitespace.length;
+					}
+				}
+
+				// Remove trailing whitespace
+				trailingWhitespace = this.getTrailingWhitespace(value);
+				if (trailingWhitespace.length > 0) {
+					value = value.substring(0, length - trailingWhitespace.length);
+					length = value.length;
+					if (selectionStart > length) {
+						selectionStart = length;
+					}
+				}
+
+				// Check for a single special multiplier shortcut at the end of the input. If one
+				// is present then ignore it by subtracting 1 from our length variable
+				if ((length > 1) && (/[kmbt]$/i.test(value))) {
+					hasMultiplier = true;
+					length--;
+				}
+
+				// Check for decimal and, if found, make sure all chars that appear after the
+				// decimal are numbers
+				if (format.scale > 0) {
+					indexOfDecimal = value.indexOf('.');
+					if (indexOfDecimal !== -1) {
+						for (i = (length - 1); i > indexOfDecimal; i--) {
+							charCode = value.charCodeAt(i);
+							if ((charCode < 48) || (charCode > 57)) {
+								// Not a number
+								value = value.substring(0, i) + value.substring(i + 1);
+								length--;
+								if (i <= selectionStart) {
+									selectionStart--;
+								}
+							}
+						}
+					}
+				}
+
+				// If the first character is the decimal then add a leading 0
+				if (indexOfDecimal === 0) {
+					value = '0' + value;
+					length++;
+					selectionStart++;
+					indexOfDecimal++;
+				}
+
+				// Step through each character up to either the decimal or the end of the value and
+				// check whether it is a number
+				if (length > 0) {
+					var beginAt = 0;
+					var endAt = length - 1;
+					if (indexOfDecimal !== -1) {
+						endAt = indexOfDecimal - 1;
+					}
+
+					tempValue = '';
+					tempSelectionStart = selectionStart;
+					tempCounter = 0;
+					tempChar = '';
+					for (i = endAt; i >= beginAt; i--) {
+						tempChar = value.charAt(i);
+
+						charCode = value.charCodeAt(i);
+						if ((charCode >= 48) && (charCode <= 57)) {
+							// Char is a number; keep it
+							if ((tempValue.length > 0) && ((tempCounter % 3) === 0)) {
+								// Add a thousands separator every 3 digits
+								tempValue = ',' + tempValue;
+								tempCounter = 0;
+								if (i <= selectionStart) {
+									tempSelectionStart++;
+								}
+							}
+							tempValue = tempChar + tempValue;
+							tempCounter++;
+						} else {
+							// Char is not a number; skip it
+							if (i <= selectionStart) {
+								tempSelectionStart--;
+							}
+						}
+					}
+
+					// If the first character was a minus (and the input allows negative values)
+					// then keep it to allow for entry of negative numbers
+					if ((tempChar === '-') && (format.min < 0)) {
+						tempValue = '-' + tempValue;
+						tempSelectionStart++;
+					}
+
+					value = tempValue +
+						((indexOfDecimal !== -1) ? value.substring(indexOfDecimal, length) : '') +
+						value.substring(length);
+					length = value.length - (hasMultiplier ? 1 : 0);
+					selectionStart = tempSelectionStart;
+				}
+
+				// Don't do anything if the value wasn't changed
+				if (value === originalValue) {
+					return;
+				}
+
+				// Update the input's value and cursor position
+				opts.setInputValue(value);
+				opts.setSelectionRange(selectionStart, selectionStart);
+			},
+
+			/**
+			 * Returns the first match in the specified string
+			 *
+			 * @param {string} str     - The string to search
+			 * @param {RegExp} pattern - The pattern to search for
+			 *
+			 * @return {string} The first match or an empty string if no match was found
+			 */
+			firstMatch: function(str, pattern) {
+				var match = str.match(pattern);
+				if (match) {
+					return match[0];
+				}
+				return '';
+			},
+
+			/**
+			 * Returns all leading whitespace characters from the specified string
+			 *
+			 * @param {string} str - The string to search
+			 *
+			 * @return {string} All leading whitespace characters
+			 */
+			getLeadingWhitespace: function(str) {
+				return this.firstMatch(str, /^\s+/g);
+			},
+
+			/**
+			 * Returns all trailing whitespace characters from the specified string
+			 *
+			 * @param {string} str - The string to search
+			 *
+			 * @return {string} All trailing whitespace characters
+			 */
+			getTrailingWhitespace: function(str) {
+				return this.firstMatch(str, /\s+$/g);
 			}
 		};
 
@@ -499,35 +629,6 @@
 	},
 
 	/**
-	 * Returns true if the character is a special multiplier shortcut
-	 *
-	 * @param {string} value - The value to test
-	 *
-	 * @return {boolean} true if value is a shortcut
-	 */
-	isMultiplier: function(value) {
-		return this.MULTIPLIERS.indexOf(value.toLowerCase()) >= 0;
-	},
-
-	/**
-	 * Checks to see if the value ends with a special multiplier shortcut. These shortcuts include K
-	 * for thousands, M for millions, B for billions and T for trillions
-	 *
-	 * @param {string} value - The value to test
-	 *
-	 * @return {boolean} true if the value ends with a multiplier; otherwise, false
-	 */
-	hasMultiplier: function(value) {
-		for (var i = 0, n = this.MULTIPLIERS.length; i < n; i++) {
-			var multiplier = this.MULTIPLIERS[i];
-			if (this.utils.endsWithIgnoreCase(value, multiplier)) {
-				return true;
-			}
-		}
-		return false;
-	},
-
-	/**
 	 * Parses a string to a number. The returned number will conform to the constraints specified by
 	 * the format object. For example, if a string of "3,002" is passed in and the format object
 	 * specifies a max value of 99 then 99 will be returned. Conversely, if the string "15" was
@@ -558,15 +659,16 @@
 	 * Formats a number using the information provided by a format object. If the value is not a
 	 * number then an empty string will be returned
 	 *
-	 * @param {number}  value      - The number to format
-	 * @param {Object}  format     - An object containing formatting information
-	 * @param {boolean} [hasFocus] - If true then the thousands separator will not be used
+	 * @param {number} value  - The number to format
+	 * @param {Object} format - An object containing formatting information
+	 * @param {string} type   - The type of the input element. Expected values are "text" and
+	 *                          "number"
 	 *
 	 * @return {string} The formatted number
 	 */
-	formatNumber: function(value, format, hasFocus) {
+	formatNumber: function(value, format, type) {
 		var thousands = ',';
-		if (this.utils.isMobile() || hasFocus) {
+		if (type === 'number') {
 			thousands = '';
 		}
 

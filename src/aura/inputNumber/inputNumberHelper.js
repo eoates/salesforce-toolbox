@@ -28,17 +28,17 @@
 
 		var self = this;
 		return action.call(behavior, event, {
-			select: function() {
-				inputElement.select();
-			},
-			hasFocus: function() {
-				return (inputElement === document.activeElement);
-			},
 			getSelectionStart: function() {
 				return inputElement.selectionStart;
 			},
 			getSelectionEnd: function() {
 				return inputElement.selectionEnd;
+			},
+			setSelectionRange: function(start, end) {
+				inputElement.setSelectionRange(start, end, 'none');
+			},
+			getInputType: function() {
+				return inputElement.type;
 			},
 			getInputValue: function() {
 				return inputElement.value;
@@ -109,11 +109,11 @@
 
 		var behavior = component.find('behavior').getModule();
 		behavior.updateInputElement({
-			hasFocus: function() {
-				return (inputElement === document.activeElement);
-			},
 			getValue: function() {
 				return component.get('v.value');
+			},
+			getInputType: function() {
+				return inputElement.type;
 			},
 			setInputValue: function(value) {
 				inputElement.value = value;

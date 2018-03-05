@@ -83,14 +83,14 @@
 				       maxlength="{!if(v.type ne 'number', v.maxlength, undefined)}"
 				       tabindex="{!v.tabindex}"
 				       disabled="{!if(v.disabled, 'disabled', '')}"
-				       onfocus="{!c.inputFocus}"
 				       onblur="{!c.inputBlur}"
 				       onkeydown="{!c.inputKeyDown}"
 				       onkeypress="{!c.inputKeyPress}"
 				       oninput="{!c.inputInput}"
 				       onchange="{!c.inputChange}" />
 
-				<select aura:id="select"
+				<select aura:id="editableSelect"
+				        id="{#globalId + '_editableSelect'}"
 				        class="{!v.class + ' slds-select'}"
 				        tabindex="-1"
 				        disabled="{!if(v.disabled, 'disabled', '')}"

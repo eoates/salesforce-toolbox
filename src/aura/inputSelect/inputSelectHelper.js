@@ -343,11 +343,11 @@
 			if (type === 'number') {
 				var numberInputBehavior = component.find('numberInputBehavior').getModule();
 				numberInputBehavior.updateInputElement({
-					hasFocus: function() {
-						return (inputElement === document.activeElement);
-					},
 					getValue: function() {
 						return value;
+					},
+					getInputType: function() {
+						return inputElement.type;
 					},
 					setInputValue: function(value) {
 						inputElement.value = value;
@@ -595,6 +595,21 @@
 	},
 
 	/**
+	 * Returns the container element
+	 *
+	 * @param {Aura.Component} component - The inputSelect component
+	 *
+	 * @return {HTMLElement} the container element
+	 */
+	getContainerElement: function(component) {
+		var container = component.find('container');
+		if (container) {
+			return container.getElement();
+		}
+		return undefined;
+	},
+
+	/**
 	 * Returns the input element
 	 *
 	 * @param {Aura.Component} component - The inputSelect component
@@ -617,15 +632,10 @@
 	 * @return {HTMLElement} The select element
 	 */
 	getSelectElement: function(component) {
-		var select = component.find('select');
+		var editable = component.get('v.editable');
+		var select = component.find(editable ? 'editableSelect' : 'select');
 		if (select) {
-			if (this.utils.isArray(select)) {
-				if (select.length > 0) {
-					return select[0].getElement();
-				}
-			} else {
-				return select.getElement();
-			}
+			return select.getElement();
 		}
 		return undefined;
 	},
@@ -651,17 +661,17 @@
 
 		var self = this;
 		return action.call(behavior, event, {
-			select: function() {
-				inputElement.select();
-			},
-			hasFocus: function() {
-				return (inputElement === document.activeElement);
-			},
 			getSelectionStart: function() {
 				return inputElement.selectionStart;
 			},
 			getSelectionEnd: function() {
 				return inputElement.selectionEnd;
+			},
+			setSelectionRange: function(start, end) {
+				inputElement.setSelectionRange(start, end, 'none');
+			},
+			getInputType: function() {
+				return inputElement.type;
 			},
 			getInputValue: function() {
 				return inputElement.value;
