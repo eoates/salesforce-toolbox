@@ -44,7 +44,7 @@
 			return instance;
 		}
 
-		var self = this;
+		var helper = this;
 		instance = {
 			/**
 			 * Invoke this method in your input element's onblur event listener
@@ -96,7 +96,7 @@
 
 				// This handling is not needed on mobile devices as phones and tablets do not
 				// typically have up or down keys
-				if (self.utils.isMobile()) {
+				if (helper.utils.isMobile()) {
 					return false;
 				}
 
@@ -107,13 +107,13 @@
 					return false;
 				}
 
-				var format = self.getFormat(component);
+				var format = helper.getFormat(component);
 				var step = format.step;
 				var stepMin = format.stepMin;
 
 				var value = opts.getInputValue();
-				value = self.parseNumber(value, format);
-				if (!self.utils.isNumber(value)) {
+				value = helper.parseNumber(value, format);
+				if (!helper.utils.isNumber(value)) {
 					value = 0;
 				}
 
@@ -177,7 +177,7 @@
 				}
 
 				// Check whether we are running on an Android device
-				if (self.utils.isAndroid()) {
+				if (helper.utils.isAndroid()) {
 					// Due to some strange behavior with the selectionStart and selectionEnd
 					// properties on Android devices we use setTimeout() to wait a very small amount
 					// of time before applying our formatting
@@ -222,10 +222,10 @@
 					this.formatTimeout = undefined;
 				}
 
-				var format = self.getFormat(component);
+				var format = helper.getFormat(component);
 
 				var value = opts.getInputValue();
-				value = self.parseNumber(value, format);
+				value = helper.parseNumber(value, format);
 
 				var changed = opts.setValue(value);
 				this.updateInputElement(opts);
@@ -248,12 +248,12 @@
 				var type = opts.getInputType();
 				var value = opts.getValue();
 
-				var numValue = self.utils.asNumber(value);
-				if (self.utils.isNumber(numValue)) {
-					var format = self.getFormat(component);
-					value = self.formatNumber(numValue, format, type);
+				var numValue = helper.utils.asNumber(value);
+				if (helper.utils.isNumber(numValue)) {
+					var format = helper.getFormat(component);
+					value = helper.formatNumber(numValue, format, type);
 				} else {
-					value = self.utils.asString(value);
+					value = helper.utils.asString(value);
 				}
 
 				opts.setInputValue(value);
@@ -265,7 +265,7 @@
 			 * @return {number} The minimum value
 			 */
 			getMin: function() {
-				var format = self.getFormat(component);
+				var format = helper.getFormat(component);
 				return format.min;
 			},
 
@@ -275,7 +275,7 @@
 			 * @return {number} The maximum value
 			 */
 			getMax: function() {
-				var format = self.getFormat(component);
+				var format = helper.getFormat(component);
 				return format.max;
 			},
 
@@ -285,7 +285,7 @@
 			 * @return {number} The step value
 			 */
 			getStep: function() {
-				var format = self.getFormat(component);
+				var format = helper.getFormat(component);
 				return format.step;
 			},
 
@@ -303,7 +303,7 @@
 			 *                                            current selection in the input element
 			 */
 			formatOnInput: function(opts) {
-				var format = self.getFormat(component);
+				var format = helper.getFormat(component);
 				var value = opts.getInputValue();
 				var length = value.length;
 				var hasMultiplier = false;
