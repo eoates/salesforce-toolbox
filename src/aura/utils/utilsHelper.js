@@ -296,7 +296,7 @@
 				}
 			}
 
-			var pattern = /^[-+]?\d+(?:\.\d*)?(?:e[-+]?\d+)?$/i;
+			var pattern = /^[-+]?(?:\.\d+|\d+(?:\.\d*)?)(?:e[-+]?\d+)?$/i;
 			if (!pattern.test(value)) {
 				return NaN;
 			}
