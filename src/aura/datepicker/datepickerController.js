@@ -17,8 +17,9 @@
 		var year = value ? value.getFullYear() : today.getFullYear();
 		var month = value ? value.getMonth() : today.getMonth();
 
-		component.set('v.year', year);
-		component.set('v.month', month);
+		component.year = year;
+		component.month = month;
+		component.activeIndex = 0;
 
 		helper.setActiveDate(component, value || today);
 	},
@@ -38,9 +39,9 @@
 		var calendar = helper.getCalendar(year, month, value);
 		var activeDay = helper.getDayByValue(calendar, value || today);
 
-		component.set('v.year', year);
-		component.set('v.month', month);
-		component.set('v.activeIndex', activeDay.index);
+		component.year = year;
+		component.month = month;
+		component.activeIndex = activeDay.index;
 
 		if (component.isRendered()) {
 			helper.updateRows(component, calendar);
@@ -102,7 +103,7 @@
 	 * navigation
 	 */
 	containerKeyDown: function(component, event, helper) {
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 		var days = 0;
 		var value;
 
@@ -250,7 +251,7 @@
 	 */
 	yearChange: function(component, event, helper) {
 		var newYear = parseInt(event.target.value, 10);
-		var oldYear = component.get('v.year');
+		var oldYear = component.year;
 		helper.navigate(component, newYear - oldYear, 'y', false);
 	},
 

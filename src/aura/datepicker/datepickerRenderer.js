@@ -7,8 +7,8 @@
 		this.superAfterRender();
 
 		// Create calendar DOM elements
-		var year = component.get('v.year');
-		var month = component.get('v.month');
+		var year = component.year;
+		var month = component.month;
 		var value = helper.utils.asDate(component.get('v.value'));
 		var calendar = helper.getCalendar(year, month, value);
 

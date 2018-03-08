@@ -300,7 +300,7 @@
 	updateActiveCellTabIndex: function(component, focus) {
 		var globalId = component.getGlobalId();
 
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 		var activeCell = document.getElementById(globalId + '_cell_' + activeIndex);
 		if (activeCell) {
 			this.toggleClass(activeCell, 'is-active', true);
@@ -331,7 +331,7 @@
 	 */
 	focusActiveCell: function(component) {
 		var globalId = component.getGlobalId();
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 		var cell = document.getElementById(globalId + '_cell_' + activeIndex);
 		if (cell && cell.focus) {
 			cell.focus();
@@ -356,8 +356,8 @@
 			return;
 		}
 
-		var year = component.get('v.year');
-		var month = component.get('v.month');
+		var year = component.year;
+		var month = component.month;
 		var value = this.utils.asDate(component.get('v.value'));
 		var calendar = this.getCalendar(year, month, value);
 
@@ -383,12 +383,12 @@
 	 * @return {void}
 	 */
 	navigate: function(component, count, unit, focus) {
-		var year = component.get('v.year');
-		var month = component.get('v.month');
+		var year = component.year;
+		var month = component.month;
 		var value = this.utils.asDate(component.get('v.value'));
 		var calendar = this.getCalendar(year, month, value);
 
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 		var activeDay = this.getDayByIndex(calendar, activeIndex);
 		var activeDate = activeDay.value;
 
@@ -440,10 +440,10 @@
 		}
 
 		// Update the active day
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 		if (activeDay.index !== activeIndex) {
 			activeIndex = activeDay.index;
-			component.set('v.activeIndex', activeIndex);
+			component.activeIndex = activeIndex;
 
 			if (component.isRendered()) {
 				this.updateActiveCellTabIndex(component, focus);
@@ -486,12 +486,12 @@
 	 * @return {Date} The active date
 	 */
 	getActiveDate: function(component) {
-		var year = component.get('v.year');
-		var month = component.get('v.month');
+		var year = component.year;
+		var month = component.month;
 		var value = this.utils.asDate(component.get('v.value'));
 		var calendar = this.getCalendar(year, month, value);
 
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 		var activeDay = this.getDayByIndex(calendar, activeIndex);
 
 		return activeDay.value;
@@ -508,10 +508,10 @@
 	 * @return {void}
 	 */
 	setActiveDate: function(component, date, focus, calendar) {
-		var year = component.get('v.year');
-		var month = component.get('v.month');
+		var year = component.year;
+		var month = component.month;
 		var value = this.utils.asDate(component.get('v.value'));
-		var activeIndex = component.get('v.activeIndex');
+		var activeIndex = component.activeIndex;
 
 		// If the calendar was not specified then get it using the currently selected year and month
 		if (!calendar) {
@@ -526,8 +526,8 @@
 		var yearChanged = (year !== calendar.year);
 		var monthChanged = (month !== calendar.month);
 		if (yearChanged || monthChanged) {
-			component.set('v.year', year);
-			component.set('v.month', month);
+			component.year = year;
+			component.month = month;
 
 			calendar = this.getCalendar(year, month, value);
 
@@ -547,7 +547,7 @@
 		var activeDay = this.getDayByValue(calendar, date);
 		if (activeDay.index !== activeIndex) {
 			activeIndex = activeDay.index;
-			component.set('v.activeIndex', activeIndex);
+			component.activeIndex = activeIndex;
 
 			if (component.isRendered()) {
 				this.updateActiveCellTabIndex(component, focus);

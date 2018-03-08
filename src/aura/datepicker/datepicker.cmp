@@ -3,10 +3,6 @@
 	<aura:attribute access="GLOBAL" name="class" type="String" />
 	<aura:attribute access="GLOBAL" name="value" type="String" />
 	<aura:attribute access="GLOBAL" name="trapFocus" type="Boolean" default="false" />
-
-	<aura:attribute access="PRIVATE" name="year" type="Integer" />
-	<aura:attribute access="PRIVATE" name="month" type="Integer" />
-	<aura:attribute access="PRIVATE" name="activeIndex" type="Integer" default="0" />
 	<!-- /attributes -->
 
 	<!-- events -->
