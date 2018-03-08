@@ -136,8 +136,8 @@
     // Begin by obtaining a reference to the apex component
     var apex = component.find('apex');
 
-    // Next, call the Apex method. The success and failure callbacks are optional. You only need to
-    // specify a callback if you intend to actually perform some action
+    // Next, call the Apex method. The success and failure callbacks are optional. You
+    // only need to specify a callback if you intend to actually perform some action
     apex.execute(component, 'echo', {
       abortable: true,
       params: {
