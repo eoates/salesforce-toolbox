@@ -1,16 +1,25 @@
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL"
+                description="Displays a calendar from which a date can be selected.">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="class" type="String" />
-	<aura:attribute access="GLOBAL" name="value" type="String" />
-	<aura:attribute access="GLOBAL" name="trapFocus" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
+	<aura:attribute access="GLOBAL" name="value" type="String"
+	                description="The selected date as a string using the format YYYY-MM-DD." />
+	<aura:attribute access="GLOBAL" name="trapFocus" type="Boolean" default="false"
+	                description="If true then pressing tab or shift+tab will only navigate through elements within the component." />
 	<!-- /attributes -->
 
 	<!-- events -->
-	<aura:registerEvent access="GLOBAL" name="onselect" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="oncancel" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onselect" type="c:genericComponentEvent"
+	                    description="Fired when a date is selected. This event differs from onchange in that it is always fired when a date is selected even if it is the same as the previous value. The onchange event, however, only fires when the selected date changes." />
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent"
+	                    description="Fired when the selected date is changed." />
+	<aura:registerEvent access="GLOBAL" name="oncancel" type="c:genericComponentEvent"
+	                    description="Fired when the user cancels date selection by pressing the escape key. Use this event if you are displaying the datepicker in a popup to hide or close the popup." />
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent"
+	                    description="Fired when the component receives focus." />
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent"
+	                    description="Fired when the component loses focus." />
 	<!-- /events -->
 
 	<!-- handlers -->
@@ -19,7 +28,8 @@
 	<!-- /handlers -->
 
 	<!-- methods -->
-	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}"
+	             description="Sets focus to the component." />
 	<!-- /methods -->
 
 	<!-- component -->
