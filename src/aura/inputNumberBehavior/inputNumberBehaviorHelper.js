@@ -324,11 +324,7 @@
 				if (leadingWhitespace.length > 0) {
 					value = value.substring(leadingWhitespace.length);
 					length = value.length;
-					if (selectionStart <= leadingWhitespace.length) {
-						selectionStart = 0;
-					} else {
-						selectionStart -= leadingWhitespace.length;
-					}
+					selectionStart = Math.max(selectionStart - leadingWhitespace.length, 0);
 				}
 
 				// Remove trailing whitespace
@@ -336,9 +332,7 @@
 				if (trailingWhitespace.length > 0) {
 					value = value.substring(0, length - trailingWhitespace.length);
 					length = value.length;
-					if (selectionStart > length) {
-						selectionStart = length;
-					}
+					selectionStart = Math.min(selectionStart, length);
 				}
 
 				// Check for a single special multiplier shortcut at the end of the input. If one
@@ -359,7 +353,7 @@
 								// Not a number
 								value = value.substring(0, i) + value.substring(i + 1);
 								length--;
-								if (i <= selectionStart) {
+								if (i < selectionStart) {
 									selectionStart--;
 								}
 							}
@@ -376,7 +370,9 @@
 				}
 
 				// Step through each character up to either the decimal or the end of the value and
-				// check whether it is a number
+				// check whether it is a number. We step through the string in reverse to keep count
+				// of how many characters we have processed and know when to insert a thousands
+				// separator
 				if (length > 0) {
 					var beginAt = 0;
 					var endAt = length - 1;
@@ -398,7 +394,7 @@
 								// Add a thousands separator every 3 digits
 								tempValue = ',' + tempValue;
 								tempCounter = 0;
-								if (i <= selectionStart) {
+								if (i < (selectionStart - 1)) {
 									tempSelectionStart++;
 								}
 							}
@@ -406,7 +402,7 @@
 							tempCounter++;
 						} else {
 							// Char is not a number; skip it
-							if (i <= selectionStart) {
+							if (i < selectionStart) {
 								tempSelectionStart--;
 							}
 						}
@@ -425,6 +421,10 @@
 					length = value.length - (hasMultiplier ? 1 : 0);
 					selectionStart = tempSelectionStart;
 				}
+
+				// Make sure cursor is in valid position
+				selectionStart = Math.max(selectionStart, 0);
+				selectionStart = Math.min(selectionStart, value.length);
 
 				// Don't do anything if the value wasn't changed
 				if (value === originalValue) {
