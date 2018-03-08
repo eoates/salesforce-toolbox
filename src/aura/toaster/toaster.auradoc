@@ -37,8 +37,6 @@
 		<h4 class="slds-text-heading_small">Component Markup</h4>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component controller="MyApexClass">
-  <aura:dependency type="EVENT" resource="c:showToast" />
-
   <c:toaster />
   <button onclick="{!c.testButtonClick}">Test</button>
 </aura:component>
