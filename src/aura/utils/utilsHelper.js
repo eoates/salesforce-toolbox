@@ -510,10 +510,10 @@
 	},
 
 	/**
-	 * Compares two values and returns true if they are equal. Compaison uses strict equality so the
-	 * types must also match. The deepEquals() method is useful when comparing arrays or objects.
-	 * For arrays deepEquals() is called recursively for each element in the array. For objects
-	 * deepEquals() is called for each property in the object
+	 * Compares two values and returns true if they are equal. Comparison uses strict equality so
+	 * the types must also match. The deepEquals() method is useful when comparing arrays or
+	 * objects. For arrays deepEquals() is called recursively for each element in the array. For
+	 * objects deepEquals() is called for each property in the object
 	 *
 	 * @param {*} a - The first value to compare
 	 * @param {*} b - The second value to compare
