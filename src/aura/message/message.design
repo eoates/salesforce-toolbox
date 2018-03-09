@@ -1,0 +1,21 @@
+<design:component label="Message">
+	<design:attribute name="class" label="Class"
+	                  description="A CSS class name to add to the component." />
+
+	<design:attribute name="type" label="Type"
+	                  datasource="info,success,warning,error"
+	                  default="info" required="true"
+	                  description="The type of message to be displayed." />
+
+	<design:attribute name="severity" label="Severity"
+	                  min="1" max="3"
+	                  default="2" required="true"
+	                  description="Controls the size of the icon." />
+
+	<design:attribute name="summary" label="Summary"
+	                  description="A brief summary of the message." />
+
+	<design:attribute name="detail" label="Detail"
+	                  default="Your message text goes here"
+	                  description="The detailed message information." />
+</design:component>

@@ -1,0 +1,33 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>message</code> component displays a simple message. The message can be an
+			informational message, a success message, a warning message, or an error message.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>This example will demonstrate basic usage of the <code>message</code> component.</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <!-- Display a very simple information message -->
+  <c:message type="info" detail="This is a simple information message." />
+
+  <!-- Display a success message with a large icon and summary -->
+  <c:message type="error" severity="3" summary="Oops! Something went wrong."
+    detail="An unexpected error occurred." />
+
+  <!-- Display a warning message containing markup -->
+  <c:message type="warning" summary="Warning">
+    <p>This is a warning message with a <a href="#">link</a>.</p>
+  </c:message>
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>

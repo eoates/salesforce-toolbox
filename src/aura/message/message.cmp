@@ -1,0 +1,56 @@
+<aura:component access="GLOBAL"
+                implements="flexipage:availableForAllPageTypes"
+                description="Displays an info, success, warning, or error message.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
+	<aura:attribute access="GLOBAL" name="type" type="String" default="info" required="true"
+	                description="The type of message to display. Accepted values are info, success, warning, and error." />
+
+	<aura:attribute access="GLOBAL" name="severity" type="Integer" default="2" required="true"
+	                description="The severity of the message. This controls the size of the icon. Accepted values are 1 (small icon), 2 (medium icon), and 3 (large icon)." />
+
+	<aura:attribute access="GLOBAL" name="summary" type="String"
+	                description="A brief summary of the message. Appears above the message detail." />
+
+	<aura:attribute access="GLOBAL" name="detail" type="String"
+	                description="The detailed message information. Appears below the message summary." />
+
+	<aura:attribute access="PRIVATE" name="themeName" type="String" default="slds-theme_shade"
+	                description="Internal use only! The SLDS theme to be applied to the container." />
+
+	<aura:attribute access="PRIVATE" name="iconName" type="String" default="utility:info"
+	                description="Internal use only! The icon to be displayed." />
+
+	<aura:attribute access="PRIVATE" name="iconAlternativeText" type="String" default="Information"
+	                description="Internal use only! Alternate text for the icon." />
+
+	<aura:attribute access="PRIVATE" name="iconInverse" type="Boolean" default="false"
+	                description="Internal use only! Controls whether the icon should be inverted." />
+	<!-- /attributes -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<aura:handler value="{!v.type}" name="change" action="{!c.typeChange}" />
+	<!-- /handlers -->
+
+	<!-- component -->
+	<div class="{!v.class + ' slds-box slds-media ' + v.themeName}">
+		<div class="slds-media__figure">
+			<lightning:icon iconName="{!v.iconName}"
+			                alternativeText="{!v.iconAlternativeText}"
+			                variant="{!if(v.iconInverse, 'inverse', undefined)}"
+			                size="{!if(v.severity lt 2, 'small', if(v.severity gt 2, 'large', 'medium'))}" />
+		</div>
+		<div class="slds-media__body">
+			<aura:if isTrue="{!not(empty(v.summary))}">
+				<h3 class="slds-text-heading_medium slds-truncate" title="{!v.summary}">{!v.summary}</h3>
+			</aura:if>
+			<aura:if isTrue="{!not(empty(v.detail))}">
+				<p>{!v.detail}</p>
+			</aura:if>
+			{!v.body}
+		</div>
+	</div>
+	<!-- /component -->
+</aura:component>
