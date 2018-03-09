@@ -42,7 +42,7 @@
 			                variant="{!if(v.iconInverse, 'inverse', undefined)}"
 			                size="{!if(v.severity lt 2, 'small', if(v.severity gt 2, 'large', 'medium'))}" />
 		</div>
-		<div class="slds-media__body">
+		<div class="slds-media__body slds-text-align_left">
 			<aura:if isTrue="{!not(empty(v.summary))}">
 				<h3 class="slds-text-heading_medium slds-truncate" title="{!v.summary}">{!v.summary}</h3>
 			</aura:if>
