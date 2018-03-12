@@ -1,0 +1,139 @@
+<aura:component access="GLOBAL"
+                description="A modal dialog window.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="title" type="String"
+	                description="The dialog title." />
+
+	<aura:attribute access="GLOBAL" name="prompt" type="Boolean" default="false"
+	                description="If true the dialog will be styled as a prompt. Prompts do not have a close button even if the closeButton attribute is true." />
+
+	<aura:attribute access="GLOBAL" name="large" type="Boolean" default="false"
+	                description="If true the dialog width will be much wider than default." />
+
+	<aura:attribute access="GLOBAL" name="directional" type="Boolean" default="false"
+	                description="If true the first element in the footer will be left aligned." />
+
+	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="false"
+	                description="Specifies whether a close button is displayed. If closeButton is set to true then you should provide a handler for the onclosebutton event." />
+
+	<aura:attribute access="GLOBAL" name="dialogClass" type="String"
+	                description="A CSS style to apply to the dialog in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="containerClass" type="String"
+	                description="A CSS style to apply to the dialog container in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="headerClass" type="String"
+	                description="A CSS style to apply to the dialog header in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="contentClass" type="String"
+	                description="A CSS style to apply to the dialog content in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="footerClass" type="String"
+	                description="A CSS style to apply to the dialog footer in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="header" type="Aura.Component[]"
+	                description="The content of the dialog header." />
+
+	<aura:attribute access="GLOBAL" name="footer" type="Aura.Component[]"
+	                description="The content of the dialog footer." />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onbeforeopen" type="c:genericComponentEvent"
+	                    description="Fired when the dialog is about to be opened but is not yet visible." />
+
+	<aura:registerEvent access="GLOBAL" name="onopen" type="c:genericComponentEvent"
+	                    description="Fired after the dialog has been opened and is visible." />
+
+	<aura:registerEvent access="GLOBAL" name="onbeforeclose" type="c:genericComponentEvent"
+	                    description="Fired when the dialog is about to be closed but is still visible." />
+
+	<aura:registerEvent access="GLOBAL" name="onclose" type="c:genericComponentEvent"
+	                    description="Fired when the dialog has been closed and is no longer visible." />
+
+	<aura:registerEvent access="GLOBAL" name="onclosebutton" type="c:genericComponentEvent"
+	                    description="Fired when the user clicks on the close button or presses the escape key." />
+
+	<aura:registerEvent access="GLOBAL" name="onfocusfirst" type="c:genericComponentEvent"
+	                    description="Fired to indicate when the first focusable element within the dialog should be focused. If your dialog has any focusable elements you should provide a handler for this event." />
+
+	<aura:registerEvent access="GLOBAL" name="onfocuslast" type="c:genericComponentEvent"
+	                    description="Fired to indicate when the last focusable element within the dialog should be focused. If your dialog has any focusable elements you should provide a handler for this event." />
+	<!-- /events -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="open" action="{!c.open}"
+	             description="Opens the dialog." />
+
+	<aura:method access="GLOBAL" name="close" action="{!c.close}"
+	             description="Closes the dialog." />
+	<!-- /methods -->
+
+	<!-- component -->
+	<div id="{#globalId + '_root'}" style="display: none;">
+		<section id="{#globalId + '_dialog'}"
+		         role="{!if(v.prompt, 'alertdialog', 'dialog')}"
+		         aria-modal="true"
+		         aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
+		         aria-describedby="{#globalId + '_content'}"
+		         class="{!v.dialogClass + ' slds-modal' + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}"
+		         onkeydown="{!c.dialogKeyDown}">
+
+			<!-- top focus trap -->
+			<a id="{#globalId + '_top'}"
+			   class="focus-trap"
+			   onfocus="{!c.focusTrapTopFocus}"
+			   onkeydown="{!c.focusTrapTopKeyDown}"
+			   onclick="{!c.focusTrapTopClick}">Top</a>
+			<!-- /top focus trap -->
+
+			<!-- container -->
+			<div class="{!v.containerClass + ' slds-modal__container'}">
+
+				<!-- header -->
+				<header class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
+					<aura:if isTrue="{!and(v.closeButton, not(v.prompt))}">
+						<lightning:buttonIcon aura:id="closeButton"
+						                      class="slds-modal__close"
+						                      iconName="utility:close"
+						                      alternativeText="Close"
+						                      variant="bare-inverse"
+						                      size="large"
+						                      onclick="{!c.closeButtonClick}" />
+					</aura:if>
+
+					<h2 id="{#globalId + '_title'}" class="{!if(empty(v.title), 'slds-hide', 'slds-text-heading_medium')}">{!v.title}</h2>
+
+					{!v.header}
+				</header>
+				<!-- /header -->
+
+				<!-- content -->
+				<div id="{#globalId + '_content'}" class="{!v.contentClass + ' slds-modal__content'}">
+					{!v.body}
+				</div>
+				<!-- /content -->
+
+				<!-- footer -->
+				<aura:if isTrue="{!not(empty(v.footer))}">
+					<footer class="{!v.footerClass + ' slds-modal__footer' + if(v.directional, ' slds-modal__footer_directional', '')}">
+						{!v.footer}
+					</footer>
+				</aura:if>
+				<!-- /footer -->
+
+			</div>
+			<!-- /container -->
+
+			<!-- bottom focus trap -->
+			<a id="{#globalId + '_bottom'}"
+			   class="focus-trap"
+			   onfocus="{!c.focusTrapBottomFocus}"
+			   onkeydown="{!c.focusTrapBottomKeyDown}"
+			   onclick="{!c.focusTrapBottomClick}">Bottom</a>
+			<!-- /bottom focus trap -->
+
+		</section>
+	</div>
+	<!-- /component -->
+</aura:component>

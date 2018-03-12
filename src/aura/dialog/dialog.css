@@ -1,0 +1,6 @@
+.THIS .focus-trap {
+	overflow: hidden;
+	position: absolute;
+	width: 0;
+	height: 0;
+}
