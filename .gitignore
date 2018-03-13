@@ -4,3 +4,4 @@ debug/
 *.sublime-workspace
 src/aura/testApplication/**
 src/aura/testComponent/**
+src/classes/LtngTestComponentController.*
