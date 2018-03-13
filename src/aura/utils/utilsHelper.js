@@ -1223,7 +1223,7 @@
 		}
 
 		if (Array.prototype.filter) {
-			return array.filter(predicate, thisArg);
+			return Array.prototype.filter.call(array, predicate, thisArg);
 		}
 
 		var length = array.length;
@@ -1286,5 +1286,299 @@
 
 		result.length = numDistinct;
 		return result;
+	},
+
+	/**
+	 * Returns true if the value is a HTMLElement; otherwise, false
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {boolean} true if the value is a HTMLElement; otherwise, false
+	 */
+	isElement: function(value) {
+		return value && (value.nodeType === 1);
+	},
+
+	/**
+	 * Returns true if the element is visible; otherwise, false
+	 *
+	 * @param {Object} element - The element to test
+	 *
+	 * @return {boolean} true if the element is visible; otherwise, false
+	 */
+	isElementVisible: function(element) {
+		if (!this.isElement(element)) {
+			return false;
+		}
+		if ((element.style.display === 'none') ||
+			(element.style.visibility === 'hidden') ||
+			this.hasClass(element, 'slds-hide')) {
+			return false;
+		}
+		return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+	},
+
+	/**
+	 * Splits a list of CSS class names, separated by spaces, into an array
+	 *
+	 * @param {string} value - The class names
+	 *
+	 * @return {string[]} An array containing the class names
+	 */
+	classNamesToArray: function(value) {
+		if (this.isArray(value)) {
+			return value;
+		}
+		if (this.isString(value)) {
+			return value.match(/[^\x20\t\r\n\f]+/g) || [];
+		}
+		return [];
+	},
+
+	/**
+	 * Returns an element's class attribute
+	 *
+	 * @param {HTMLElement} element - The element
+	 *
+	 * @return {string} The element's class attribute
+	 */
+	getClass: function(element) {
+		var className = (element && element.getAttribute && element.getAttribute('class')) || '';
+		return this.classNamesToArray(className).join(' ');
+	},
+
+	/**
+	 * Returns true if the element is assigned the specified class; otherwise, false
+	 *
+	 * @param {HTMLElement} element   - The element to test
+	 * @param {string}      className - The class to check for
+	 *
+	 * @return {boolean} true if the element is assigned the specified class; otherwise, false
+	 */
+	hasClass: function(element, className) {
+		className = ' ' + this.classNamesToArray(className).join(' ') + ' ';
+		return (' ' + this.getClass(element) + ' ').indexOf(className) >= 0;
+	},
+
+	/**
+	 * Adds the specified class(es) to an element
+	 *
+	 * @param {HTMLElement} element    - The element
+	 * @param {string}      classNames - One or more space-separated classes to be added to the
+	 *                                   element
+	 *
+	 * @return {void}
+	 */
+	addClass: function(element, classNames) {
+		if (!this.isElement(element)) {
+			return;
+		}
+
+		classNames = this.classNamesToArray(classNames);
+		if (classNames.length > 0) {
+			var currentValue = ' ' + this.getClass(element) + ' ';
+			for (var i = 0, n = classNames.length; i < n; i++) {
+				var className = classNames[i];
+				if (currentValue.indexOf(' ' + className + ' ') < 0) {
+					currentValue += className + ' ';
+				}
+			}
+
+			var finalValue = this.classNamesToArray(currentValue).join(' ');
+			if (this.getClass(element) !== finalValue) {
+				element.setAttribute('class', finalValue);
+			}
+		}
+	},
+
+	/**
+	 * Removes the specified class(es) from an element
+	 *
+	 * @param {HTMLElement} element    - The element
+	 * @param {string}      classNames - One or more space-separated classes to be removed from the
+	 *                                   element
+	 *
+	 * @return {void}
+	 */
+	removeClass: function(element, classNames) {
+		if (!this.isElement(element)) {
+			return;
+		}
+
+		var classNames = this.classNamesToArray(classNames);
+		if (classNames.length > 0) {
+			var currentValue = ' ' + this.getClass(element) + ' ';
+			for (var i = 0, n = classNames.length; i < n; i++) {
+				var className = classNames[i];
+				while (currentValue.indexOf(' ' + className + ' ') >= 0) {
+					currentValue = currentValue.replace(' ' + className + ' ', ' ');
+				}
+			}
+
+			var finalValue = this.classNamesToArray(currentValue).join(' ');
+			if (this.getClass(element) !== finalValue) {
+				element.setAttribute('class', finalValue);
+			}
+		}
+	},
+
+	/**
+	 * Add or remove one or more classes from an element, depending on either the class's presence
+	 * or the value of the state argument
+	 *
+	 * @param {HTMLElement} element    - The element
+	 * @param {string}      classNames - One or more class names (separated by spaces) to be toggled
+	 *                                   for the element
+	 * @param {boolean}     [state]    - A Boolean (not just truthy/falsy) value to determine
+	 *                                   whether the class should be added or removed
+	 *
+	 * @return {void}
+	 */
+	toggleClass: function(element, classNames, state) {
+		if (!this.isElement(element)) {
+			return;
+		}
+
+		if (state === true) {
+			this.addClass(element, classNames);
+			return;
+		} else if (state === false) {
+			this.removeClass(element, classNames);
+			return;
+		}
+
+		var classNames = this.classNamesToArray(classNames);
+		for (var i = 0, n = classNames.length; i < n; i++) {
+			var className = classNames[i];
+			if (this.hasClass(element, className)) {
+				this.removeClass(element, className);
+			} else {
+				this.addClass(element, className);
+			}
+		}
+	},
+
+	/**
+	 * Returns true if the element would be selected by the specified selector string; otherwise,
+	 * false. This method provides a polyfill if a native implementation is not available
+	 *
+	 * @param {HTMLElement} element  - The element to test
+	 * @param {string}      selector - The selector to test
+	 *
+	 * @return {boolean} true if the element matches the selector; otherwise, false
+	 */
+	matchesSelector: function(element, selector) {
+		var matches = element.matches ||
+			element.matchesSelector ||
+			element.mozMatchesSelector ||
+			element.msMatchesSelector ||
+			element.oMatchesSelector ||
+			element.webkitMatchesSelector ||
+			function(sel) {
+				var doc = this.document || this.ownerDocument;
+				if (doc) {
+					var elems = doc.querySelectorAll(sel);
+					for (var i = 0, n = elems.length; i < n; i++) {
+						if (elems.item(i) === this) {
+							return true;
+						}
+					}
+				}
+				return false;
+			};
+
+		return matches.call(element, selector);
+
+	},
+
+	/**
+	 * Sorts an array elements by tab index. Elements with an explicit tab index have priority over
+	 * elements with no tab index or a tab index of 0. Each element in the specified array should be
+	 * capable of receiving focus (e.g., input, button, select, etc.) and its tab index should be
+	 * undefined or greater than -1. This method creates a new sorted array and does not modify the
+	 * original array
+	 *
+	 * @param {HTMLElement[]} elements - The array of elements to be sorted
+	 *
+	 * @return {HTMLElement[]} The sorted elements
+	 */
+	sortElementsByTabIndex: function(elements) {
+		var self = this;
+
+		var sortable = elements.map(function(value, index) {
+			return {
+				position: index,
+				element: value
+			};
+		});
+
+		sortable.sort(function(a, b) {
+			var elementA = a.element;
+			var elementB = b.element;
+			var tabIndexA = self.asInteger(elementA.getAttribute('tabindex')) || 0;
+			var tabIndexB = self.asInteger(elementB.getAttribute('tabindex')) || 0;
+			var positionA = a.position;
+			var positionB = b.position;
+			if ((tabIndexA === 0) && (tabIndexB === 0)) {
+				return positionA - positionB;
+			} else if (tabIndexA === 0) {
+				return 1;
+			} else if (tabIndexB === 0) {
+				return -1;
+			} else {
+				var result = tabIndexA - tabIndexB;
+				if (result === 0) {
+					result = positionA - positionB;
+				}
+				return result;
+			}
+		});
+
+		return sortable.map(function(value) {
+			return value.element;
+		});
+	},
+
+	/**
+	 * Returns a list of focusable elements for the specified parent element. If no parent element
+	 * is specified then all focusable elements in the entire DOM are returned. Optionally you may
+	 * specify a filter argument to exclude elements from the returned array. This filter can be
+	 * a callback function or a string containing a CSS selector
+	 *
+	 * @param {HTMLElement}     [parentElement] - The parent element
+	 * @param {string|Function} [filter]        - Optional filter
+	 * @param {*}               [thisArg]       - If filter is a callback function then thisArg will
+	 *                                            be used as the this object
+	 *
+	 * @return {HTMLElement[]} An array of focusable elements
+	 */
+	getFocusableElements: function(parentElement, filter, thisArg) {
+		if (this.isUndefinedOrNull(parentElement)) {
+			parentElement = document.documentElement;
+		} else if (!this.isElement(parentElement)) {
+			return [];
+		}
+
+		var elements = parentElement.querySelectorAll(
+			'input:not(:disabled):not([tabindex="-1"])'
+			+ ',textarea:not(:disabled):not([tabindex="-1"])'
+			+ ',select:not(:disabled):not([tabindex="-1"])'
+			+ ',button:not(:disabled):not([tabindex="-1"])'
+			+ ',[href]:not([tabindex="-1"])'
+			+ ',[tabindex]:not([tabindex="-1"])'
+		);
+
+		elements = this.filter(elements, this.isElementVisible, this);
+
+		if (this.isFunction(filter)) {
+			elements = this.filter(elements, filter, thisArg);
+		} else if (this.isString(filter)) {
+			elements = this.filter(elements, function(element) {
+				return this.matchesSelector(element, filter);
+			}, this);
+		}
+
+		elements = this.sortElementsByTabIndex(elements);
+		return elements;
 	}
 })
