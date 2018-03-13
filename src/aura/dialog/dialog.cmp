@@ -83,11 +83,11 @@
 		         onkeydown="{!c.dialogKeyDown}">
 
 			<!-- top focus trap -->
-			<a id="{#globalId + '_top'}"
-			   class="focus-trap"
-			   onfocus="{!c.focusTrapTopFocus}"
-			   onkeydown="{!c.focusTrapTopKeyDown}"
-			   onclick="{!c.focusTrapTopClick}">Top</a>
+			<button id="{#globalId + '_top'}"
+			        class="focus-trap"
+			        type="button"
+			        onfocus="{!c.focusTrapTopFocus}"
+			        onkeydown="{!c.focusTrapTopKeyDown}">Top</button>
 			<!-- /top focus trap -->
 
 			<!-- container -->
@@ -134,11 +134,11 @@
 			<!-- /container -->
 
 			<!-- bottom focus trap -->
-			<a id="{#globalId + '_bottom'}"
-			   class="focus-trap"
-			   onfocus="{!c.focusTrapBottomFocus}"
-			   onkeydown="{!c.focusTrapBottomKeyDown}"
-			   onclick="{!c.focusTrapBottomClick}">Bottom</a>
+			<button id="{#globalId + '_bottom'}"
+			        class="focus-trap"
+			        type="button"
+			        onfocus="{!c.focusTrapBottomFocus}"
+			        onkeydown="{!c.focusTrapBottomKeyDown}">Bottom</button>
 			<!-- /bottom focus trap -->
 
 		</section>

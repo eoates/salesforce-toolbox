@@ -174,19 +174,18 @@
 	 * @return {HTMLElement} The focus trap element
 	 */
 	createFocusTrap: function(trapId) {
-		var trap = document.createElement('a');
+		var trap = document.createElement('button');
 		trap.id = trapId;
-		trap.href = 'javascript' + ':' + 'void(0)';
+		trap.type = 'button';
 		trap.innerText = trapId;
 		trap.style.overflow = 'hidden';
 		trap.style.position = 'absolute';
 		trap.style.width = '0';
 		trap.style.height = '0';
+		trap.style.padding = '0';
+		trap.style.border = 'none';
+		trap.style.background = 'none';
 		trap.style.display = 'none';
-		trap.addEventListener('click', function(event) {
-			event.stopPropagation();
-			event.preventDefault();
-		});
 		return trap;
 	},
 

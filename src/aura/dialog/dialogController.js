@@ -88,14 +88,6 @@
 	},
 
 	/**
-	 * Ignore click event on top focus trap
-	 */
-	focusTrapTopClick: function(component, event, helper) {
-		event.stopPropagation();
-		event.preventDefault();
-	},
-
-	/**
 	 * When the bottom focus trap element receives focus that means the user pressed TAB while the
 	 * last focusable element in the dialog had focus. If a close button is present then set focus
 	 * to it; otherwise, fire the onfocusfirst event to signal to the parent that it should set
@@ -133,13 +125,5 @@
 			event.preventDefault();
 			helper.fireEvent(component, 'onfocusfirst');
 		}
-	},
-
-	/**
-	 * Ignore click event on bottom focus trap
-	 */
-	focusTrapBottomClick: function(component, event, helper) {
-		event.stopPropagation();
-		event.preventDefault();
 	}
 })
