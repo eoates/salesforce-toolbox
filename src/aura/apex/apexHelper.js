@@ -1,5 +1,18 @@
 ({
 	/**
+	 * Imports modules used by the component
+	 *
+	 * @param {Aura.Component} component - The apex component
+	 *
+	 * @return {void}
+	 */
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
+		}
+	},
+
+	/**
 	 * Executes an Apex method
 	 *
 	 * @param {Aura.Component} component              - The component for which to execute the Apex
@@ -22,7 +35,8 @@
 
 		var action = component.get('c.' + name);
 		if (opts && opts.params) {
-			action.setParams(opts.params);
+			var params = this.utils.clone(opts.params);
+			action.setParams(params);
 		}
 		if (opts && opts.abortable) {
 			action.setAbortable();

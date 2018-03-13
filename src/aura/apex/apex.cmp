@@ -1,5 +1,9 @@
 <aura:component access="GLOBAL"
                 description="A reusable component for executing Apex methods.">
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
 	<!-- methods -->
 	<aura:method access="GLOBAL"
 	             name="execute"
@@ -15,4 +19,8 @@
 		                description="Optional. An object used to specify execution options." />
 	</aura:method>
 	<!-- /methods -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+	<!-- /component -->
 </aura:component>

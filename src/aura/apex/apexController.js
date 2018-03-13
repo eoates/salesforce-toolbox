@@ -1,5 +1,12 @@
 ({
 	/**
+	 * Initializes the component
+	 */
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
 	 * Executes an Apex method
 	 */
 	execute: function(component, event, helper) {
