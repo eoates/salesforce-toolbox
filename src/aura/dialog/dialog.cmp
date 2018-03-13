@@ -39,6 +39,9 @@
 	<!-- /attributes -->
 
 	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="ondefaultaction" type="c:genericComponentEvent"
+	                    description="Fired when the user presses the enter key inside the dialog." />
+
 	<aura:registerEvent access="GLOBAL" name="onbeforeopen" type="c:genericComponentEvent"
 	                    description="Fired when the dialog is about to be opened but is not yet visible." />
 
@@ -109,9 +112,14 @@
 				<!-- /header -->
 
 				<!-- content -->
-				<div id="{#globalId + '_content'}" class="{!v.contentClass + ' slds-modal__content'}">
+				<form id="{#globalId + '_content'}"
+				      class="{!v.contentClass + ' slds-modal__content'}"
+				      onsubmit="{!c.formSubmit}">
+					<!-- this hidden submit input is needed for the ENTER key to submit the form -->
+					<input type="submit" value="Submit" tabindex="-1" class="slds-hide" />
+
 					{!v.body}
-				</div>
+				</form>
 				<!-- /content -->
 
 				<!-- footer -->

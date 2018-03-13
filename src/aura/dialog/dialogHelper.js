@@ -4,6 +4,68 @@
 	openDialogs: [],
 
 	/**
+	 * Sets focus to the dialog's top element
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {void}
+	 */
+	focusTop: function(component) {
+		var topId = component.getGlobalId() + '_top';
+		var top = document.getElementById(topId);
+		if (top) {
+			top.focus();
+		}
+	},
+
+	/**
+	 * Sets focus to the dialog's top element without triggering its event handler
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {void}
+	 */
+	focusTopSilent: function(component) {
+		component.ignoreFocusTrapTopFocus = true;
+		try {
+			this.focusTop(component);
+		} finally {
+			component.ignoreFocusTrapTopFocus = false;
+		}
+	},
+
+	/**
+	 * Sets focus to the dialog's bottom element
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {void}
+	 */
+	focusBottom: function(component) {
+		var bottomId = component.getGlobalId() + '_bottom';
+		var bottom = document.getElementById(bottomId);
+		if (bottom) {
+			bottom.focus();
+		}
+	},
+
+	/**
+	 * Sets focus to the dialog's bottom element without triggering its event handler
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {void}
+	 */
+	focusBottomSilent: function(component) {
+		component.ignoreFocusTrapBottomFocus = true;
+		try {
+			this.focusBottom(component);
+		} finally {
+			component.ignoreFocusTrapBottomFocus = false;
+		}
+	},
+
+	/**
 	 * Set focus to the first element in the dialog
 	 *
 	 * @param {Aura.Component} component - The dialog component
@@ -15,21 +77,27 @@
 		// that; otherwise, use the top focus trap
 		var closeButton = component.find('closeButton');
 		if (closeButton) {
-			// Set focus to close button
 			closeButton.focus();
 		} else {
-			// Set focus to top focus trap. Set the ignoreFocusTrapTopFocus flag to true so the
-			// element's focus handler does not try to fire the onfocuslast event
-			var topId = component.getGlobalId() + '_top';
-			var top = document.getElementById(topId);
-			if (top) {
-				component.ignoreFocusTrapTopFocus = true;
-				try {
-					top.focus();
-				} finally {
-					component.ignoreFocusTrapTopFocus = false;
-				}
-			}
+			this.focusTopSilent(component);
+		}
+	},
+
+	/**
+	 * Set focus to the last element in the dialog
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {void}
+	 */
+	focusLastElement: function(component) {
+		// Make sure some element within the dialog has focus. If we have a close button then use
+		// that; otherwise, use the bottom focus trap
+		var closeButton = component.find('closeButton');
+		if (closeButton) {
+			closeButton.focus();
+		} else {
+			this.focusBottomSilent(component);
 		}
 	},
 
@@ -83,9 +151,86 @@
 			container.appendChild(backdrop);
 
 			body.appendChild(container);
+
+			var topFocusTrap = this.createTopFocusTrap();
+			body.insertBefore(topFocusTrap, body.childNodes[0]);
+
+			var bottomFocusTrap = this.createBottomFocusTrap();
+			body.appendChild(bottomFocusTrap);
 		}
 
 		return container;
+	},
+
+	/**
+	 * Creates a focus trap element. A focus trap element is used to prevent focus from leaving the
+	 * active dialog. We create 2 focus traps: a top and a bottom. When the top focus trap receives
+	 * focus then it finds the active dialog and notifies it to set focus to its first element.
+	 * Similarly, when the bottom focus trap receives focus it finds the active dialog and notifies
+	 * it to set focus to its last element
+	 *
+	 * @param {string} trapId - The ID to use for the created element
+	 *
+	 * @return {HTMLElement} The focus trap element
+	 */
+	createFocusTrap: function(trapId) {
+		var trap = document.createElement('a');
+		trap.id = trapId;
+		trap.href = 'javascript' + ':' + 'void(0)';
+		trap.innerText = trapId;
+		trap.style.overflow = 'hidden';
+		trap.style.position = 'absolute';
+		trap.style.width = '0';
+		trap.style.height = '0';
+		trap.style.display = 'none';
+		trap.addEventListener('click', function(event) {
+			event.stopPropagation();
+			event.preventDefault();
+		});
+		return trap;
+	},
+
+	/**
+	 * Creates the top focus trap element. It has its tab index set to 1 so it should be the first
+	 * element to receive focus if the user tabs into the window from outside (for example the
+	 * browser's location/address field)
+	 *
+	 * @return {HTMLElement} The top focus trap element
+	 */
+	createTopFocusTrap: function() {
+		var self = this;
+
+		var trap = this.createFocusTrap(this.dialogContainerId + '_top');
+		trap.tabIndex = 1;
+		trap.addEventListener('focus', $A.getCallback(function() {
+			var activeDialog = self.getActiveDialog();
+			if (activeDialog) {
+				self.focusFirstElement(activeDialog);
+				self.fireEvent(activeDialog, 'onfocusfirst');
+			}
+		}));
+
+		return trap;
+	},
+
+	/**
+	 * Creates the bottom focus trap element
+	 *
+	 * @return {HTMLElement} The bottom focus trap element
+	 */
+	createBottomFocusTrap: function() {
+		var self = this;
+
+		var trap = this.createFocusTrap(this.dialogContainerId + '_bottom');
+		trap.addEventListener('focus', $A.getCallback(function() {
+			var activeDialog = self.getActiveDialog();
+			if (activeDialog) {
+				self.focusLastElement(activeDialog);
+				self.fireEvent(activeDialog, 'onfocuslast');
+			}
+		}));
+
+		return trap;
 	},
 
 	/**
@@ -185,6 +330,9 @@
 		var backdrop = document.getElementById(backdropId);
 		if (backdrop) {
 			$A.util.addClass(backdrop, 'slds-backdrop_open');
+
+			this.showTopFocusTrap();
+			this.showBottomFocusTrap();
 		}
 	},
 
@@ -198,19 +346,96 @@
 		var backdrop = document.getElementById(backdropId);
 		if (backdrop) {
 			$A.util.removeClass(backdrop, 'slds-backdrop_open');
+
+			this.hideTopFocusTrap();
+			this.hideBottomFocusTrap();
+		}
+	},
+
+	/**
+	 * Shows the top focus trap. In addition to showing the element this method also ensures it
+	 * appears as early in the DOM as possible. Unfortunately, due to security implemented within
+	 * Lightning elements in components outside or our namespace are not returned via
+	 * body.childNodes so it is still possible for other elements to appear in the DOM before our
+	 * element. At this time there really isn't anything we can do about it. Luckily, because we
+	 * set the tab index to 1 it should be the first element to receive focus
+	 *
+	 * @return {void}
+	 */
+	showTopFocusTrap: function() {
+		var trapId = this.dialogContainerId + '_top';
+		var trap = document.getElementById(trapId);
+		if (trap) {
+			trap.style.display = '';
+
+			var body = this.getBodyElement();
+			if (body) {
+				if (body.childNodes[0] !== trap) {
+					body.removeChild(trap);
+					body.insertBefore(trap, body.childNodes[0]);
+				}
+			}
+		}
+	},
+
+	/**
+	 * Hides the top focus trap
+	 *
+	 * @return {void}
+	 */
+	hideTopFocusTrap: function() {
+		var trapId = this.dialogContainerId + '_top';
+		var trap = document.getElementById(trapId);
+		if (trap) {
+			trap.style.display = 'none';
+		}
+	},
+
+	/**
+	 * Shows the bottom focus trap. In addition to showing the element this method also ensures it
+	 * appears at the end of the DOM
+	 *
+	 * @return {void}
+	 */
+	showBottomFocusTrap: function() {
+		var trapId = this.dialogContainerId + '_bottom';
+		var trap = document.getElementById(trapId);
+		if (trap) {
+			trap.style.display = '';
+
+			var body = this.getBodyElement();
+			if (body) {
+				if (body.childNodes[body.childNodes.length - 1] !== trap) {
+					body.removeChild(trap);
+					body.appendChild(trap);
+				}
+			}
+		}
+	},
+
+	/**
+	 * Hides the bottom focus trap
+	 *
+	 * @return {void}
+	 */
+	hideBottomFocusTrap: function() {
+		var trapId = this.dialogContainerId + '_bottom';
+		var trap = document.getElementById(trapId);
+		if (trap) {
+			trap.style.display = 'none';
 		}
 	},
 
 	/**
 	 * Sets the CSS z-index property for the specified dialog
 	 *
-	 * @param {string} componentId - The ID of the dialog component
-	 * @param {number} zIndex      - Index property
+	 * @param {Aura.Component} component - The dialog component
+	 * @param {number}         zIndex    - Index property
 	 *
 	 * @return {void}
 	 */
-	setDialogZIndex: function(componentId, zIndex) {
-		var dialogId = componentId + '_dialog';
+	setDialogZIndex: function(component, zIndex) {
+		var dialogId = component.getGlobalId() + '_dialog';
 		var dialog = document.getElementById(dialogId);
 		if (dialog) {
 			dialog.style.zIndex = zIndex;
@@ -224,8 +449,8 @@
 	 */
 	bringActiveDialogToFront: function() {
 		if (this.openDialogs.length > 0) {
-			var componentId = this.openDialogs[this.openDialogs.length - 1];
-			this.setDialogZIndex(componentId, this.dialogContainerZIndex + 1);
+			var component = this.openDialogs[this.openDialogs.length - 1];
+			this.setDialogZIndex(component, this.dialogContainerZIndex + 1);
 		}
 	},
 
@@ -239,10 +464,44 @@
 		if (this.openDialogs.length > 1) {
 			var counter = 1;
 			for (var i = this.openDialogs.length - 1; i >= 0; i--) {
-				var componentId = this.openDialogs[i];
-				this.setDialogZIndex(componentId, this.dialogContainerZIndex - counter++);
+				var component = this.openDialogs[i];
+				this.setDialogZIndex(component, this.dialogContainerZIndex - counter++);
 			}
 		}
+	},
+
+	/**
+	 * Returns a reference to the active dialog. The active dialog is the dialog that was opened
+	 * most recently
+	 *
+	 * @return {Aura.Component} The active dialog or undefined if there are no open dialogs
+	 */
+	getActiveDialog: function() {
+		var activeDialog;
+		if (this.openDialogs.length > 0) {
+			activeDialog = this.openDialogs[this.openDialogs.length - 1];
+		}
+		return activeDialog;
+	},
+
+	/**
+	 * Returns the index of the specified dialog component within the list of open dialogs. If the
+	 * dialog is not open then -1 is returned
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {number} The index of the dialog within the list of open dialogs if it is open or -1
+	 *                  if it is not open
+	 */
+	indexOfDialog: function(component) {
+		var index = -1;
+		for (var i = 0, n = this.openDialogs.length; i < n; i++) {
+			if (this.openDialogs[i] === component) {
+				index = i;
+				break;
+			}
+		}
+		return index;
 	},
 
 	/**
@@ -253,14 +512,12 @@
 	 * @return {void}
 	 */
 	handleDialogOpen: function(component) {
-		var componentId = component.getGlobalId();
-
-		var index = this.openDialogs.indexOf(componentId);
+		var index = this.indexOfDialog(component);
 		if (index >= 0) {
 			this.openDialogs.splice(index, 1);
 		}
 
-		this.openDialogs.push(componentId);
+		this.openDialogs.push(component);
 
 		this.sendInactiveDialogsToBack();
 		this.bringActiveDialogToFront();
@@ -278,12 +535,12 @@
 	 * @return {void}
 	 */
 	handleDialogClose: function(component) {
-		var componentId = component.getGlobalId();
-
-		var index = this.openDialogs.indexOf(componentId);
-		if (index >= 0) {
-			this.openDialogs.splice(index, 1);
+		var index = this.indexOfDialog(component);
+		if (index === -1) {
+			return;
 		}
+
+		this.openDialogs.splice(index, 1);
 
 		this.sendInactiveDialogsToBack();
 		this.bringActiveDialogToFront();
@@ -301,26 +558,28 @@
 	 * @return {void}
 	 */
 	openDialog: function(component) {
-		if (component.visible) {
-			return;
-		}
-
 		var dialogId = component.getGlobalId() + '_dialog';
 		var dialog = document.getElementById(dialogId);
 		if (!dialog) {
 			return;
 		}
 
-		this.fireEvent(component, 'onbeforeopen');
-		this.handleDialogOpen(component);
+		var index = this.indexOfDialog(component);
+		if (index === -1) {
+			this.fireEvent(component, 'onbeforeopen');
+			this.handleDialogOpen(component);
 
-		component.visible = true;
-		$A.util.addClass(dialog, 'slds-fade-in-open');
+			$A.util.addClass(dialog, 'slds-fade-in-open');
 
-		this.focusFirstElement(component);
+			this.focusFirstElement(component);
+			this.fireEvent(component, 'onopen');
+			this.fireEvent(component, 'onfocusfirst');
+		} else {
+			this.handleDialogOpen(component);
 
-		this.fireEvent(component, 'onopen');
-		this.fireEvent(component, 'onfocusfirst');
+			this.focusFirstElement(component);
+			this.fireEvent(component, 'onfocusfirst');
+		}
 	},
 
 	/**
@@ -331,21 +590,27 @@
 	 * @return {void}
 	 */
 	closeDialog: function(component) {
-		if (!component.visible) {
-			return;
-		}
-
 		var dialogId = component.getGlobalId() + '_dialog';
 		var dialog = document.getElementById(dialogId);
 		if (!dialog) {
 			return;
 		}
 
+		var index = this.indexOfDialog(component);
+		if (index === -1) {
+			return;
+		}
+
 		this.fireEvent(component, 'onbeforeclose');
 		this.handleDialogClose(component);
 
-		component.visible = false;
 		$A.util.removeClass(dialog, 'slds-fade-in-open');
+
+		var activeDialog = this.getActiveDialog();
+		if (activeDialog) {
+			this.focusFirstElement(activeDialog);
+			this.fireEvent(activeDialog, 'onfocusfirst');
+		}
 
 		this.fireEvent(component, 'onclose');
 	},

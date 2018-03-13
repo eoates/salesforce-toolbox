@@ -46,11 +46,26 @@
 	},
 
 	/**
+	 * Fire the ondefaultaction event when the form is submitted
+	 */
+	formSubmit: function(component, event, helper) {
+		event.stopPropagation();
+		event.preventDefault();
+		helper.fireEvent(component, 'ondefaultaction');
+	},
+
+	/**
 	 * When the top focus trap element receives focus that means the user pressed SHIFT+TAB while
 	 * the first element in the dialog had focus. Fire the onfocuslast event to signal to the parent
 	 * that it should set focus to the last focusable element in the dialog
 	 */
 	focusTrapTopFocus: function(component, event, helper) {
+		var activeDialog = helper.getActiveDialog();
+		if (activeDialog && (activeDialog !== component)) {
+			helper.focusTop(activeDialog);
+			return;
+		}
+
 		if (component.ignoreFocusTrapTopFocus) {
 			return;
 		}
@@ -87,6 +102,16 @@
 	 * focus to the first focusable element in the dialog
 	 */
 	focusTrapBottomFocus: function(component, event, helper) {
+		var activeDialog = helper.getActiveDialog(component);
+		if (activeDialog && (activeDialog !== component)) {
+			helper.focusBottom(activeDialog);
+			return;
+		}
+
+		if (component.ignoreFocusTrapBottomFocus) {
+			return;
+		}
+
 		var closeButton = component.find('closeButton');
 		if (closeButton) {
 			closeButton.focus();
