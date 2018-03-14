@@ -24,11 +24,11 @@
 
 		var keyCode = event.keyCode || event.which || 0;
 		if (keyCode === 27) {
-			// Escape was pressed. If a close button is present then fire the onclosebutton event.
-			// The reason we check for an actual close button instead of just getting the value of
-			// the closeButton attribute is because there are other conditions which can cause the
-			// close button to not appear such as if the prompt attribute is true
-			var closeButton = component.find('closeButton');
+			// Escape was pressed. If the closeButton attribute is true then fire the onclosebutton
+			// event. It is the dialog owner's responsibility to handle this event and actually
+			// close the dialog. The reason we don't just close the dialog automatically is that
+			// there could be reasons the dialog owner may wish the dialog to remain open
+			var closeButton = component.get('v.closeButton');
 			if (closeButton) {
 				event.stopPropagation();
 				event.preventDefault();

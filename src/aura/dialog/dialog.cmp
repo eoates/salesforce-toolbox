@@ -1,4 +1,5 @@
 <aura:component access="GLOBAL"
+                extensible="true"
                 description="A modal dialog window.">
 	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="title" type="String"

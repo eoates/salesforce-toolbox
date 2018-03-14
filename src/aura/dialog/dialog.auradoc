@@ -1,7 +1,237 @@
 <aura:documentation>
 	<aura:description>
 		<!-- description -->
-		<p>TODO: Add documentation</p>
+		<p>
+			The <code>dialog</code> component is used to create custom modal dialogs in your
+			application. A modal dialog appears above all other elements on the page and prevents
+			the user from interacting with the page until the dialog is closed. For more
+			information on how dialogs behave and their usage refer to the
+			<a href="https://www.lightningdesignsystem.com/components/modals/" target="_blank">Salesforce Lightning Design System</a>.
+		</p>
 		<!-- /description -->
+
+		<!-- opening -->
+		<h3 class="slds-text-heading_medium">Opening a Dialog</h3>
+		<p>
+			Opening a dialog will make it visible and displayed above (i.e. in front of) all other
+			content on the page including other dialogs. In order to open a dialog you simply
+			need to call its <code>open()</code> method. If you call <code>open()</code> on a
+			dialog that is already open then it will be brought to the top/front of the stack of
+			open dialogs.
+		</p>
+		<!-- /opening -->
+
+		<!-- closing -->
+		<h3 class="slds-text-heading_medium">Closing a Dialog</h3>
+		<p>
+			To close a dialog call its <code>close()</code> method. If there are other open dialogs
+			then the top/front dialog will become the active dialog. If there are no other open
+			dialogs, however, then control returns to underlying page.
+		</p>
+		<!-- /closing -->
+
+		<!-- keyboard navigation -->
+		<h3 class="slds-text-heading_medium">Keyboard Focus and the Tab Key</h3>
+		<p>
+			The expected behavior for dialogs is to set focus to the first element in the dialog
+			when it opens. When the dialog is closed focus should be set to the element that
+			triggered the opening of the dialog. When navigating through the elements within the
+			dialog using the tab key (or shift+tab to navigate in reverse) the focus should
+			&quot;wrap&quot;. This means that pressing the tab key while the last element has focus
+			should set the focus to the first element and pressing shift+tab while the first
+			element has focus should set the focus to the last element.
+		</p>
+
+		<p>
+			Unfortunately, due to how Lightning works, the <code>dialog</code> component cannot
+			automatically handle setting focus to the correct element for you. That said, the
+			<code>dialog</code> component does provide several events to help assist with this
+			behavior. It is very important that you handle these events and set focus to the
+			appropriate element. The table below lists the important event and describes the
+			expected behavior. It is up to you to provide the implementation of this behavior.
+		</p>
+
+		<div class="slds-box slds-theme_warning slds-theme_alert-texture slds-m-vertical_small">
+			If your dialog contains any focusable elements at all then it is very important that you
+			handle the <code>onfocusfirst</code> and <code>onfocuslast</code> events. The
+			<code>onclose</code> event should always be handled regardless of whether your dialog
+			contains any focusable elements.
+		</div>
+
+		<table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+			<thead>
+				<tr class="slds-text-title_caps">
+					<th scope="col">Event Name</th>
+					<th scope="col">Expected Behavior</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>onfocusfirst</td>
+					<td class="slds-cell-wrap">
+						Set focus to the first focusable element in the dialog.
+					</td>
+				</tr>
+				<tr>
+					<td>onfocuslast</td>
+					<td class="slds-cell-wrap">
+						Set focus to the last focusable element in the dialog.
+					</td>
+				</tr>
+				<tr>
+					<td>onclose</td>
+					<td class="slds-cell-wrap">
+						Set focus to the element that triggered the opening of the dialog. For
+						example, if the user clicked a button to open the dialog then set focus to
+						that button.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- /keyboard navigation -->
+
+		<!-- close button -->
+		<h3 class="slds-text-heading_medium">Close Button and the Escape Key</h3>
+		<p>
+			By default dialogs do not have a close button, but you can add one easily by setting the
+			<code>closeButton</code> attribute to true. Setting the <code>closeButton</code>
+			attribute to true will cause a close button to be displayed, but the <code>dialog</code>
+			component does not provide a default implementation for this button. In order to
+			actually close the dialog when the close button is clicked you must handle the dialog's
+			<code>onclosebutton</code> event. The <code>onclosebutton</code> event will also be
+			fired when the user presses the escape key on the keyboard.
+		</p>
+		<!-- /close button -->
+
+		<!-- default action -->
+		<h3 class="slds-text-heading_medium">Default Action and the Enter Key</h3>
+		<p>
+			When the user presses the enter key on the keyboard while an element within the dialog
+			has focus the <code>ondefaultaction</code> event is fired. If you need to explicitly
+			override this functionality for a single element then in that element's
+			<code>onkeydown</code> event handler check for the enter key and call the
+			<code>preventDefault()</code> method on the <code>Event</code> object to cancel the
+			event.
+		</p>
+		<!-- /default action -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>This example will demonstrate basic usage of the <code>dialog</code> component.</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="firstName" type="String" />
+  <aura:attribute name="lastName" type="String" />
+  <aura:attribute name="email" type="String" />
+  <aura:attribute name="saving" type="Boolean" default="false" />
+
+  <lightning:button aura:id="openContactDialogButton"
+    label="Create Contact"
+    onclick="{!c.openContactDialogButtonClick}" />
+
+  <c:dialog aura:id="contactDialog"
+    title="Create Contact"
+    closeButton="true"
+    contentClass="slds-form slds-form_stacked slds-p-around_small"
+    ondefaultaction="{!c.contactSaveButtonClick}"
+    onclosebutton="{!c.contactCancelButtonClick}"
+    onfocusfirst="{!c.contactDialogFocusFirst}"
+    onfocuslast="{!c.contactDialogFocusLast}"
+    onbeforeopen="{!c.contactDialogOpening}"
+    onclose="{!c.contactDialogClosed}">
+    <lightning:input aura:id="firstNameInput" label="First Name" value="{!v.firstName}"
+      type="text" disabled="{!v.saving}" />
+    <lightning:input label="Last Name" value="{!v.lastName}" type="text"
+      disabled="{!v.saving}" />
+    <lightning:input label="Email" value="{!v.email}" type="text"
+      disabled="{!v.saving}" />
+
+    <aura:set attribute="footer">
+      <lightning:button aura:id="contactSaveButton" label="Save" variant="brand"
+        disabled="{!v.saving || empty(v.lastName)}"
+        onclick="{!c.contactSaveButtonClick}" />
+
+      <lightning:button aura:id="contactCancelButton" label="Cancel"
+        onclick="{!c.contactCancelButtonClick}" />
+    </aura:set>
+  </c:dialog>
+</aura:component>
+]]></pre>
+
+		<h4 class="slds-text-heading_medium">Component Controller</h4>
+<pre><![CDATA[// MyComponentController.js
+({
+  openContactDialogButtonClick: function(component, event, helper) {
+    // Open the dialog
+    component.find('contactDialog').open();
+  },
+
+  contactDialogOpening: function(component, event, helper) {
+    // The onbeforeopen event fires before the dialog becomes visible. This makes it a
+    // great place to reset the dialog to its initial, default state
+    component.set('v.firstName', '');
+    component.set('v.lastName', '');
+    component.set('v.email', '');
+  },
+
+  contactDialogClosed: function(component, event, helper) {
+    // When the dialog is closed make sure to set focus to the element that triggered it
+    component.find('openContactDialogButton').focus();
+  },
+
+  contactDialogFocusFirst: function(component, event, helper) {
+    // Set focus to first element. Note that we check the saving flag here. If saving is
+    // true then the input fields and the save button will be disabled so we will set
+    // focus to the cancel button instead. It is a good idea to always leave at least one
+    // element enabled so you have something to set focus to
+    var saving = component.get('v.saving');
+    if (saving) {
+      // Inputs and save button will be disabled while saving. Set focus to the cancel
+      // button instead
+      component.find('contactCancelButton').focus();
+    } else {
+      // Set focus to first input
+      component.find('firstNameInput').focus();
+    }
+  },
+
+  contactDialogFocusLast: function(component, event, helper) {
+    // Set focus to the last element in the dialog which is the cancel button
+    component.find('contactCancelButton').focus();
+  },
+
+  contactSaveButtonClick: function(component, event, helper) {
+    // Check to make sure the form is valid. For the sake of this demo we will just check
+    // whether the button is disabled, but in a real world scenario this is where you
+    // would likely perform any validation on the input elements
+    var disabled = component.find('contactSaveButton').get('v.disabled');
+    if (disabled) {
+      return;
+    }
+
+    // Simulate a call to the server
+    component.set('v.saving', true);
+    setTimeout($A.getCallback(function() {
+      component.set('v.saving', false);
+
+      // This is where you would notify the user of the result. You chould show a
+      // message in the dialog or close the dialog and show the result in a toast. It's
+      // really up to you here. Just do what makes sense for your use case
+    }), 3000);
+  },
+
+  contactCancelButtonClick: function(component, event, helper) {
+    // Close the dialog as long as we're not waiting on the save to complete
+    var saving = component.get('v.saving');
+    if (!saving) {
+      component.find('contactDialog').close();
+    }
+  }
+})
+]]></pre>
+		<!-- /example -->
 	</aura:description>
 </aura:documentation>
