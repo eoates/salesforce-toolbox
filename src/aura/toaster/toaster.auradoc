@@ -8,7 +8,7 @@
 
 		<p>
 			Normally, attempting to fire the standard
-			<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/ref_force_showToast.htm">force:showToast</a>
+			<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/ref_force_showToast.htm" target="_blank">force:showToast</a>
 			event when your component is running outside of the one.app container (for example, as a
 			stand-alone app or embedded within a Visualforce page) results in an exception as the
 			<code>force:showToast</code> event is not available. The <code>toaster</code> component

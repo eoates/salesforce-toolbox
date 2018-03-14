@@ -4,7 +4,7 @@
 		<p>
 			The <code>formElement</code> component is used to represent an HTML form element. For
 			more information on form elements refer to the documentation in the
-			<a href="https://www.lightningdesignsystem.com/components/form-element">Lightning Design
+			<a href="https://www.lightningdesignsystem.com/components/form-element" target="_blank">Lightning Design
 			System</a>.
 		</p>
 		<!-- /description -->

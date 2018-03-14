@@ -42,7 +42,7 @@
 					<td class="slds-cell-wrap">
 						If true then the action is marked as abortable. For more information about
 						abortable actions refer to the
-						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_abortable_actions.htm">Lightning Components Developer Guide</a>.
+						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_abortable_actions.htm" target="_blank">Lightning Components Developer Guide</a>.
 					</td>
 				</tr>
 				<tr>
@@ -51,7 +51,7 @@
 					<td class="slds-cell-wrap">
 						If true then the action is marked as storable. For more information about
 						storable actions refer to the
-						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_storable_actions.htm">Lightning Components Developer Guide</a>.
+						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_storable_actions.htm" target="_blank">Lightning Components Developer Guide</a>.
 					</td>
 				</tr>
 				<tr>
@@ -69,7 +69,7 @@
 							<li>
 								<strong>state</strong> -
 								This is the state returned by the server. Refer to the
-								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm">Lightning Components Developer Guide</a>
+								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm" target="_blank">Lightning Components Developer Guide</a>
 								for more information about action states.
 							</li>
 						</ul>
@@ -91,7 +91,7 @@
 							<li>
 								<strong>state</strong> -
 								This is the state returned by the server. Refer to the
-								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm">Lightning Components Developer Guide</a>
+								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm" target="_blank">Lightning Components Developer Guide</a>
 								for more information about action states.
 							</li>
 						</ul>
