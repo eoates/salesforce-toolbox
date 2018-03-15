@@ -748,13 +748,9 @@
 	 */
 	trim: function(value) {
 		value = this.asString(value);
-
-		if (value.trim) {
-			value = value.trim();
-		} else {
+		if (value) {
 			value = value.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 		}
-
 		return value;
 	},
 
@@ -1488,15 +1484,14 @@
 			};
 
 		return matches.call(element, selector);
-
 	},
 
 	/**
-	 * Sorts an array elements by tab index. Elements with an explicit tab index have priority over
-	 * elements with no tab index or a tab index of 0. Each element in the specified array should be
-	 * capable of receiving focus (e.g., input, button, select, etc.) and its tab index should be
-	 * undefined or greater than -1. This method creates a new sorted array and does not modify the
-	 * original array
+	 * Sorts an array of elements by tab index. Elements with an explicit tab index have priority
+	 * over elements with no tab index or a tab index of 0. Each element in the specified array
+	 * should be capable of receiving focus (e.g., input, button, select, etc.) and its tab index
+	 * should be undefined or greater than -1. This method creates a new sorted array and does not
+	 * modify the original array
 	 *
 	 * @param {HTMLElement[]} elements - The array of elements to be sorted
 	 *
