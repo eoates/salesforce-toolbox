@@ -161,7 +161,7 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_medium">Component Controller</h4>
+		<h4 class="slds-text-heading_small">Component Controller</h4>
 <pre><![CDATA[// MyComponentController.js
 ({
   openContactDialogButtonClick: function(component, event, helper) {
