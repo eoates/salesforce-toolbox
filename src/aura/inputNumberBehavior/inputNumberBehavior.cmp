@@ -1,13 +1,29 @@
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL"
+                description="Provides behavior logic for numeric inputs.">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="min" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="max" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="step" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="precision" type="Integer" />
-	<aura:attribute access="GLOBAL" name="scale" type="Integer" />
-	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true" />
-	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
+	<aura:attribute access="GLOBAL" name="min" type="Decimal"
+	                description="The minimum value allowed by the input." />
+
+	<aura:attribute access="GLOBAL" name="max" type="Decimal"
+	                description="The maximium value allowed by the input." />
+	
+	<aura:attribute access="GLOBAL" name="step" type="Decimal"
+	                description="The amount by which the value is incremented when the user presses the up and down arrows." />
+	
+	<aura:attribute access="GLOBAL" name="precision" type="Integer"
+	                description="The total number of digits in the number (not including the decimal)." />
+	
+	<aura:attribute access="GLOBAL" name="scale" type="Integer"
+	                description="The number of digits to the right of the decimal point." />
+	
+	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true"
+	                description="Specifies whether the input can accept a blank input. If false and the user does not enter a value then 0 will be used (if 0 &lt; min then min will be used, if 0 &gt; max then max will be used)." />
+	
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false"
+	                description="Specifies whether the input is disabled." />
+	
+	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false"
+	                description="Specifies whether the input is a read-only state." />
 	<!-- /attributes -->
 
 	<!-- handlers -->
@@ -15,7 +31,8 @@
 	<!-- /handlers -->
 
 	<!-- methods -->
-	<aura:method access="GLOBAL" name="getModule" action="{!c.getModule}" />
+	<aura:method access="GLOBAL" name="getModule" action="{!c.getModule}"
+	             description="Returns an object with methods for implementing the behavior." />
 	<!-- /methods -->
 
 	<!-- component -->

@@ -1,0 +1,200 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>c:inputNumberBehavior</code> component provides the behavior for a numeric
+			input without providing the implementation. This allows you to implement the same
+			behavior as the <code>c:inputNumber</code> and <code>c:inputSelect</code> (when
+			<code>editable</code> is true and <code>type</code> is &quot;number&quot;) in your own
+			components.
+		</p>
+
+		<p>
+			The <code>c:inputNumberBehavior</code> component works by calling the component's
+			<code>getModule</code> method to get a reference to the behavior module instance. Once
+			you have obtained a reference to the behavior module you call the appropriate method on
+			the module in response to events from your input element. For example, in your input
+			element's <code>onkeydown</code> event you would call the module's
+			<code>onKeyDown</code> method. In total there are four (4) methods that can be used in
+			your own event handlers to implement the desired behavior: <code>onBlur</code>,
+			<code>onKeyDown</code>, <code>onInput</code> and <code>onChange</code>. See the example
+			below for a better idea of how to implement in your own code.
+		</p>
+
+		<div class="slds-box slds-theme_warning slds-theme_alert-texture slds-m-vertical_small">
+			At this time the <code>c:inputNumberBehavior</code> component only works with native
+			input elements (e.g., <code>&lt;input type=&quot;text&quot;&gt;</code>). You cannot
+			apply this behavior to other components such as <code>ui:inputText</code> or
+			<code>lightning:input</code>. This is because the <code>c:inputNumberBehavior</code>
+			component needs access to the input element and since those other components are in a
+			different namespace it is not possible to access their inner DOM element(s).
+		</div>
+		<!-- /description -->
+
+		<!-- options -->
+		<h3 class="slds-text-heading_medium">Options</h3>
+		<p>
+			The <code>onBlur</code>, <code>onKeyDown</code>, <code>onInput</code> and
+			<code>onChange</code> methods of the <code>c:inputNumberBehavior</code> component all
+			accept two (2) arguments: <code>event</code> and <code>opts</code>. The event argument
+			is the native JavaScript Event object passed to your input element's event handler. The
+			opts argument should be an object which has the following methods:
+		</p>
+
+		<table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+			<thead>
+				<tr class="slds-text-title_caps">
+					<th scope="col">Method Name</th>
+					<th scope="col">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>getSelectionStart</td>
+					<td class="slds-cell-wrap">
+						Return your input element's <code>selectionStart</code> property.
+					</td>
+				</tr>
+				<tr>
+					<td>getSelectionEnd</td>
+					<td class="slds-cell-wrap">
+						Return your input element's <code>selectionEnd</code> property.
+					</td>
+				</tr>
+				<tr>
+					<td>setSelectionRange</td>
+					<td class="slds-cell-wrap">
+						Execute your input element's <code>setSelectionRange</code> method.
+					</td>
+				</tr>
+				<tr>
+					<td>getInputType</td>
+					<td class="slds-cell-wrap">
+						Return your input element's <code>type</code> property.
+					</td>
+				</tr>
+				<tr>
+					<td>getInputValue</td>
+					<td class="slds-cell-wrap">
+						Return your input element's <code>value</code> property.
+					</td>
+				</tr>
+				<tr>
+					<td>setInputValue</td>
+					<td class="slds-cell-wrap">
+						Set your input element's <code>value</code> property.
+					</td>
+				</tr>
+				<tr>
+					<td>getValue</td>
+					<td class="slds-cell-wrap">
+						Return your component's current value. Note that this is different than the
+						input element value. This is used to determine if the value the user entered
+						is different and whether a change event should be fired.
+					</td>
+				</tr>
+				<tr>
+					<td>setValue</td>
+					<td class="slds-cell-wrap">
+						Update your component's current value. This method should return true if the
+						value changed or false if unchanged.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- /options -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>
+			This example will demonstrate basic usage of the <code>c:inputNumberBehavior</code>
+			component.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="value" type="Decimal" />
+
+  <c:inputNumberBehavior aura:id="numberBehavior"
+    min="-32768" max="32768" step="1"
+    precision="7" scale="2" />
+
+  <input aura:id="myInput" type="text"
+    onblur="{!c.myInputBlur}"
+    onkeydown="{!c.myInputKeyDown}"
+    oninput="{!c.myInputInput}"
+    onchange="{!c.myInputChange}" />
+</aura:component>
+]]></pre>
+
+		<h4 class="slds-text-heading_small">Component Controller</h4>
+<pre><![CDATA[// MyComponentController.js
+({
+  myInputBlur: function(component, event, helper) {
+    helper.performBehaviorAction(component, event, 'onBlur');
+  },
+
+  myInputKeyDown: function(component, event, helper) {
+    var changed = helper.performBehaviorAction(component, event, 'onKeyDown');
+    if (changed) {
+      // TODO: Handle value change
+    }
+  },
+
+  myInputInput: function(component, event, helper) {
+    helper.performBehaviorAction(component, event, 'onInput');
+  },
+
+  myInputChange: function(component, event, helper) {
+    var changed = helper.performBehaviorAction(component, event, 'onChange');
+    if (changed) {
+      // TODO: Handle value change
+    }
+  }
+})
+]]></pre>
+
+		<h4 class="slds-text-heading_small">Component Helper</h4>
+<pre><![CDATA[// MyComponentHelper.js
+({
+  performBehaviorAction: function(component, event, name) {
+    var inputElement = component.find('myInput').getElement();
+    var behavior = component.find('numberBehavior').getModule();
+    var action = behavior[name];
+
+    var self = this;
+    return action.call(behavior, event, {
+      getSelectionStart: function() {
+        return inputElement.selectionStart;
+      },
+      getSelectionEnd: function() {
+        return inputElement.selectionEnd;
+      },
+      setSelectionRange: function(start, end) {
+        inputElement.setSelectionRange(start, end, 'none');
+      },
+      getInputType: function() {
+        return inputElement.type;
+      },
+      getInputValue: function() {
+        return inputElement.value;
+      },
+      setInputValue: function(value) {
+        inputElement.value = value;
+      },
+      getValue: function() {
+        return component.get('v.value');
+      },
+      setValue: function(value) {
+        component.set('v.value', value);
+        return true;
+      }
+    });
+  }
+})
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>
