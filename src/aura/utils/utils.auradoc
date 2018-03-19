@@ -8,7 +8,7 @@
 		</p>
 
 		<p>
-			Use the component's <code>getModule()</code> method to obtain a reference to the
+			Use the component's <code>getModule</code> method to obtain a reference to the
 			code module. For a list of all of the methods provided by the returned module and to
 			view documentation on each method refer to the code in the component's helper resource
 			(/aura/utils/utilsHelper.js).

@@ -14,7 +14,7 @@
 		<h3 class="slds-text-heading_medium">Options</h3>
 
 		<p>
-			The component's <code>execute()</code> method accepts an optional <code>opts</code>
+			The component's <code>execute</code> method accepts an optional <code>opts</code>
 			argument which can be used to specify execution options as well as callback functions
 			for handing success and failure conditions. The table below lists all of the options
 			that can be specified via the <code>opts</code> argument.

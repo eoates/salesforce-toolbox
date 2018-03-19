@@ -15,7 +15,7 @@
 		<p>
 			Opening a dialog will make it visible and displayed above (i.e. in front of) all other
 			content on the page including other dialogs. In order to open a dialog you simply
-			need to call its <code>open()</code> method. If you call <code>open()</code> on a
+			need to call its <code>open</code> method. If you call <code>open</code> on a
 			dialog that is already open then it will be brought to the top/front of the stack of
 			open dialogs.
 		</p>
@@ -24,7 +24,7 @@
 		<!-- closing -->
 		<h3 class="slds-text-heading_medium">Closing a Dialog</h3>
 		<p>
-			To close a dialog call its <code>close()</code> method. If there are other open dialogs
+			To close a dialog call its <code>close</code> method. If there are other open dialogs
 			then the top/front dialog will become the active dialog. If there are no other open
 			dialogs, however, then control returns to underlying page.
 		</p>
@@ -110,7 +110,7 @@
 			has focus the <code>ondefaultaction</code> event is fired. If you need to explicitly
 			override this functionality for a single element then in that element's
 			<code>onkeydown</code> event handler check for the enter key and call the
-			<code>preventDefault()</code> method on the <code>Event</code> object to cancel the
+			<code>preventDefault</code> method on the <code>Event</code> object to cancel the
 			event.
 		</p>
 		<!-- /default action -->
