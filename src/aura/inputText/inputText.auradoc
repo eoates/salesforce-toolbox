@@ -1,0 +1,26 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			A <code>c:inputText</code> represents a basic text input field which is rendered as a
+			HTML <code>input</code> tag of type <code>text</code>.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>
+			This example will demonstrate basic usage of the <code>c:inputText</code> component.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="accountName" type="String" />
+  <c:inputText label="Account Name" value="{!v.accountName}" required="true" />
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>
