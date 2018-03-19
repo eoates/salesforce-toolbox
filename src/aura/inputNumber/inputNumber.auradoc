@@ -1,0 +1,25 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			A <code>c:inputNumber</code> represents a numeric input field.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>
+			This example will demonstrate basic usage of the <code>c:inputNumber</code> component.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="employees" type="Decimal" />
+  <c:inputNumber label="Number of Employees" value="{!v.employees}" min="0" />
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>

@@ -2,7 +2,7 @@
 	<aura:description>
 		<!-- description -->
 		<p>
-			The <code>dialog</code> component is used to create custom modal dialogs in your
+			The <code>c:dialog</code> component is used to create custom modal dialogs in your
 			application. A modal dialog appears above all other elements on the page and prevents
 			the user from interacting with the page until the dialog is closed. For more
 			information on how dialogs behave and their usage refer to the
@@ -43,9 +43,9 @@
 		</p>
 
 		<p>
-			Unfortunately, due to how Lightning works, the <code>dialog</code> component cannot
+			Unfortunately, due to how Lightning works, the <code>c:dialog</code> component cannot
 			automatically handle setting focus to the correct element for you. That said, the
-			<code>dialog</code> component does provide several events to help assist with this
+			<code>c:dialog</code> component does provide several events to help assist with this
 			behavior. It is very important that you handle these events and set focus to the
 			appropriate element. The table below lists the important event and describes the
 			expected behavior. It is up to you to provide the implementation of this behavior.
@@ -95,11 +95,11 @@
 		<p>
 			By default dialogs do not have a close button, but you can add one easily by setting the
 			<code>closeButton</code> attribute to true. Setting the <code>closeButton</code>
-			attribute to true will cause a close button to be displayed, but the <code>dialog</code>
-			component does not provide a default implementation for this button. In order to
-			actually close the dialog when the close button is clicked you must handle the dialog's
-			<code>onclosebutton</code> event. The <code>onclosebutton</code> event will also be
-			fired when the user presses the escape key on the keyboard.
+			attribute to true will cause a close button to be displayed, but the
+			<code>c:dialog</code> component does not provide a default implementation for this
+			button. In order to actually close the dialog when the close button is clicked you must
+			handle the dialog's <code>onclosebutton</code> event. The <code>onclosebutton</code>
+			event will also be fired when the user presses the escape key on the keyboard.
 		</p>
 		<!-- /close button -->
 
@@ -118,7 +118,7 @@
 		<!-- example -->
 		<h3 class="slds-text-heading_medium">Usage Example</h3>
 
-		<p>This example will demonstrate basic usage of the <code>dialog</code> component.</p>
+		<p>This example will demonstrate basic usage of the <code>c:dialog</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
 <pre><![CDATA[<!-- MyComponent.cmp -->

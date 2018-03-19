@@ -1,0 +1,135 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			A <code>c:inputSelect</code> make a selection from a list of options. It is rendered as
+			a HTML <code>select</code> tag.
+		</p>
+		<!-- /description -->
+
+		<!-- editable -->
+		<h3 class="slds-text-heading_medium">Editable</h3>
+		<p>
+			By default the <code>c:inputSelect</code> presents a list of options from which the user
+			can select, but it does not allow users to enter a value that is not in the list of
+			existing options. If you set the <code>editable</code> attribute to true, however, then
+			the list becomes editable and the user can either select one of the existing options or
+			enter something else. Additionally, when <code>editable</code> is true the
+			<code>type</code> attribute allows you to restrict the type of data the user can enter.
+			Accepted values for the <code>type</code> attribute are <code>text</code> (default) and
+			<code>number</code>. If <code>type</code> is <code>text</code> then the user can enter
+			any text they like. If <code>type</code> is <code>number</code>, however, then the user
+			may only enter a numeric value.
+		</p>
+		<!-- /editable -->
+
+		<!-- options -->
+		<h3 class="slds-text-heading_medium">Options</h3>
+		<p>
+			A <code>c:inputSelect</code> has options which are specified by its <code>options</code>
+			attribute. There are 2 main ways to populate the list of options. The easiest way is to
+			provide a string of comma-separated values such as &quot;A, B, C&quot; which would
+			result in the list containing three (3) options: A, B and C. You can also specify a
+			label for each option using this same syntax like this &quot;A: This is Option A, B:
+			This is Option B, C: This is Option C&quot;. Alternatively, you can set the options
+			programmatically by building an array of options and setting the component's
+			<code>options</code> attribute. The latter approach gives you more flexibility over the
+			options and allows you to specify some additional properties for each option such as
+			CSS styles, tooltip text, whether the option is disabled, etc. Refer to the examples
+			below for more information on each of the described approaches for setting options.
+		</p>
+		<!-- /options -->
+
+		<!-- example 1: declarative -->
+		<h3 class="slds-text-heading_medium">Example: Declarative Options</h3>
+		<p>
+			This example demonstrates how to declaratively set the options.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="options" type="String"
+    default=": --Select--, A, B, C: Label for C" />
+
+  <c:inputSelect label="Select a Value" options="{!v.options}" />
+</aura:component>
+]]></pre>
+		<!-- /example 1: declarative -->
+
+		<!-- example 2: programmatic -->
+		<h3 class="slds-text-heading_medium">Example: Setting Options Programmatically</h3>
+		<p>
+			This example demonstrates how to programmatically set the options.
+		</p>
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="options" type="Object[]" />
+
+  <aura:handler value="{!this}" name="init" action="{!c.init}" />
+
+  <c:inputSelect label="Select a Value" options="{!v.options}" />
+</aura:component>
+]]></pre>
+
+		<h4 class="slds-text-heading_small">Component Style</h4>
+<pre><![CDATA[/* MyComponent.css */
+.THIS .invalid-option {
+  color: red;
+}
+]]></pre>
+
+		<h4 class="slds-text-heading_small">Component Controller</h4>
+<pre><![CDATA[// MyComponentController.js
+({
+  init: function(component, event, helper) {
+    var options = [
+      // The only required property for an option is a value. If you do not specify a
+      // label the value is used
+      {
+        value: 'A'
+      },
+      // Specify a label that is different than the value
+      {
+        value: 'B',
+        label: 'This is option B'
+      },
+      // Options can be disabled
+      {
+        value: 'C',
+        label: 'This option is disabled',
+        disabled: true
+      },
+      // Options can also have a tooltip text and CSS style applied. You can specify the
+      // CSS style using either className or class
+      {
+        value: 'D',
+        label: 'This option should be styled and have a tooltip',
+        className: 'invalid-option',
+        title: 'This option is not valid'
+      },
+      // Another way to assign a tooltip to the option is by using the special valid and
+      // message properties. If an option has a property named valid and its value is
+      // false then the option's message property will be used as the tooltip
+      {
+        value: 'E',
+        'class': 'invalid-option',
+        valid: false,
+        message: 'This will be used as the tooltip because valid is false'
+      },
+      // If an option's valid property is true then its message will not be displayed
+      {
+        value: 'F',
+        valid: true,
+        message: 'This will not be used because valid is true'
+      }
+    ];
+
+    component.set('v.options', options);
+  }
+})
+]]></pre>
+		<!-- /example 2: programmatic -->
+	</aura:description>
+</aura:documentation>

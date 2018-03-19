@@ -2,9 +2,9 @@
 	<aura:description>
 		<!-- description -->
 		<p>
-			The <code>apex</code> component can be used to execute an Apex server method. Although
+			The <code>c:apex</code> component can be used to execute an Apex server method. Although
 			you can execute an Apex method without using this component, it requires a lot of
-			repeated boilerplate code. Using the <code>apex</code> component allows you to focus
+			repeated boilerplate code. Using the <code>c:apex</code> component allows you to focus
 			on just the logic needed within your component and not all of the extra code needed to
 			actually invoke the Apex call or handle exceptions.
 		</p>
@@ -115,7 +115,7 @@
 		<!-- example -->
 		<h3 class="slds-text-heading_medium">Usage Example</h3>
 
-		<p>This example will demonstrate basic usage of the <code>apex</code> component.</p>
+		<p>This example will demonstrate basic usage of the <code>c:apex</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
 <pre><![CDATA[<!-- MyComponent.cmp -->

@@ -1,0 +1,39 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			A <code>c:inputDate</code> represents a date input field. The component renders
+			differently depending on whether it is displayed on a mobile device or in a desktop
+			browser. On mobile devices it is rendered as HTML <code>input</code> element of type
+			<code>date</code> whereas in desktop browsers it is rendered as a HTML
+			<code>input</code> element of type <code>text</code>. On mobile devices the component
+			does not provide any special UI for selecting a date and relies on the device's native
+			functionality for date input. In desktop browsers, however, a button icon is displayed
+			on the right side of the input that will display a popup <code>c:datepicker</code> when
+			clicked.
+		</p>
+
+		<p>
+			Note that although the <code>c:inputDate</code> component is designed to allow for date
+			input, its <code>value</code> attribute is actually of type <code>String</code> and not
+			<code>Date</code>. The value is represented as a string in the format YYYY-MM-DD.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>
+			This example will demonstrate basic usage of the <code>c:inputDate</code> component.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="birthdate" type="String" />
+  <c:inputDate label="Date of Birth" value="{!v.birthdate}" />
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>

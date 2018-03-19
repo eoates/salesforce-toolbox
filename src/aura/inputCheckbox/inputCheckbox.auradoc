@@ -1,0 +1,29 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			A <code>c:inputCheckbox</code> represents a checkbox which is rendered as a HTML
+			<code>input</code> tag of type <code>checkbox</code>. The state of the checkbox is
+			controlled by its <code>value</code> attribute and has three (3) possible states:
+			checked (<code>true</code>), unchecked (<code>false</code>) and indeterminate
+			(<code>undefined</code> or <code>null</code>).
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>
+			This example will demonstrate basic usage of the <code>c:inputCheckbox</code> component.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="active" type="Boolean" default="false" />
+  <c:inputCheckbox label="Is Active?" value="{!v.active}" />
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>
