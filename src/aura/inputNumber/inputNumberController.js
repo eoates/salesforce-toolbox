@@ -64,10 +64,6 @@
 	},
 
 	inputInput: function(component, event, helper) {
-		if (helper.utils.isMobile()) {
-			return;
-		}
-
 		helper.performBehaviorAction(component, event, 'onInput');
 	},
 
