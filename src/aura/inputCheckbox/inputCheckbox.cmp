@@ -1,26 +1,9 @@
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL" implements="c:inputBase"
+                description="Allows the user to make a true/false selection.">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="name" type="String" />
-	<aura:attribute access="GLOBAL" name="class" type="String" />
-	<aura:attribute access="GLOBAL" name="value" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
-	<aura:attribute access="GLOBAL" name="title" type="String" />
-	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
-	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="label" type="String" />
-	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
-	<aura:attribute access="GLOBAL" name="error" type="String" />
-	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
-	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
-	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
-	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
+	<aura:attribute access="GLOBAL" name="value" type="Boolean" default="false"
+	                description="The value of the checkbox (checked = true, unchecked = false, indeterminate = undefined or null)." />
 	<!-- /attributes -->
-
-	<!-- events -->
-	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
-	<!-- /events -->
 
 	<!-- handlers -->
 	<aura:handler value="{!this}" name="init" action="{!c.init}" />
@@ -28,7 +11,8 @@
 	<!-- /handlers -->
 
 	<!-- methods -->
-	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}"
+	             description="Sets focus to the component." />
 	<!-- /methods -->
 
 	<!-- component -->
@@ -46,7 +30,7 @@
 			       accesskey="{!v.accesskey}"
 			       title="{!v.title}"
 			       tabindex="{!v.tabindex}"
-			       disabled="{!if(v.disabled, 'disabled', '')}"
+			       disabled="{!if(or(v.disabled, v.readonly), 'disabled', '')}"
 			       onfocus="{!c.inputFocus}"
 			       onblur="{!c.inputBlur}"
 			       onchange="{!c.inputChange}" />

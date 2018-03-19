@@ -1,0 +1,56 @@
+<aura:interface access="GLOBAL" description="Common interface for input components.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="name" type="String"
+	                description="Specifies the name of an input element." />
+
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
+
+	<aura:attribute access="GLOBAL" name="accesskey" type="String"
+	                description="Specifies a shortcut key to activate or focus an element." />
+
+	<aura:attribute access="GLOBAL" name="title" type="String"
+	                description="Displays tooltip text when the mouse moves over the element." />
+
+	<aura:attribute access="GLOBAL" name="tabindex" type="Integer"
+	                description="Specifies the tab order of an element (when the tab button is used for navigating)." />
+
+	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false"
+	                description="Specifies that an input element should be disabled. This value defaults to false." />
+
+    <aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false"
+                    description="Specifies that an input field is read-only. This value defaults to false." />
+
+	<aura:attribute access="GLOBAL" name="label" type="String"
+	                description="Text label for the input." />
+
+	<aura:attribute access="GLOBAL" name="required" type="Boolean"
+	                description="Specifies that an input field must be filled out before submitting the form. This value defaults to false." />
+
+	<aura:attribute access="GLOBAL" name="error" type="String"
+	                description="Error message associated with this input." />
+
+	<aura:attribute access="GLOBAL" name="elementClass" type="String"
+	                description="Optional CSS style to apply to the inner form element (slds-form-element)." />
+
+	<aura:attribute access="GLOBAL" name="labelClass" type="String"
+	                description="Optional CSS style to apply to the label (slds-form-element__label)." />
+
+	<aura:attribute access="GLOBAL" name="controlClass" type="String"
+	                description="Optional CSS style to apply to the control container (slds-form-element__control)." />
+
+	<aura:attribute access="GLOBAL" name="errorClass" type="String"
+	                description="Optional CSS style to apply to the error message (slds-form-element__help)." />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent"
+	                    description="Fired when the component receives focus." />
+
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent"
+	                    description="Fired when the component loses focus." />
+
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent"
+	                    description="Fired when the value changes." />
+	<!-- /events -->
+</aura:interface>

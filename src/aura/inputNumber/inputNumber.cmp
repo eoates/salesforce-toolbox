@@ -1,35 +1,46 @@
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL" implements="c:inputBase"
+                description="Allows the user to enter a numeric value.">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="name" type="String" />
-	<aura:attribute access="GLOBAL" name="class" type="String" />
-	<aura:attribute access="GLOBAL" name="value" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="accesskey" type="String" />
-	<aura:attribute access="GLOBAL" name="placeholder" type="String" />
-	<aura:attribute access="GLOBAL" name="title" type="String" />
-	<aura:attribute access="GLOBAL" name="min" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="max" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="step" type="Decimal" />
-	<aura:attribute access="GLOBAL" name="precision" type="Integer" />
-	<aura:attribute access="GLOBAL" name="scale" type="Integer" />
-	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true" />
-	<aura:attribute access="GLOBAL" name="tabindex" type="Integer" />
-	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="label" type="String" />
-	<aura:attribute access="GLOBAL" name="required" type="Boolean" />
-	<aura:attribute access="GLOBAL" name="error" type="String" />
-	<aura:attribute access="GLOBAL" name="elementClass" type="String" />
-	<aura:attribute access="GLOBAL" name="labelClass" type="String" />
-	<aura:attribute access="GLOBAL" name="controlClass" type="String" />
-	<aura:attribute access="GLOBAL" name="errorClass" type="String" />
-	<aura:attribute access="GLOBAL" name="left" type="Aura.Component[]" />
-	<aura:attribute access="GLOBAL" name="right" type="Aura.Component[]" />
+	<aura:attribute access="GLOBAL" name="value" type="Decimal"
+	                description="The value of the component." />
+
+	<aura:attribute access="GLOBAL" name="placeholder" type="String"
+	                description="Text that is displayed when the field is empty, to prompt the user for a valid entry." />
+
+	<aura:attribute access="GLOBAL" name="min" type="Decimal"
+	                description="The minimum value accepted by the component." />
+
+	<aura:attribute access="GLOBAL" name="max" type="Decimal"
+	                description="The maximum value accepted by the component." />
+
+	<aura:attribute access="GLOBAL" name="step" type="Decimal"
+	                description="The amount by which the value is incremented/decremented when the user presses the up and down arrows on the keyboard." />
+
+	<aura:attribute access="GLOBAL" name="precision" type="Integer"
+	                description="The total number of digits allowed (not including the decimal point)." />
+
+	<aura:attribute access="GLOBAL" name="scale" type="Integer"
+	                description="The number of digits allowed to the right of the decimal point. Set this to 0 to allow only integer values." />
+
+	<aura:attribute access="GLOBAL" name="nillable" type="Boolean" default="true"
+	                description="Controls whether the component accepts blank/nill values. If false then the value will be automatically set to 0 if the user leaves the field blank." />
+
+	<aura:attribute access="GLOBAL" name="left" type="Aura.Component[]"
+	                description="Content displayed to the left of the input element." />
+
+	<aura:attribute access="GLOBAL" name="right" type="Aura.Component[]"
+	                description="Content displayed to the right of the input element." />
 	<!-- /attributes -->
 
 	<!-- events -->
-	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent" />
-	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent" />
+	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent"
+	                    description="Fired when the component receives focus." />
+
+	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent"
+	                    description="Fired when the component loses focus." />
+
+	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent"
+	                    description="Fired when the value changes." />
 	<!-- /events -->
 
 	<!-- handlers -->
@@ -38,8 +49,11 @@
 	<!-- /handlers -->
 
 	<!-- methods -->
-	<aura:method access="GLOBAL" name="focus" action="{!c.focus}" />
-	<aura:method access="GLOBAL" name="select" action="{!c.select}" />
+	<aura:method access="GLOBAL" name="focus" action="{!c.focus}"
+	             description="Sets focus to the component." />
+
+	<aura:method access="GLOBAL" name="select" action="{!c.select}"
+	             description="Selects all text in the component." />
 	<!-- /methods -->
 
 	<!-- component -->
