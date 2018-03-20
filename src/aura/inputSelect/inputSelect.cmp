@@ -89,7 +89,8 @@
 	               controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"
-	               error="{!v.error}">
+	               error="{!v.error}"
+	               errors="{!v.errors}">
 		<div aura:id="container"
 		     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
 		     onfocusin="{!c.containerFocusIn}"

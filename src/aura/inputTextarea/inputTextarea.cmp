@@ -51,7 +51,8 @@
 	               controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"
-	               error="{!v.error}">
+	               error="{!v.error}"
+	               errors="{!v.errors}">
 		<div class="slds-grid slds-grid_vertical">
 			<!-- input -->
 			<textarea aura:id="input"

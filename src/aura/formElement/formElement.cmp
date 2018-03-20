@@ -24,11 +24,14 @@
 	                description="Specifies whether the field is required. Setting this to true only affects the appearance of the component." />
 
 	<aura:attribute access="GLOBAL" name="error" type="String"
-	                description="An error message to be displayed next to the component." />
+	                description="A single error message to be displayed next to the component. Use either error or errors - do not set both." />
+
+	<aura:attribute access="GLOBAL" name="errors" type="String[]"
+	                description="An array of error messages to be displayed next to this component. Use either error or errors - do not set both." />
 	<!-- /attributes -->
 
 	<!-- component -->
-	<div class="{!v.class + ' slds-form-element' + if(empty(v.error), '', ' slds-has-error')}">
+	<div class="{!v.class + ' slds-form-element' + if(and(empty(v.error), empty(v.errors)), '', ' slds-has-error')}">
 
 		<!-- label -->
 		<aura:if isTrue="{!not(empty(v.label))}">
@@ -46,8 +49,16 @@
 		<!-- /control -->
 
 		<!-- error -->
-		<div class="{!if(empty(v.error), 'slds-hide', v.errorClass + ' slds-form-element__help')}">
-			{!v.error}
+		<div class="{!if(and(empty(v.error), empty(v.errors)), 'slds-hide', v.errorClass + ' slds-form-element__help')}">
+			<ul>
+				<aura:if isTrue="{!not(empty(v.error))}">
+					<li>{!v.error}</li>
+				</aura:if>
+
+				<aura:iteration items="{!v.errors}" var="error">
+					<li>{!error}</li>
+				</aura:iteration>
+			</ul>
 		</div>
 		<!-- /error -->
 

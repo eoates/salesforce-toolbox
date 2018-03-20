@@ -22,7 +22,8 @@
 	               controlClass="{!v.controlClass}"
 	               errorClass="{!v.errorClass}"
 	               required="{!v.required}"
-	               error="{!v.error}">
+	               error="{!v.error}"
+	               errors="{!v.errors}">
 		<span class="{!v.class + ' slds-checkbox'}">
 			<input aura:id="input"
 			       id="{#globalId + '_input'}"

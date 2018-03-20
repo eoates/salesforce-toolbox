@@ -28,7 +28,10 @@
 	                description="Specifies that an input field must be filled out before submitting the form. This value defaults to false." />
 
 	<aura:attribute access="GLOBAL" name="error" type="String"
-	                description="Error message associated with this input." />
+	                description="A single error message associated with this input. Use either error or errors - do not set both." />
+
+	<aura:attribute access="GLOBAL" name="errors" type="String[]"
+	                description="Multiple error messages associated with this input. Use either error or errors - do not set both." />
 
 	<aura:attribute access="GLOBAL" name="elementClass" type="String"
 	                description="Optional CSS style to apply to the inner form element (slds-form-element)." />

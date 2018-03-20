@@ -54,7 +54,8 @@
 	               controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
 	               required="{!v.required}"
-	               error="{!v.error}">
+	               error="{!v.error}"
+	               errors="{!v.errors}">
 		{!v.left}
 
 		<input aura:id="input"
