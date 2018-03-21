@@ -24,8 +24,8 @@
 	 * When the component is unrendered/destroyed remove it from the container
 	 */
 	unrender: function(component, helper) {
+		helper.closeDialog(component);
 		helper.removeDialogFromContainer(component);
-		helper.handleDialogClose(component);
 
 		this.superUnrender();
 	}

@@ -630,13 +630,13 @@
 
 		this.utils.removeClass(dialog, 'slds-fade-in-open');
 
+		this.fireEvent(component, 'onclose');
+
 		var activeDialog = this.getActiveDialog();
 		if (activeDialog) {
 			this.focusFirstElement(activeDialog);
 			this.fireEvent(activeDialog, 'onfocusfirst');
 		}
-
-		this.fireEvent(component, 'onclose');
 	},
 
 	/**
