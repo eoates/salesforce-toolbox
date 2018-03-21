@@ -12,16 +12,32 @@
 *
 ****************************************************************************************************
 -->
-<aura:component access="GLOBAL">
+<aura:component access="GLOBAL"
+                description="A stand-alone toast message.">
 	<!-- attributes -->
-	<aura:attribute access="GLOBAL" name="container" type="Boolean" default="true" />
-	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="false" />
-	<aura:attribute access="GLOBAL" name="closeButtonSize" type="String" default="large" />
-	<aura:attribute access="GLOBAL" name="iconSize" type="String" default="small" />
-	<aura:attribute access="GLOBAL" name="type" type="String" default="other" />
-	<aura:attribute access="GLOBAL" name="key" type="String" />
-	<aura:attribute access="GLOBAL" name="title" type="String" />
-	<aura:attribute access="GLOBAL" name="message" type="String" />
+	<aura:attribute access="GLOBAL" name="container" type="Boolean" default="false"
+	                description="If true the slds-notify_container CSS style is applied to the element." />
+
+	<aura:attribute access="GLOBAL" name="closeButton" type="Boolean" default="false"
+	                description="Controls whether a close button is displayed. The close button fires the onclosebutton event when clicked." />
+
+	<aura:attribute access="GLOBAL" name="closeButtonSize" type="String" default="large"
+	                description="The size of the close button. Accepted values are: x-small, small, medium, and large." />
+
+	<aura:attribute access="GLOBAL" name="iconSize" type="String" default="small"
+	                description="The size of the icon. Accepted values are: xx-small, x-small, small, medium, and large." />
+
+	<aura:attribute access="GLOBAL" name="type" type="String" default="other"
+	                description="The type of message. Accepted values are: info, success, warning, error, and other." />
+
+	<aura:attribute access="GLOBAL" name="key" type="String"
+	                description="Specifies an icon when type is other." />
+
+	<aura:attribute access="GLOBAL" name="title" type="String"
+	                description="The toast title appears in bold above the message." />
+
+	<aura:attribute access="GLOBAL" name="message" type="String"
+	                description="The message to display." />
 	<!-- /attributes -->
 
 	<!-- events -->

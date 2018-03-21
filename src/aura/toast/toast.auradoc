@@ -1,0 +1,46 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			Use the <code>c:toast</code> component when you want to display a stand-alone toast
+			message.
+		</p>
+
+		<p>
+			You can add a close button to the <code>c:toast</code> but setting the
+			<code>closeButton</code> attribute to true. The <code>c:toast</code> component does not
+			provide any default behavior for this button. Instead, the <code>onclosebutton</code>
+			event is fired when the button is clicked allowing you to do whatever makes sense in
+			your use case.
+		</p>
+
+		<p>
+			A common use of the <code>c:toast</code> component is to display a notification message
+			inside of a <code>c:dialog</code> header. When using a <code>c:toast</code> inside the
+			header of a <code>c:dialog</code> make sure to set the <code>container</code> attribute
+			to true.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h3 class="slds-text-heading_medium">Usage Example</h3>
+
+		<p>
+			This example will demonstrate basic usage of the <code>c:toast</code> component.
+		</p>
+
+		<h4 class="slds-text-heading_small">Component Markup</h4>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <c:toast type="success" title="Yay!" message="Something good happened." />
+
+  <c:toast type="error" title="Uh-oh!" message="Something bad happened." />
+
+  <c:toast type="other" key="notification" iconSize="large"
+    closeButton="true" closeButtonSize="large"
+    title="Hey!" message="Something happened that I wanted to notify you about." />
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>
