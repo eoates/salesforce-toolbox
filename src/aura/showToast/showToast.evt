@@ -1,3 +1,16 @@
+<!--
+****************************************************************************************************
+* showToast.evt
+****************************************************************************************************
+* This is a shared event. Do not make modifications to this event without carefully considering the
+* impact this may have on existing applications/components/pages/etc. that use this event.
+*
+* @author   Eugene Oates
+* @date     2018-03-20
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
 <aura:event access="GLOBAL"
             type="APPLICATION"
             description="Displays page-level toasts.">

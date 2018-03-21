@@ -1,3 +1,17 @@
+<!--
+****************************************************************************************************
+* toaster.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author   Eugene Oates
+* @date     2018-03-20
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
 <aura:component access="GLOBAL"
                 description="Manages the display of toasts. The toaster component uses a custom solution for displaying toasts if the standard functionality is unavailable.">
 	<!-- attributes -->
