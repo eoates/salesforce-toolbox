@@ -219,9 +219,9 @@
 	 * @return {void}
 	 */
 	updateCell: function(cell, calendar, day) {
-		this.toggleClass(cell, 'slds-disabled-text', day.disabled);
-		this.toggleClass(cell, 'slds-is-selected', !day.disabled && day.selected);
-		this.toggleClass(cell, 'slds-is-today', !day.disabled && !day.selected && day.today);
+		this.utils.toggleClass(cell, 'slds-disabled-text', day.disabled);
+		this.utils.toggleClass(cell, 'slds-is-selected', !day.disabled && day.selected);
+		this.utils.toggleClass(cell, 'slds-is-today', !day.disabled && !day.selected && day.today);
 
 		this.setElementAttribute(cell, 'aria-disabled', day.disabled ? true : undefined);
 		this.setElementAttribute(cell, 'aria-selected', !day.disabled && day.selected);
@@ -315,7 +315,7 @@
 		var activeIndex = component.activeIndex;
 		var activeCell = document.getElementById(globalId + '_cell_' + activeIndex);
 		if (activeCell) {
-			this.toggleClass(activeCell, 'is-active', true);
+			this.utils.toggleClass(activeCell, 'is-active', true);
 			this.setElementAttribute(activeCell, 'tabindex', 0);
 			if (focus) {
 				this.focusActiveCell(component);
@@ -328,7 +328,7 @@
 			var cell = cells[i];
 			var index = parseInt(cell.getAttribute('data-index'), 10);
 			if (index !== activeIndex) {
-				this.toggleClass(cell, 'is-active', false);
+				this.utils.toggleClass(cell, 'is-active', false);
 				this.setElementAttribute(cell, 'tabindex', undefined);
 			}
 		}
@@ -584,28 +584,6 @@
 		var value = this.utils.asDate(component.get('v.value'));
 		this.setActiveDate(component, value || today, focus);
 		this.fireEvent(component, 'oncancel');
-	},
-
-	/**
-	 * Adds or removes the specified CSS class
-	 *
-	 * @param {HTMLElement} element   - The element
-	 * @param {string}      className - The CSS class to add or remove
-	 * @param {boolean}     [state]   - true to add the CSS class, false to remove it, or
-	 *                                  undefined/null to toggle it
-	 *
-	 * @return {void}
-	 */
-	toggleClass: function(element, className, state) {
-		if (this.utils.isUndefinedOrNull(state)) {
-			state = !$A.util.hasClass(element, className);
-		}
-
-		if (state) {
-			$A.util.addClass(element, className);
-		} else {
-			$A.util.removeClass(element, className);
-		}
 	},
 
 	/**

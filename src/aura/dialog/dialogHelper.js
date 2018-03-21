@@ -16,6 +16,19 @@
 	openDialogs: [],
 
 	/**
+	 * Imports modules used by the component
+	 *
+	 * @param {Aura.Component} component - The dialog component
+	 *
+	 * @return {void}
+	 */
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
+		}
+	},
+
+	/**
 	 * Sets focus to the dialog's top element
 	 *
 	 * @param {Aura.Component} component - The dialog component
@@ -284,7 +297,7 @@
 		var rootId = componentId + '_root';
 		var root = document.getElementById(rootId);
 		if (root) {
-			$A.util.addClass(holder, root.className);
+			this.utils.addClass(holder, root.className);
 		}
 
 		dialog.parentNode.removeChild(dialog);
@@ -340,7 +353,7 @@
 		var backdropId = this.dialogContainerId + '_backdrop';
 		var backdrop = document.getElementById(backdropId);
 		if (backdrop) {
-			$A.util.addClass(backdrop, 'slds-backdrop_open');
+			this.utils.addClass(backdrop, 'slds-backdrop_open');
 
 			this.showTopFocusTrap();
 			this.showBottomFocusTrap();
@@ -356,7 +369,7 @@
 		var backdropId = this.dialogContainerId + '_backdrop';
 		var backdrop = document.getElementById(backdropId);
 		if (backdrop) {
-			$A.util.removeClass(backdrop, 'slds-backdrop_open');
+			this.utils.removeClass(backdrop, 'slds-backdrop_open');
 
 			this.hideTopFocusTrap();
 			this.hideBottomFocusTrap();
@@ -580,7 +593,7 @@
 			this.fireEvent(component, 'onbeforeopen');
 			this.handleDialogOpen(component);
 
-			$A.util.addClass(dialog, 'slds-fade-in-open');
+			this.utils.addClass(dialog, 'slds-fade-in-open');
 
 			this.focusFirstElement(component);
 			this.fireEvent(component, 'onopen');
@@ -615,7 +628,7 @@
 		this.fireEvent(component, 'onbeforeclose');
 		this.handleDialogClose(component);
 
-		$A.util.removeClass(dialog, 'slds-fade-in-open');
+		this.utils.removeClass(dialog, 'slds-fade-in-open');
 
 		var activeDialog = this.getActiveDialog();
 		if (activeDialog) {

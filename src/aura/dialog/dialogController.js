@@ -26,6 +26,13 @@
 	},
 
 	/**
+	 * Initializes the component
+	 */
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
 	 * Fire the onclosebutton event when ESCAPE is pressed and a close button is present
 	 */
 	dialogKeyDown: function(component, event, helper) {

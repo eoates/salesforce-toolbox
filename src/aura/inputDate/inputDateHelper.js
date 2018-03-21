@@ -35,7 +35,7 @@
 	 */
 	isOpen: function(component) {
 		var container = component.find('container');
-		return $A.util.hasClass(container.getElement(), 'slds-is-open');
+		return this.utils.hasClass(container.getElement(), 'slds-is-open');
 	},
 
 	/**
@@ -56,7 +56,7 @@
 			dropdown.getElement().setAttribute('aria-hidden', false);
 
 			var container = component.find('container');
-			$A.util.addClass(container.getElement(), 'slds-is-open');
+			this.utils.addClass(container.getElement(), 'slds-is-open');
 		}
 
 		if (focus) {
@@ -75,7 +75,7 @@
 	close: function(component, focus) {
 		if (this.isOpen(component)) {
 			var container = component.find('container');
-			$A.util.removeClass(container.getElement(), 'slds-is-open');
+			this.utils.removeClass(container.getElement(), 'slds-is-open');
 
 			var dropdown = component.find('dropdown');
 			dropdown.getElement().setAttribute('aria-hidden', true);

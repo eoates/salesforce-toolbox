@@ -140,7 +140,7 @@
 
 		// Add the has-focus class
 		var container = helper.getContainerElement(component);
-		$A.util.addClass(container, 'has-focus');
+		helper.utils.addClass(container, 'has-focus');
 
 		// Walk up the element tree and check to see if the component is within a slds-form-element
 		// and, if so, check whether it has the slds-has-error class. This is to prevent issues with
@@ -148,8 +148,8 @@
 		var hasError = false;
 		var element = container;
 		while (element) {
-			if ($A.util.hasClass(element, 'slds-form-element')) {
-				hasError = $A.util.hasClass(element, 'slds-has-error');
+			if (helper.utils.hasClass(element, 'slds-form-element')) {
+				hasError = helper.utils.hasClass(element, 'slds-has-error');
 				if (hasError) {
 					break;
 				}
@@ -158,7 +158,7 @@
 		}
 
 		if (hasError) {
-			$A.util.addClass(container, 'has-error');
+			helper.utils.addClass(container, 'has-error');
 		}
 
 		// Fire the focus event
@@ -189,8 +189,8 @@
 			component.blurTimeoutId = undefined;
 
 			var container = helper.getContainerElement(component);
-			$A.util.removeClass(container, 'has-focus');
-			$A.util.removeClass(container, 'has-error');
+			helper.utils.removeClass(container, 'has-focus');
+			helper.utils.removeClass(container, 'has-error');
 
 			helper.fireEvent(component, 'onblur');
 		}), 0);

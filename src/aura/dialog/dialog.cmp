@@ -79,6 +79,10 @@
 	                    description="Fired to indicate when the last focusable element within the dialog should be focused. If your dialog has any focusable elements you should provide a handler for this event." />
 	<!-- /events -->
 
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
 	<!-- methods -->
 	<aura:method access="GLOBAL" name="open" action="{!c.open}"
 	             description="Opens the dialog." />
@@ -88,6 +92,8 @@
 	<!-- /methods -->
 
 	<!-- component -->
+	<c:utils aura:id="utils" />
+
 	<div id="{#globalId + '_root'}" style="display: none;">
 		<section id="{#globalId + '_dialog'}"
 		         role="{!if(v.prompt, 'alertdialog', 'dialog')}"
