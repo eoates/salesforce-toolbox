@@ -39,10 +39,10 @@
 		var value = optionString;
 		var label = value;
 
-		var indexOfEqual = optionString.indexOf(':');
-		if (indexOfEqual !== -1) {
-			value = optionString.substr(0, indexOfEqual);
-			label = optionString.substr(indexOfEqual + 1);
+		var indexOfSeparator = optionString.indexOf(':');
+		if (indexOfSeparator !== -1) {
+			value = optionString.substr(0, indexOfSeparator);
+			label = optionString.substr(indexOfSeparator + 1);
 		}
 
 		value = this.utils.trim(value);
