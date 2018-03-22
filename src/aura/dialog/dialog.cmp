@@ -81,6 +81,7 @@
 
 	<!-- handlers -->
 	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<aura:handler event="aura:locationChange" action="{!c.locationChange}" />
 	<!-- /handlers -->
 
 	<!-- methods -->

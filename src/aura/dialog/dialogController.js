@@ -33,6 +33,13 @@
 	},
 
 	/**
+	 * When the hash part of the URL changes close all open dialogs
+	 */
+	locationChange: function(component, event, helper) {
+		helper.closeAll();
+	},
+
+	/**
 	 * Fire the onclosebutton event when ESCAPE is pressed and a close button is present
 	 */
 	dialogKeyDown: function(component, event, helper) {

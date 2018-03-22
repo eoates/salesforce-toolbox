@@ -591,8 +591,8 @@
 		var index = this.indexOfDialog(component);
 		if (index === -1) {
 			this.fireEvent(component, 'onbeforeopen');
-			this.handleDialogOpen(component);
 
+			this.handleDialogOpen(component);
 			this.utils.addClass(dialog, 'slds-fade-in-open');
 
 			this.focusFirstElement(component);
@@ -610,10 +610,11 @@
 	 * Close the specified dialog
 	 *
 	 * @param {Aura.Component} component - The dialog component
+	 * @param {boolean}        [silent]  - If true no events will be fired
 	 *
 	 * @return {void}
 	 */
-	closeDialog: function(component) {
+	closeDialog: function(component, silent) {
 		var dialogId = component.getGlobalId() + '_dialog';
 		var dialog = document.getElementById(dialogId);
 		if (!dialog) {
@@ -625,17 +626,48 @@
 			return;
 		}
 
-		this.fireEvent(component, 'onbeforeclose');
-		this.handleDialogClose(component);
+		if (!silent) {
+			this.fireEvent(component, 'onbeforeclose');
+		}
 
+		this.handleDialogClose(component);
 		this.utils.removeClass(dialog, 'slds-fade-in-open');
 
-		this.fireEvent(component, 'onclose');
+		if (!silent) {
+			this.fireEvent(component, 'onclose');
 
-		var activeDialog = this.getActiveDialog();
-		if (activeDialog) {
-			this.focusFirstElement(activeDialog);
-			this.fireEvent(activeDialog, 'onfocusfirst');
+			var activeDialog = this.getActiveDialog();
+			if (activeDialog) {
+				this.focusFirstElement(activeDialog);
+				this.fireEvent(activeDialog, 'onfocusfirst');
+			}
+		}
+	},
+
+	/**
+	 * This method is intended to close all open dialogs in response to an aura:locationChange event
+	 * which is typically fired when the user navigates from one view to another within the mobile
+	 * site (or the Salesforce 1 app). The mobile site does not always destroy components
+	 * immediately when navigating between views. If the user opens a dialog and clicks the back
+	 * button in their browser or on their device the dialog remains open blocking other content. In
+	 * order to prevent this we handle the aura:locationChange event and close all open dialogs.
+	 * Since we are closing the dialogs because the user has changed views we don't fire the dialog
+	 * events such as onbeforeclose and onclose. The drawback to this approach is that if a dialog
+	 * contains an anchor element with a href of "#" and event.preventDefault() is not called in its
+	 * onclick event handler then the dialog will close and it may not be obvious why. That said,
+	 * this seems like a reasonable trade-off to make as it seems far more likely that a user may
+	 * inadvertently click the back button while a dialog is open than it is that a developer may
+	 * use an anchor element with a href of "#" without calling event.preventDefault() in the
+	 * onclick event handler. The bad anchor element can be fixed, but we cannot prevent the use of
+	 * the back button
+	 *
+	 * @return {void}
+	 */
+	closeAll: function() {
+		var dialogs = this.openDialogs.slice();
+		for (var i = (dialogs.length - 1); i >= 0; i--) {
+			var dialog = dialogs[i];
+			this.closeDialog(dialog, true);
 		}
 	},
 
