@@ -527,65 +527,33 @@
 	 * objects. For arrays deepEquals() is called recursively for each element in the array. For
 	 * objects deepEquals() is called for each property in the object
 	 *
-	 * @param {*}        a         - The first value to compare
-	 * @param {*}        b         - The second value to compare
-	 * @param {Function} [filter]  - A callback function used to control which properties are
-	 *                               considered in the comparison. If provided this function will be
-	 *                               executed for each property when comparing two object values.
-	 *                               This function accepts three arguments: the name of the property
-	 *                               being compared, the full path which includes any parent object
-	 *                               property names as well as the property being compared separated
-	 *                               by a period (for example,
-	 *                               "rootObject.nestedObject.propertyName"), the first object in
-	 *                               the comparison, the second object in the comparison. The
-	 *                               function should return true to allow the property in the
-	 *                               comparison or false to ignore it
-	 * @param {*}        [thisArg] - The value to use for the this keyword when executing the filter
-	 *                               callback
+	 * @param {*} a - The first value to compare
+	 * @param {*} b - The second value to compare
 	 *
 	 * @return {boolean} true if the values are equal; otherwise, false
 	 */
-	deepEquals: function(a, b, filter, thisArg) {
+	deepEquals: function(a, b) {
 		// If the values are the same then just return true immediately
 		if (a === b) {
 			return true;
 		}
 
-		var depth = (arguments[4] + 1) || 0;
-		var path = arguments[5] || '';
-
 		if (this.isArray(a) && this.isArray(b) && (a.length === b.length)) {
 			// Compare arrays of equal length
-			if (path || (depth > 0)) {
-				path += '[]';
-			}
-
 			for (var i = 0, n = a.length; i < n; i++) {
-				if (!this.deepEquals(a[i], b[i], filter, thisArg, depth, path)) {
+				if (!this.deepEquals(a[i], b[i])) {
 					return false;
 				}
 			}
 			return true;
 		} else if (this.isObject(a) && this.isObject(b)) {
 			// Compare objects
-			if (path) {
-				path += '.';
-			}
-
 			var keysInA = this.keys(a);
 			var keysInB = this.keys(b);
 			var keysInBoth = this.distinct(keysInA.concat(keysInB));
 			for (var i = 0, n = keysInBoth.length; i < n; i++) {
 				var key = keysInBoth[i];
-
-				if (filter) {
-					var include = filter.call(thisArg, key, path + key, a, b);
-					if (!include) {
-						continue;
-					}
-				}
-
-				if (!this.deepEquals(a[key], b[key], filter, thisArg, depth, path + key)) {
+				if (!this.deepEquals(a[key], b[key])) {
 					return false;
 				}
 			}
