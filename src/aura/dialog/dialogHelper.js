@@ -344,6 +344,22 @@
 	},
 
 	/**
+	 * Scroll the content area of a dialog to the top so the first element is visible
+	 *
+	 * @param {Aura.Component} component - the dialog component
+	 *
+	 * @return {void}
+	 */
+	scrollDialogContentToTop: function(component) {
+		var contentId = component.getGlobalId() + '_content';
+		var content = document.getElementById(contentId);
+		if (content) {
+			content.scrollTop = 0;
+			content.scrollLeft = 0;
+		}
+	},
+
+	/**
 	 * Displays the dialog backdrop. This is displayed when the first dialog is opened and remains
 	 * visible until the last dialog is closed
 	 *
@@ -595,6 +611,7 @@
 			this.handleDialogOpen(component);
 			this.utils.addClass(dialog, 'slds-fade-in-open');
 
+			this.scrollDialogContentToTop(component);
 			this.focusFirstElement(component);
 			this.fireEvent(component, 'onopen');
 			this.fireEvent(component, 'onfocusfirst');
