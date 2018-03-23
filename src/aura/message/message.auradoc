@@ -2,7 +2,7 @@
 	<aura:description>
 		<!-- description -->
 		<p>
-			The <code>message</code> component displays a simple message. The message can be an
+			The <code>c:message</code> component displays a simple message. The message can be an
 			informational message, a success message, a warning message, or an error message.
 		</p>
 		<!-- /description -->
@@ -10,7 +10,7 @@
 		<!-- example -->
 		<h3 class="slds-text-heading_medium">Usage Example</h3>
 
-		<p>This example will demonstrate basic usage of the <code>message</code> component.</p>
+		<p>This example will demonstrate basic usage of the <code>c:message</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
 <pre><![CDATA[<!-- MyComponent.cmp -->

@@ -2,7 +2,7 @@
 	<aura:description>
 		<!-- description -->
 		<p>
-			The <code>utils</code> component provides a module of common JavaScript methods to
+			The <code>c:utils</code> component provides a module of common JavaScript methods to
 			promote code reuse across components. This component has no attributes and does not
 			render any user interface (UI) elements.
 		</p>
@@ -18,7 +18,7 @@
 		<!-- example -->
 		<h3 class="slds-text-heading_medium">Usage Example</h3>
 
-		<p>This example will demonstrate basic usage of the <code>utils</code> component.</p>
+		<p>This example will demonstrate basic usage of the <code>c:utils</code> component.</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
 <pre><![CDATA[<!-- MyComponent.cmp -->

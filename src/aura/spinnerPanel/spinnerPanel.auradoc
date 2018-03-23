@@ -2,9 +2,9 @@
 	<aura:description>
 		<!-- description -->
 		<p>
-			The <code>spinnerPanel</code> component is used to display a spinner overlay on a
+			The <code>c:spinnerPanel</code> component is used to display a spinner overlay on a
 			block of content. This is useful when loading or saving data to the server. For example,
-			you can place your form inside of a <code>spinnerPanel</code> component and when the
+			you can place your form inside of a <code>c:spinnerPanel</code> component and when the
 			user submits the form you can set the <code>showSpinner</code> attribute to
 			<code>true</code> to indicate that the data is being saved. Just make sure to set
 			<code>showSpinner</code> back to <code>false</code> to hide the spinner.
@@ -14,7 +14,9 @@
 		<!-- example -->
 		<h3 class="slds-text-heading_medium">Usage Example</h3>
 
-		<p>This example will demonstrate basic usage of the <code>spinnerPanel</code> component.</p>
+		<p>
+			This example will demonstrate basic usage of the <code>c:spinnerPanel</code> component.
+		</p>
 
 		<h4 class="slds-text-heading_small">Component Markup</h4>
 <pre><![CDATA[<!-- CreateContact.cmp -->
