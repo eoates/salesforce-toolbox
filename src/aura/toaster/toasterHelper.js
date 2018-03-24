@@ -94,7 +94,10 @@
 		} else {
 			var args = Array.prototype.slice.call(arguments, 1);
 
-			var queue = component.queue || [];
+			var queue = component.queue;
+			if (!queue) {
+				queue = component.queue = [];
+			}
 			queue.push(args);
 		}
 	},
