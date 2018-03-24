@@ -18,6 +18,9 @@
 	<aura:attribute access="GLOBAL" name="value" type="Decimal"
 	                description="The value of the component." />
 
+	<aura:attribute access="GLOBAL" name="type" type="String" default="text"
+	                description="The type of the rendered input element. Accepted values are: text, number, and auto. If set to auto then the type will be determined based on the current device - text will be used in desktop browsers and number will be used on mobile." />
+
 	<aura:attribute access="GLOBAL" name="placeholder" type="String"
 	                description="Text that is displayed when the field is empty, to prompt the user for a valid entry." />
 
@@ -97,7 +100,7 @@
 		       id="{#globalId + '_input'}"
 		       name="{!v.name}"
 		       class="{!v.class + ' slds-input'}"
-		       type="{#if($Browser.formFactor eq 'DESKTOP', 'text', 'number')}"
+		       type="{!if(v.type eq 'auto', if($Browser.formFactor eq 'DESKTOP', 'text', 'number'), v.type)}"
 		       accesskey="{!v.accesskey}"
 		       placeholder="{!v.placeholder}"
 		       title="{!v.title}"

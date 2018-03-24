@@ -215,7 +215,18 @@
 				return;
 			}
 
-			helper.performNumberInputBehaviorAction(component, event, 'onBlur');
+			// Update the value
+			var valueChanged = helper.performNumberInputBehaviorAction(component, event, 'onBlur');
+
+			// Make sure no option is selected in the select list
+			var selectedIndexChanged = helper.setSelectedIndex(component, -1);
+			helper.updateSelectElement(component);
+
+			// If the value was changed then fire the event
+			var changed = valueChanged || selectedIndexChanged;
+			if (changed) {
+				helper.fireEvent(component, 'onchange');
+			}
 		} else {
 			component.pendingAutocomplete = false;
 			helper.setValueFromInputElement(component);

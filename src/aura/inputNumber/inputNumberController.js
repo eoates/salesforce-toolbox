@@ -60,7 +60,10 @@
 	 * Handles the blur event of the input element. Applies formatting
 	 */
 	inputBlur: function(component, event, helper) {
-		helper.performBehaviorAction(component, event, 'onBlur');
+		var changed = helper.performBehaviorAction(component, event, 'onBlur');
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
+		}
 		helper.fireEvent(component, 'onblur');
 	},
 

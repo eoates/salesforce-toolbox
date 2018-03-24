@@ -68,21 +68,10 @@
 			 * @param {Function} opts.getInputType  - Gets the input element's type
 			 * @param {Function} opts.setInputValue - Sets the value of the input element
 			 *
-			 * @return {void}
+			 * @return {boolean} true if the component value was changed
 			 */
 			onBlur: function(event, opts) {
-				var disabled = component.get('v.disabled');
-				var readOnly = component.get('v.readonly');
-				if (disabled || readOnly) {
-					return;
-				}
-
-				if (this.formatTimeout) {
-					clearTimeout(this.formatTimeout);
-					this.formatTimeout = undefined;
-				}
-
-				this.updateInputElement(opts);
+				return this.onChange(event, opts);
 			},
 
 			/**
