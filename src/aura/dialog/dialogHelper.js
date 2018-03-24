@@ -621,6 +621,8 @@
 			this.focusFirstElement(component);
 			this.fireEvent(component, 'onfocusfirst');
 		}
+
+		component.set('v.visible', true);
 	},
 
 	/**
@@ -659,6 +661,8 @@
 				this.fireEvent(activeDialog, 'onfocusfirst');
 			}
 		}
+
+		component.set('v.visible', false);
 	},
 
 	/**

@@ -26,6 +26,23 @@
 	},
 
 	/**
+	 * Sets focus to the dialog's close button if it has one. Useful in onfocusfirst and
+	 * onfocuslast event handlers when a dialog has no focusable elements of its own
+	 */
+	focusCloseButton: function(component, event, helper) {
+		var index = helper.indexOfDialog(component);
+		if (index === -1) {
+			// Dialig is not open
+			return;
+		}
+
+		var closeButton = component.find('closeButton');
+		if (closeButton) {
+			closeButton.focus();
+		}
+	},
+
+	/**
 	 * Initializes the component
 	 */
 	init: function(component, event, helper) {

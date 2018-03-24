@@ -51,6 +51,9 @@
 
 	<aura:attribute access="GLOBAL" name="footer" type="Aura.Component[]"
 	                description="The content of the dialog footer." />
+
+	<aura:attribute access="PRIVATE" name="visible" type="Boolean" default="false"
+	                description="Internal use only! The visible state of the dialog." />
 	<!-- /attributes -->
 
 	<!-- events -->
@@ -90,6 +93,9 @@
 
 	<aura:method access="GLOBAL" name="close" action="{!c.close}"
 	             description="Closes the dialog." />
+
+	<aura:method access="GLOBAL" name="focusCloseButton" action="{!c.focusCloseButton}"
+	             description="Sets focus to the dialog's close button if it has one." />
 	<!-- /methods -->
 
 	<!-- component -->
@@ -101,7 +107,7 @@
 		         aria-modal="true"
 		         aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
 		         aria-describedby="{#globalId + '_content'}"
-		         class="{!v.dialogClass + ' slds-modal' + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '')}"
+		         class="{!v.dialogClass + ' slds-modal' + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '') + if(v.visible, ' slds-fade-in-open', '')}"
 		         onkeydown="{!c.dialogKeyDown}">
 
 			<!-- top focus trap -->
