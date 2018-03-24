@@ -227,6 +227,14 @@
 		var trap = this.createFocusTrap(this.dialogContainerId + '_top');
 		trap.tabIndex = 1;
 		trap.addEventListener('focus', $A.getCallback(function() {
+			// Scroll to the top of the page
+			var body = self.getBodyElement();
+			if (body) {
+				body.scrollTop = 0;
+				body.scrollLeft = 0;
+			}
+
+			// Focus the first element in the active dialog
 			var activeDialog = self.getActiveDialog();
 			if (activeDialog) {
 				self.focusFirstElement(activeDialog);
