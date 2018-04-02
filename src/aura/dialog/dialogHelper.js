@@ -368,51 +368,6 @@
 	},
 
 	/**
-	 * Disables scrolling on the body element in iOS by setting position to "fixed" and width to
-	 * 100%. This is done as a workaround to a known bug in iOS. For more information on the bug
-	 * see this link: https://bugs.webkit.org/show_bug.cgi?id=176896. As of the time this code was
-	 * written the current version of iOS is 11.2. This bug has supposedly been fixed and should be
-	 * in the next release (iOS 11.3) at which time we can likely remove this method and its
-	 * counterpart enableBodyScroll()
-	 *
-	 * Note: This workaround causes the page to scroll to the top. It can be annoying to users if
-	 * they had scrolled down a page and opened a dialog for the page to scroll all the way back to
-	 * the top, but this is a trade-off we have to make in order to make the dialog behave correctly
-	 *
-	 * @return {void}
-	 */
-	disableBodyScroll: function() {
-		var isIOS = this.utils.isIOS();
-		var body = this.getBodyElement();
-		if (isIOS && body) {
-			// Remember the current value of the position and width style properties so we can
-			// restore them when all dialogs are closed
-			body.setAttribute('data-c_dialog_body_position', body.style.position);
-			body.setAttribute('data-c_dialog_body_width', body.style.width);
-
-			// Set position to "fixed" and width to 100%
-			body.style.position = 'fixed';
-			body.style.width = '100%';
-		}
-	},
-
-	/**
-	 * Removes the changes made by disableBodyScroll(). This is a workaround for a bug in iOS. See
-	 * the description of the disableBodyScroll() method for more information
-	 *
-	 * @return {void}
-	 */
-	enableBodyScroll: function() {
-		var isIOS = this.utils.isIOS();
-		var body = this.getBodyElement();
-		if (isIOS && body) {
-			// Restore previous value for the position and width style properties
-			body.style.position = body.getAttribute('data-c_dialog_body_position') || '';
-			body.style.width = body.getAttribute('data-c_dialog_body_width') || '';
-		}
-	},
-
-	/**
 	 * Displays the dialog backdrop. This is displayed when the first dialog is opened and remains
 	 * visible until the last dialog is closed
 	 *
@@ -426,7 +381,6 @@
 
 			this.showTopFocusTrap();
 			this.showBottomFocusTrap();
-			this.disableBodyScroll();
 		}
 	},
 
@@ -443,7 +397,6 @@
 
 			this.hideTopFocusTrap();
 			this.hideBottomFocusTrap();
-			this.enableBodyScroll();
 		}
 	},
 
