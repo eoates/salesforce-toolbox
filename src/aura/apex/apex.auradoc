@@ -2,12 +2,18 @@
 	<aura:description>
 		<!-- description -->
 		<p>
-			The <code>c:apex</code> component simplifies the task of invoking server-side Apex
-			methods from your Lightning components. Executing server-side Apex in your component is
-			not difficult, but there is a lot of repeated code. The purpose of the
-			<code>c:apex</code> component is to provide a reusable solution that removes much of the
-			redundant response handling logic as possible and allows you to specify callbacks for
-			only the states that you need to handle.
+			The <code>c:apex</code> component can be used to execute an Apex server method. Although
+			you can execute an Apex method without using this component, it requires a lot of
+			repeated boilerplate code. Using the <code>c:apex</code> component allows you to focus
+			on just the logic needed within your component and not all of the extra code needed to
+			actually invoke the Apex method or handle errors.
+		</p>
+
+		<p>
+			Use the component's <code>getModule</code> method to obtain a reference to the
+			code module. For a list of all of the methods provided by the returned module and to
+			view documentation on each method refer to the code in the component's helper resource
+			(/aura/apex/apexHelper.js).
 		</p>
 		<!-- /description -->
 
@@ -15,10 +21,10 @@
 		<h3 class="slds-text-heading_medium">Options</h3>
 
 		<p>
-			The component's <code>getHandler</code> method accepts an optional <code>opts</code>
-			argument which is used to specify one or more callback functions for handing success and
-			failure conditions. The table below lists all of the options that can be specified via
-			the <code>opts</code> argument.
+			The <code>execute</code> method accepts an optional <code>opts</code> argument which can
+			be used to specify execution options as well as callback functions for handing success
+			and failure conditions. The table below lists all of the options that can be specified
+			via the <code>opts</code> argument.
 		</p>
 
 		<table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
@@ -30,6 +36,31 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					<td>params</td>
+					<td>Object</td>
+					<td class="slds-cell-wrap">
+						An object containing parameter values to be passed to the Apex method.
+					</td>
+				</tr>
+				<tr>
+					<td>abortable</td>
+					<td>Boolean</td>
+					<td class="slds-cell-wrap">
+						If true then the action is marked as abortable. For more information about
+						abortable actions refer to the
+						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_abortable_actions.htm" target="_blank">Lightning Components Developer Guide</a>.
+					</td>
+				</tr>
+				<tr>
+					<td>storable</td>
+					<td>Boolean</td>
+					<td class="slds-cell-wrap">
+						If true then the action is marked as storable. For more information about
+						storable actions refer to the
+						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_storable_actions.htm" target="_blank">Lightning Components Developer Guide</a>.
+					</td>
+				</tr>
 				<tr>
 					<td>success</td>
 					<td>Function</td>
@@ -77,8 +108,8 @@
 					<td>complete</td>
 					<td>Function</td>
 					<td class="slds-cell-wrap">
-						A function to be executed after the Apex method completes regardless of
-						whether it was successful. This function will be called with no arguments.
+						A function to be executed when the Apex method completes regardless of
+						success or failure. This function will be called with no arguments.
 					</td>
 				</tr>
 				<tr>
@@ -87,8 +118,9 @@
 					<td class="slds-cell-wrap">
 						If a value is specified then it will be used as the <code>this</code> object
 						in your callback functions. If a value is not specified, however, then
-						<code>this</code> will be the object that was provided to the action's
-						<code>setCallback</code> method.
+						<code>this</code> will be <code>undefined</code> in your callback functions.
+						It is typical to pass in a reference to your component's helper here, but
+						you can really pass in anything you like.
 					</td>
 				</tr>
 			</tbody>
@@ -108,7 +140,7 @@
   <c:apex aura:id="apex" />
   <button onclick="{!c.testButtonClick}">Test</button>
 
-  <p>{!v.message}!</p>
+  <p>{!v.message}</p>
 </aura:component>
 ]]></pre>
 
@@ -116,36 +148,25 @@
 <pre><![CDATA[// MyComponentController.js
 ({
   testButtonClick: function(component, event, helper) {
-    // Begin by obtaining a reference to the apex component
-    var apex = component.find('apex');
+    // Begin by obtaining a reference to the apex module
+    var apex = component.find('apex').getModule();
 
-    // The apex component's getHandler() method will return a function that you can pass
-    // to your action's setCallback() method and will handle all of the error handling for
-    // you. You can specify 3 callbacks which will be called by the handler. All of these
-    // callbacks are optional
-    var handler = apex.getHandler({
-       succes: function(returnValue, state) {
-         // Success
-         component.set('v.message', returnValue);
-       },
-       failure: function(error, state) {
-         // Failure
-         console.error('Uh oh! Something went wrong', error);
-       },
-       complete: function() {
-         // Complete
-         console.log('Apex method complete!');
-       }
+    // Next, call the Apex method. The success and failure callbacks are optional. You
+    // only need to specify a callback if you intend to actually perform some action
+    apex.execute(component, 'echo', {
+      abortable: true,
+      params: {
+        message: 'Hello world!'
+      },
+      success: function(returnValue) {
+        // Success
+        component.set('v.message', returnValue);
+      },
+      failure: function(error) {
+        // Failure
+        console.error('An error occurred', error);
+      }
     });
-
-    // Enqueue the action. Use the function returned by the apex component's getHandler()
-    // method as the callback for the action
-    var action = component.get('c.echo');
-    action.setParams({
-      message: 'Hello world!'
-    });
-    action.setCallback(null, handler);
-    $A.enqueueAction(action);
   }
 })
 ]]></pre>
@@ -153,9 +174,9 @@
 		<h4 class="slds-text-heading_small">Apex Class</h4>
 <pre><![CDATA[// MyApexClass.cls
 public class MyApexClass {
-  // A simple method which simply returns the input with some text added
+  // A method which simply returns the input with some text added
   @AuraEnabled
-  public String echo(String message) {
+  public static String echo(String message) {
     return 'Message from server: ' + message;
   }
 }

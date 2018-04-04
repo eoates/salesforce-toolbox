@@ -7,15 +7,21 @@
  *
  * @author   Eugene Oates
  * @date     2018-03-20
- * @version  2.0.0
+ * @version  1.1.0
  *
  **************************************************************************************************/
 ({
 	/**
-	 * Returns a handler function
+	 * Initializes the component
 	 */
-	getHandler: function(component, event, helper) {
-		var args = event.getParam('arguments');
-		return helper.getHandler(args.opts);
+	init: function(component, event, helper) {
+		helper.importModules(component);
+	},
+
+	/**
+	 * Returns the apex module
+	 */
+	getModule: function(component, event, helper) {
+		return helper.getInstance();
 	}
 })

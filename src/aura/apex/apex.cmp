@@ -8,19 +8,22 @@
 *
 * @author   Eugene Oates
 * @date     2018-03-20
-* @version  2.0.0
+* @version  1.1.0
 *
 ****************************************************************************************************
 -->
 <aura:component access="GLOBAL"
                 description="A reusable component for executing Apex methods.">
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
 	<!-- methods -->
-	<aura:method access="GLOBAL"
-	             name="getHandler"
-	             action="{!c.getHandler}"
-	             description="Returns a function that can be used as the callback for an Apex method.">
-		<aura:attribute name="opts" type="Object"
-		                description="Optional. An object used to specify options such as callback functions." />
-	</aura:method>
+	<aura:method access="GLOBAL" name="getModule" action="{!c.getModule}"
+	             description="Returns an object which has the apex methods." />
 	<!-- /methods -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+	<!-- /component -->
 </aura:component>
