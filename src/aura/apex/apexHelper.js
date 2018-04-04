@@ -7,62 +7,37 @@
  *
  * @author   Eugene Oates
  * @date     2018-03-20
- * @version  1.0.0
+ * @version  2.0.0
  *
  **************************************************************************************************/
  ({
-	/**
-	 * Imports modules used by the component
+ 	/**
+	 * Returns a function which is intended to be passed to the setCallback() method of a
+	 * component action
 	 *
-	 * @param {Aura.Component} component - The apex component
+	 * @param {Object}   [opts]          - An object containing options
+	 * @param {Function} [opts.success]  - A function to be executed if the Apex method is
+	 *                                     successful
+	 * @param {Function} [opts.failure]  - A function to be executed if an error occurs
+	 * @param {Function} [opts.complete] - A function to be executed after the Apex method has been
+	 *                                     executed regardless of success or failure. This callback
+	 *                                     is executed after the success and failure callbacks
+	 * @param {Object}   [opts.context]  - An object to be used for the this object when executing
+	 *                                     the success or failure callback
 	 *
-	 * @return {void}
+	 * @return {Function} A function that will handle the response from the framework when executing
+	 *                    a server-side Apex method
 	 */
-	importModules: function(component) {
-		if (!this.utils) {
-			this.utils = component.find('utils').getModule();
-		}
-	},
+	getHandler: function(opts) {
+		var self = this;
+		var beginTime = Date.now();
+		var endTime, duration;
 
-	/**
-	 * Executes an Apex method
-	 *
-	 * @param {Aura.Component} component              - The component for which to execute the Apex
-	 *                                                  method
-	 * @param {string}         name                   - The name of the apex method to execute
-	 * @param {Object}         opts                   - An object containing optional arguments
-	 * @param {Object}         [opts.params]          - Parameter values to be passed to the Apex
-	 *                                                  method
-	 * @param {boolean}        [opts.abortable=false] - If true then the action is abortable
-	 * @param {boolean}        [opts.storable=false]  - If true the action is storable
-	 * @param {Function}       [opts.success]         - A function to execute if the action succeeds
-	 * @param {Function}       [opts.failure]         - A function to execute if the action fails
-	 * @param {Object}         [opts.context]         - Object to use as this when executing
-	 *                                                  the success or failure callbacks
-	 *
-	 * @return {void}
-	 */
-	execute: function(component, name, opts) {
-		var beginTime, endTime, duration;
+		return function(response, component) {
+			var success, failure, complete, context;
+			var state, result, error, message;
+			var action = component.getName() + '.' + response.getName();
 
-		var action = component.get('c.' + name);
-		if (opts && opts.params) {
-			var params = this.utils.clone(opts.params);
-			action.setParams(params);
-		}
-		if (opts && opts.abortable) {
-			action.setAbortable();
-		}
-		if (opts && opts.storable) {
-			action.setStorable();
-		}
-
-		var context = undefined;
-		if (opts) {
-			context = opts.context;
-		}
-
-		action.setCallback(this, function(response) {
 			// Do nothing if the component is not valid
 			if (!component.isValid()) {
 				return;
@@ -71,58 +46,153 @@
 			// Record the duration
 			endTime = Date.now();
 			duration = endTime - beginTime;
-			console.debug(
-				'Callout ' + component.getName() + '.' + name + ' completed in ' + duration + 'ms'
-			);
+			console.debug('Callout ' + action + ' completed in ' + duration + 'ms');
 
-			var state = response.getState();
+			// Get options
+			success = opts && opts.success;
+			failure = opts && opts.failure;
+			complete = opts && opts.complete;
+			context = (opts && opts.context) || this;
+
+			// Handle the response
+			state = response.getState();
 			switch (state) {
 				// Action completed successfully
 				case 'SUCCESS':
 				case 'REFRESH':
-					var result = response.getReturnValue();
-					if (opts && opts.success) {
-						opts.success.call(context, result, state);
-					}
+					result = response.getReturnValue();
+					self.handleSuccess(action, state, result, context, success, failure, complete);
 					break;
 
 				case 'ERROR':
 					// An error occurred
-					var message = 'An error occurred.';
-					var error = response.getError();
-					if (error && error.length && error.length > 0 && error[0] && error[0].message) {
+					message = 'An error occurred.';
+					error = response.getError();
+					if (error && (error.length > 0) && error[0] && error[0].message) {
 						message = error[0].message;
 					}
-					if (opts && opts.failure) {
-						opts.failure.call(context, new Error(message), state);
-					}
+
+					self.handleFailure(action, state, message, context, failure, complete);
 					break;
 
 				case 'INCOMPLETE':
 					// Lost connection to server
-					if (opts && opts.failure) {
-						opts.failure.call(context, new Error('Lost connection to server.'), state);
-					}
+					message = 'Lost connection to server.'
+					self.handleFailure(action, state, message, context, failure, complete);
 					break;
 
 				case 'ABORTED':
 					// Operation was aborted
-					if (opts && opts.failure) {
-						opts.failure.call(context, new Error('Operation was aborted.'), state);
-					}
+					message = 'Operation was aborted.';
+					self.handleFailure(action, state, message, context, failure, complete);
 					break;
 
 				default:
 					// Unknown error
-					if (opts && opts.failure) {
-						opts.failure.call(context, new Error('Unknown error.'), state);
-					}
+					message = 'Unknown error.';
+					self.handleFailure(action, state, message, context, failure, complete);
 					break;
 			}
-		});
+		};
+	},
 
-		// Execute the action
-		beginTime = Date.now();
-		$A.enqueueAction(action);
+	/**
+	 * Handles successful execution of an Apex method and executes the appropriate callbacks. If an
+	 * exception occurs while executing the success callback and a failure callback is provided then
+	 * the failure callback will be executed. The complete callback, if provided, is always executed
+	 *
+	 * @param {string}   action   - The name of the action. This consists of the component name and
+	 *                              Apex method name
+	 * @param {string}   state    - The state returned by the platform. Possible values are
+	 *                              "SUCCESS" and "REFRESH"
+	 * @param {*}        result   - The value returned by the Apex method
+	 * @param {Object}   context  - The context in which to execute the callbacks
+	 * @param {Function} success  - A function to be executed on success
+	 * @param {Function} failure  - A function to be executed on failure
+	 * @param {Function} complete - A function to be executed on completion regardless success or
+	 *                              failure
+	 *
+	 * @return {void}
+	 */
+	handleSuccess: function(action, state, result, context, success, failure, complete) {
+		var message;
+
+		// If a success callback is provided then execute it. If an exception occurs while executing
+		// the success callback and a failure callback is provided then the failure callback will
+		// be executed
+		if (success) {
+			try {
+				success.call(context, result, state);
+			} catch (se) {
+				// An exception occurred in the success callback. If a failure callback was provided
+				// then execute it; otherwise, just log the error to the console
+				if (failure) {
+					try {
+						message = 'Unhandled exception in success callback: ' + se.message;
+						failure.call(context, new Error(message), 'ERROR');
+					} catch (fe) {
+						console.error('Unhandled exception in failure callback for ' + action, fe);
+					}
+				} else {
+					console.error('Unhandled exception in success callback for ' + action, se);
+				}
+			}
+		}
+
+		this.handleComplete(action, context, complete);
+	},
+
+	/**
+	 * Handles failed execution of an Apex method and executes the appropriate callbacks.
+	 *
+	 * @param {string}   action   - The name of the action. This consists of the component name and
+	 *                              Apex method name
+	 * @param {string}   state    - The state returned by the platform. Possible values are
+	 *                              "SUCCESS" and "REFRESH"
+	 * @param {string}   message  - An error message that describes what went wrong
+	 * @param {Object}   context  - The context in which to execute the callbacks
+	 * @param {Function} failure  - A function to be executed on failure
+	 * @param {Function} complete - A function to be executed on completion regardless success or
+	 *                              failure
+	 *
+	 * @return {void}
+	 */
+	handleFailure: function(action, state, message, context, failure, complete) {
+		// If a failure callback is provided then execute it; otherwise, just log the error to the
+		// console
+		if (failure) {
+			try {
+				failure.call(context, new Error(message), state);
+			} catch (fe) {
+				console.error('Unhandled exception in failure callback for ' + action, fe);
+			}
+		} else {
+			console.error('Callout ' + action + ' failed', new Error(message), state);
+		}
+
+		this.handleComplete(action, context, complete);
+	},
+
+	/**
+	 * Executes the complete callback if provided. The complete callback is always executed
+	 * regardless of whether the Apex method was successful. Think of the complete callback like
+	 * the finally statement in a try/catch/finally structure
+	 *
+	 * @param {string} action     - The name of the action. This consists of the component name and
+	 *                              Apex method name
+	 * @param {Object} context    - The context in which to execute the callbacks
+	 * @param {Function} complete - A function to be executed on completion regardless success or
+	 *                              failure
+	 *
+	 * @return {void}
+	 */
+	handleComplete: function(action, context, complete) {
+		if (complete) {
+			try {
+				complete.call(context);
+			} catch (ce) {
+				console.error('Unhandled exception in complete callback for ' + action, ce);
+			}
+		}
 	}
 })
