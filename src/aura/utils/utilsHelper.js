@@ -617,6 +617,50 @@
 	},
 
 	/**
+	 * The bind() method creates a new function that, when called, has its this keyword set to the
+	 * provided value, with a given sequence of arguments preceding any provided when the new
+	 * function is called
+	 *
+	 * Note that this is a polyfill for Function.prototype.bind(). Function.prototype.bind() will be
+	 * used if available
+	 *
+	 * @param {Function} fn      - The function to be bound
+	 * @param {Object}   thisArg - The value to be passed as the this parameter to the target
+	 *                             function when the bound function is called. The value is ignored
+	 *                             if the bound function is constructed using the new operator
+	 * @param {...*}     [arg]   - Arguments to prepend to arguments provided to the bound function
+	 *                             when invoking the target function
+	 *
+	 * @return {Function} A copy of the given function with the specified this value and initial
+	 *                    arguments
+	 */
+	bind: function(fn, thisArg) {
+		if (!this.isFunction(fn)) {
+			throw new TypeError('Argument \'fn\' must be a function');
+		}
+
+		if (Function.prototype.bind) {
+			return fn.bind(thisArg);
+		}
+
+		var args = Array.prototype.slice.call(arguments, 2);
+		var nop = function() {};
+		var bound = function() {
+			return fn.apply(
+				(this instanceof nop) ? this : thisArg,
+				args.concat(Array.prototype.slice.call(arguments))
+			);
+		};
+
+		if (fn.prototype) {
+			nop.prototype = fn.prototype;
+		}
+
+		bound.prototype = new nop();
+		return bound;
+	},
+
+	/**
 	 * Generates a random number between min (included) and max (excluded)
 	 *
 	 * @param {number} min - The minimum value
