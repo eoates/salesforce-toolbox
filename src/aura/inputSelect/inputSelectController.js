@@ -74,7 +74,7 @@
 	 * Handles change to the options attribute
 	 */
 	optionsChange: function(component, event, helper) {
-		var options = helper.createAndSetLocalOptions(component);
+		helper.createAndSetLocalOptions(component);
 		helper.setSelectedIndexFromValue(component);
 
 		if (!component.isValid() || !component.isRendered()) {
@@ -257,33 +257,32 @@
 			return;
 		}
 
-		var inputElement = event.target;
 		var selectElement = helper.getSelectElement(component);
 
 		var handled = false;
 		var which = event.which || event.keyCode;
 		switch (which) {
-			case 8: // Backspace
-			case 46: // Delete
+		case 8: // Backspace
+		case 46: // Delete
+			component.pendingAutocomplete = false;
+			selectElement.selectedIndex = -1;
+			break;
+
+		case 38: // Up arrow
+			if (helper.selectNextOptionElement(component, true)) {
 				component.pendingAutocomplete = false;
-				selectElement.selectedIndex = -1;
-				break;
+				helper.setValueFromSelectElement(component);
+			}
+			handled = true;
+			break;
 
-			case 38: // Up arrow
-				if (helper.selectNextOptionElement(component, true)) {
-					component.pendingAutocomplete = false;
-					helper.setValueFromSelectElement(component);
-				}
-				handled = true;
-				break;
-
-			case 40: // Down arrow
-				if (helper.selectNextOptionElement(component, false)) {
-					component.pendingAutocomplete = false;
-					helper.setValueFromSelectElement(component);
-				}
-				handled = true;
-				break;
+		case 40: // Down arrow
+			if (helper.selectNextOptionElement(component, false)) {
+				component.pendingAutocomplete = false;
+				helper.setValueFromSelectElement(component);
+			}
+			handled = true;
+			break;
 		}
 
 		if (handled) {

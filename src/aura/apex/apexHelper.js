@@ -10,21 +10,21 @@
  * @version  1.1.0
  *
  **************************************************************************************************/
- ({
- 	/**
+({
+	/**
 	 * Imports modules used by the component
 	 *
 	 * @param {Aura.Component} component - The apex component
 	 *
 	 * @return {void}
 	 */
- 	importModules: function(component) {
- 		if (!this.utils) {
- 			this.utils = component.find('utils').getModule();
- 		}
- 	},
+	importModules: function(component) {
+		if (!this.utils) {
+			this.utils = component.find('utils').getModule();
+		}
+	},
 
- 	/**
+	/**
  	 * Returns a bound copy of the named function for exporting
  	 *
  	 * @param {string} name - The name of the function to export. This name must refer to a function
@@ -32,11 +32,11 @@
  	 *
  	 * @return {Function} A function bound to the helper
  	 */
- 	export: function(name) {
- 		return this.utils.bind(this[name], this);
- 	},
+	export: function(name) {
+		return this.utils.bind(this[name], this);
+	},
 
- 	/**
+	/**
 	 * Returns the module instance. In order to keep the inner methods of the component private we
 	 * return a proxy object which has only the methods we wish to be public. If you need to add a
 	 * publicly accessible method then you must add it to the instance defined here.
@@ -67,7 +67,7 @@
 		return component.getName() + '.' + name;
 	},
 
- 	/**
+	/**
 	 * Executes an Apex method
 	 *
 	 * @param {Aura.Component} component              - The component for which to execute the Apex
@@ -89,7 +89,6 @@
 	 * @return {void}
 	 */
 	execute: function(component, name, opts) {
-		var beginTime, endTime, duration;
 		var action, qualifiedName;
 		var failure = opts && opts.failure;
 		var complete = opts && opts.complete;
@@ -106,14 +105,7 @@
 		try {
 			action = component.get('c.' + name);
 		} catch (e) {
-			this.handleFailure(
-				qualifiedName,
-				'ERROR',
-				e.message,
-				context,
-				opts && opts.failure,
-				opts && opts.complete
-			);
+			this.handleFailure(qualifiedName, 'ERROR', e.message, context, failure, complete);
 			return;
 		}
 
@@ -130,11 +122,10 @@
 		action.setCallback(this, handler, 'ALL');
 
 		// Execute the action
-		beginTime = Date.now();
 		$A.enqueueAction(action);
 	},
 
- 	/**
+	/**
 	 * Returns a function which is intended to be passed to the setCallback() method of a
 	 * component action
 	 *
@@ -180,41 +171,41 @@
 			// Handle the response
 			state = response.getState();
 			switch (state) {
+			case 'SUCCESS':
+			case 'REFRESH':
 				// Action completed successfully
-				case 'SUCCESS':
-				case 'REFRESH':
-					result = response.getReturnValue();
-					self.handleSuccess(name, state, result, context, success, failure, complete);
-					break;
+				result = response.getReturnValue();
+				self.handleSuccess(name, state, result, context, success, failure, complete);
+				break;
 
-				case 'ERROR':
-					// An error occurred
-					message = 'An error occurred.';
-					error = response.getError();
-					if (error && (error.length > 0) && error[0] && error[0].message) {
-						message = error[0].message;
-					}
+			case 'ERROR':
+				// An error occurred
+				message = 'An error occurred.';
+				error = response.getError();
+				if (error && (error.length > 0) && error[0] && error[0].message) {
+					message = error[0].message;
+				}
 
-					self.handleFailure(name, state, message, context, failure, complete);
-					break;
+				self.handleFailure(name, state, message, context, failure, complete);
+				break;
 
-				case 'INCOMPLETE':
-					// Lost connection to server
-					message = 'Lost connection to server.'
-					self.handleFailure(name, state, message, context, failure, complete);
-					break;
+			case 'INCOMPLETE':
+				// Lost connection to server
+				message = 'Lost connection to server.';
+				self.handleFailure(name, state, message, context, failure, complete);
+				break;
 
-				case 'ABORTED':
-					// Operation was aborted
-					message = 'Operation was aborted.';
-					self.handleFailure(name, state, message, context, failure, complete);
-					break;
+			case 'ABORTED':
+				// Operation was aborted
+				message = 'Operation was aborted.';
+				self.handleFailure(name, state, message, context, failure, complete);
+				break;
 
-				default:
-					// Unknown error
-					message = 'Unknown error.';
-					self.handleFailure(name, state, message, context, failure, complete);
-					break;
+			default:
+				// Unknown error
+				message = 'Unknown error.';
+				self.handleFailure(name, state, message, context, failure, complete);
+				break;
 			}
 		};
 	},

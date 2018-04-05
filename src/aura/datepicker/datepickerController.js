@@ -122,79 +122,79 @@
 		var which = event.keyCode || event.which || 0;
 		var handled = false;
 		switch (which) {
-			case 13: // Enter
-			case 32: // Space
-				// Select date
-				value = helper.getActiveDate(component);
-				helper.setValue(component, value, true);
-				handled = true;
-				break;
+		case 13: // Enter
+		case 32: // Space
+			// Select date
+			value = helper.getActiveDate(component);
+			helper.setValue(component, value, true);
+			handled = true;
+			break;
 
-			case 27: // Escape
-				// Set active date to the selected date (or today if no date selected)
-				helper.cancel(component, true);
-				handled = true;
-				break;
+		case 27: // Escape
+			// Set active date to the selected date (or today if no date selected)
+			helper.cancel(component, true);
+			handled = true;
+			break;
 
-			case 33: // Page Up
-				if (event.altKey) {
-					// Previous year
-					helper.navigate(component, -1, 'y', true);
-				} else {
-					// Previous month
-					helper.navigate(component, -1, 'm', true);
-				}
-				handled = true;
-				break;
+		case 33: // Page Up
+			if (event.altKey) {
+				// Previous year
+				helper.navigate(component, -1, 'y', true);
+			} else {
+				// Previous month
+				helper.navigate(component, -1, 'm', true);
+			}
+			handled = true;
+			break;
 
-			case 34: // Page Down
-				if (event.altKey) {
-					// Next year
-					helper.navigate(component, 1, 'y', true);
-				} else {
-					// Next month
-					helper.navigate(component, 1, 'm', true);
-				}
-				handled = true;
-				break;
+		case 34: // Page Down
+			if (event.altKey) {
+				// Next year
+				helper.navigate(component, 1, 'y', true);
+			} else {
+				// Next month
+				helper.navigate(component, 1, 'm', true);
+			}
+			handled = true;
+			break;
 
-			case 35: // End
-				// End of week
-				days = 6 - (activeIndex % 7);
-				helper.navigate(component, days, 'd', true);
-				handled = true;
-				break;
+		case 35: // End
+			// End of week
+			days = 6 - (activeIndex % 7);
+			helper.navigate(component, days, 'd', true);
+			handled = true;
+			break;
 
-			case 36: // Home
-				// Beginning of week
-				days = 0 - (activeIndex % 7);
-				helper.navigate(component, days, 'd', true);
-				handled = true;
-				break;
+		case 36: // Home
+			// Beginning of week
+			days = 0 - (activeIndex % 7);
+			helper.navigate(component, days, 'd', true);
+			handled = true;
+			break;
 
-			case 37: // Left Arrow
-				// Previous day
-				helper.navigate(component, -1, 'd', true);
-				handled = true;
-				break;
+		case 37: // Left Arrow
+			// Previous day
+			helper.navigate(component, -1, 'd', true);
+			handled = true;
+			break;
 
-			case 39: // Right Arrow
-				// Next day
-				helper.navigate(component, 1, 'd', true);
-				handled = true;
-				break;
+		case 39: // Right Arrow
+			// Next day
+			helper.navigate(component, 1, 'd', true);
+			handled = true;
+			break;
 
-			case 38: // Up Arrow
-				// Same day last week
-				helper.navigate(component, -7, 'd', true);
-				handled = true;
-				break;
+		case 38: // Up Arrow
+			// Same day last week
+			helper.navigate(component, -7, 'd', true);
+			handled = true;
+			break;
 
-			case 40: // Down Arrow
-				// Same day next week
-				helper.navigate(component, 7, 'd', true);
-				handled = true;
-				break;
+		case 40: // Down Arrow
+			// Same day next week
+			helper.navigate(component, 7, 'd', true);
+			handled = true;
+			break;
 		}
 
 		if (handled) {
@@ -211,21 +211,21 @@
 
 		var which = event.keyCode || event.which || 0;
 		switch (which) {
-			case 9: // Tab
-				event.stopPropagation();
+		case 9: // Tab
+			event.stopPropagation();
 
-				// If we are trapping focus and SHIFT+TAB is pressed then move focus to the last
-				// element
-				if (trapFocus && event.shiftKey) {
-					component.find('today').getElement().focus();
-					event.preventDefault();
-				}
-				break;
+			// If we are trapping focus and SHIFT+TAB is pressed then move focus to the last
+			// element
+			if (trapFocus && event.shiftKey) {
+				component.find('today').getElement().focus();
+				event.preventDefault();
+			}
+			break;
 
-			case 13: // Enter
-			case 32: // Space
-				event.stopPropagation();
-				break;
+		case 13: // Enter
+		case 32: // Space
+			event.stopPropagation();
+			break;
 		}
 	},
 
@@ -243,11 +243,11 @@
 	nextMonthKeyDown: function(component, event, helper) {
 		var which = event.keyCode || event.which || 0;
 		switch (which) {
-			case 9: // Tab
-			case 13: // Enter
-			case 32: // Space
-				event.stopPropagation();
-				break;
+		case 9: // Tab
+		case 13: // Enter
+		case 32: // Space
+			event.stopPropagation();
+			break;
 		}
 	},
 
@@ -275,20 +275,20 @@
 
 		var which = event.keyCode || event.which || 0;
 		switch (which) {
-			case 9: // Tab
-				event.stopPropagation();
+		case 9: // Tab
+			event.stopPropagation();
 
-				// If we are trapping focus and TAB is pressed then move focus to the first element
-				if (trapFocus && !event.shiftKey) {
-					event.preventDefault();
-					component.find('previousMonth').focus();
-				}
-				break;
+			// If we are trapping focus and TAB is pressed then move focus to the first element
+			if (trapFocus && !event.shiftKey) {
+				event.preventDefault();
+				component.find('previousMonth').focus();
+			}
+			break;
 
-			case 13: // Enter
-			case 32: // Space
-				event.stopPropagation();
-				return;
+		case 13: // Enter
+		case 32: // Space
+			event.stopPropagation();
+			return;
 		}
 	},
 

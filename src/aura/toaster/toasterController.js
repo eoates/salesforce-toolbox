@@ -24,12 +24,12 @@
 		}
 
 		var params = event.getParams(),
-		    type = params.type,
-		    key = params.key,
-		    title = params.title,
-		    message = params.message,
-		    mode = params.mode,
-		    duration = params.duration;
+			type = params.type,
+			key = params.key,
+			title = params.title,
+			message = params.message,
+			mode = params.mode,
+			duration = params.duration;
 
 		var toastEvent = $A.get('e.force:showToast');
 		if (toastEvent) {
@@ -50,7 +50,7 @@
 	 */
 	dismissToast: function(component, event, helper) {
 		var toast = event.getSource(),
-		    name = toast.get('v.value');
+			name = toast.get('v.value');
 
 		event.stopPropagation();
 		helper.removeToast(component, name);

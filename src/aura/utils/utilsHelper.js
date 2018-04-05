@@ -387,9 +387,10 @@
 				if (this.isNull(value)) {
 					value = undefined;
 				}
-				return value;
 			} catch (e) {
+				value = undefined;
 			}
+			return value;
 		}
 
 		return undefined;
@@ -410,16 +411,19 @@
 	 * @return {*} The original value if it was not undefined; otherwise, null
 	 */
 	changeUndefinedToNull: function(value) {
+		var i, n;
+		var keys, key;
+
 		if (this.isUndefined(value)) {
 			value = null;
 		} else if (this.isArray(value)) {
-			for (var i = 0, n = value.length; i < n; i++) {
+			for (i = 0, n = value.length; i < n; i++) {
 				value[i] = this.changeUndefinedToNull(value[i]);
 			}
 		} else if (this.isObject(value)) {
-			var keys = this.keys(value);
-			for (var i = 0, n = keys.length; i < n; i++) {
-				var key = keys[i];
+			keys = this.keys(value);
+			for (i = 0, n = keys.length; i < n; i++) {
+				key = keys[i];
 				if (!this.isFunction(value[key])) {
 					value[key] = this.changeUndefinedToNull(value[key]);
 				}
@@ -469,33 +473,35 @@
 
 		for (; i < length; i++) {
 			options = arguments[i];
-			if (options !== null) {
-				// Extend the base object
-				for (name in options) {
-					src = target[name];
-					copy = options[name];
+			if (options === null) {
+				continue;
+			}
 
-					// Prevent never-ending loop
-					if (target === copy) {
-						continue;
+			// Extend the base object
+			for (name in options) {
+				src = target[name];
+				copy = options[name];
+
+				// Prevent never-ending loop
+				if (target === copy) {
+					continue;
+				}
+
+				// Recurse if we're merging plain objects or arrays
+				copyIsObject = this.isObject(copy);
+				copyIsArray = this.isArray(copy);
+				if (deep && copy && (copyIsObject || copyIsArray)) {
+					if (copyIsArray) {
+						clone = src && this.isArray(src) ? src : [];
+					} else {
+						clone = src && this.isObject(src) ? src : {};
 					}
 
-					// Recurse if we're merging plain objects or arrays
-					copyIsObject = this.isObject(copy);
-					copyIsArray = this.isArray(copy);
-					if (deep && copy && (copyIsObject || copyIsArray)) {
-						if (copyIsArray) {
-							clone = src && this.isArray(src) ? src : [];
-						} else {
-							clone = src && this.isObject(src) ? src : {};
-						}
-
-						// Never move original objects, clone them
-						target[name] = this.extend(deep, clone, copy);
-					} else if (!this.isUndefined(copy)) {
-						// Don't bring in undefined values
-						target[name] = copy;
-					}
+					// Never move original objects, clone them
+					target[name] = this.extend(deep, clone, copy);
+				} else if (!this.isUndefined(copy)) {
+					// Don't bring in undefined values
+					target[name] = copy;
 				}
 			}
 		}
@@ -533,6 +539,9 @@
 	 * @return {boolean} true if the values are equal; otherwise, false
 	 */
 	deepEquals: function(a, b) {
+		var i, n;
+		var keysInA, keysInB, keysInBoth, key;
+
 		// If the values are the same then just return true immediately
 		if (a === b) {
 			return true;
@@ -540,7 +549,7 @@
 
 		if (this.isArray(a) && this.isArray(b) && (a.length === b.length)) {
 			// Compare arrays of equal length
-			for (var i = 0, n = a.length; i < n; i++) {
+			for (i = 0, n = a.length; i < n; i++) {
 				if (!this.deepEquals(a[i], b[i])) {
 					return false;
 				}
@@ -548,11 +557,11 @@
 			return true;
 		} else if (this.isObject(a) && this.isObject(b)) {
 			// Compare objects
-			var keysInA = this.keys(a);
-			var keysInB = this.keys(b);
-			var keysInBoth = this.distinct(keysInA.concat(keysInB));
-			for (var i = 0, n = keysInBoth.length; i < n; i++) {
-				var key = keysInBoth[i];
+			keysInA = this.keys(a);
+			keysInB = this.keys(b);
+			keysInBoth = this.distinct(keysInA.concat(keysInB));
+			for (i = 0, n = keysInBoth.length; i < n; i++) {
+				key = keysInBoth[i];
 				if (!this.deepEquals(a[key], b[key])) {
 					return false;
 				}
@@ -601,14 +610,14 @@
 		var dontEnumsLength = dontEnums.length;
 
 		var result = [];
-		for (var key in o) {
-			if (hasOwnProperty.call(o, key)) {
+		for (var key in obj) {
+			if (hasOwnProperty.call(obj, key)) {
 				result.push(key);
 			}
 		}
 		if (hasDontEnumBug) {
 			for (var i = 0; i < dontEnumsLength; i++) {
-				if (hasOwnProperty.call(o, dontEnums[i])) {
+				if (hasOwnProperty.call(obj, dontEnums[i])) {
 					result.push(dontEnums[i]);
 				}
 			}
@@ -679,7 +688,7 @@
 			max = tempValue;
 		}
 
-		return (Math.random() * (max - min)) + min
+		return (Math.random() * (max - min)) + min;
 	},
 
 	/**
@@ -1318,18 +1327,20 @@
 		var length = array.length;
 		var result = new Array(length);
 		var numDistinct = 0;
+		var self = this;
+		var searchArray = function(arrayToSearch, valueToFind) {
+			if (equality) {
+				return self.findIndex(arrayToSearch, function(value) {
+					return equality.call(thisArg, valueToFind, value);
+				});
+			} else {
+				return arrayToSearch.indexOf(valueToFind);
+			}
+		};
 
 		for (var i = 0; i < length; i++) {
 			if (i in array) {
-				var index;
-				if (equality) {
-					index = this.findIndex(result, function(value) {
-						return equality.call(thisArg, array[i], value);
-					});
-				} else {
-					index = result.indexOf(array[i]);
-				}
-
+				var index = searchArray(result, array[i]);
 				if (index < 0) {
 					result[numDistinct++] = array[i];
 				}
@@ -1457,11 +1468,11 @@
 			return;
 		}
 
-		var classNames = this.classNamesToArray(classNames);
-		if (classNames.length > 0) {
+		var classNameArray = this.classNamesToArray(classNames);
+		if (classNameArray.length > 0) {
 			var currentValue = ' ' + this.getClass(element) + ' ';
-			for (var i = 0, n = classNames.length; i < n; i++) {
-				var className = classNames[i];
+			for (var i = 0, n = classNameArray.length; i < n; i++) {
+				var className = classNameArray[i];
 				while (currentValue.indexOf(' ' + className + ' ') >= 0) {
 					currentValue = currentValue.replace(' ' + className + ' ', ' ');
 				}
@@ -1499,9 +1510,9 @@
 			return;
 		}
 
-		var classNames = this.classNamesToArray(classNames);
-		for (var i = 0, n = classNames.length; i < n; i++) {
-			var className = classNames[i];
+		var classNameArray = this.classNamesToArray(classNames);
+		for (var i = 0, n = classNameArray.length; i < n; i++) {
+			var className = classNameArray[i];
 			if (this.hasClass(element, className)) {
 				this.removeClass(element, className);
 			} else {

@@ -61,7 +61,6 @@
 		var currentDate = beginDate;
 		var calendarDays = [];
 		for (var y = 0; y < 6; y++) {
-			var week = [];
 			for (var x = 0; x < 7; x++) {
 				var day = {
 					index: (y * 7) + x,
@@ -225,7 +224,11 @@
 
 		this.setElementAttribute(cell, 'aria-disabled', day.disabled ? true : undefined);
 		this.setElementAttribute(cell, 'aria-selected', !day.disabled && day.selected);
-		this.setElementAttribute(cell, 'aria-current', (!day.disabled && day.today) ? 'date' : undefined);
+		this.setElementAttribute(
+			cell,
+			'aria-current',
+			(!day.disabled && day.today) ? 'date' : undefined
+		);
 
 		this.setElementAttribute(cell, 'data-index', day.index);
 		this.setElementAttribute(cell, 'data-year', day.year);
