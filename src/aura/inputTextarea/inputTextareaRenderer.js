@@ -19,4 +19,4 @@
 		helper.updateInputElement(component);
 		helper.updateCounterElement(component);
 	}
-})
+}) // eslint-disable-line semi

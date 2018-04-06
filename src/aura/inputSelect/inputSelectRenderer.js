@@ -21,4 +21,4 @@
 		helper.setSelectedIndexFromValue(component);
 		helper.updateInputAndSelectElements(component);
 	}
-})
+}) // eslint-disable-line semi

@@ -18,4 +18,4 @@
 		helper.destroy(component);
 		this.superUnrender();
 	}
-})
+}) // eslint-disable-line semi

@@ -24,4 +24,4 @@
 	getModule: function(component, event, helper) {
 		return helper.getInstance();
 	}
-})
+}) // eslint-disable-line semi

@@ -313,4 +313,4 @@
 			}
 		}
 	}
-})
+}) // eslint-disable-line semi

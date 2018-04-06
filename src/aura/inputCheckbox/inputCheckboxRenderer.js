@@ -18,4 +18,4 @@
 		this.superAfterRender();
 		helper.updateInputElement(component);
 	}
-})
+}) // eslint-disable-line semi

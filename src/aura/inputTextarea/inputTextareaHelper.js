@@ -167,4 +167,4 @@
 		event.setParam('arguments', args || {});
 		event.fire();
 	}
-})
+}) // eslint-disable-line semi

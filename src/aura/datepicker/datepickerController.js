@@ -299,4 +299,4 @@
 		var today = new Date();
 		helper.setValue(component, today, false);
 	}
-})
+}) // eslint-disable-line semi

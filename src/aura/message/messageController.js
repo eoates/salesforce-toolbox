@@ -24,4 +24,4 @@
 	typeChange: function(component, event, helper) {
 		helper.setThemeAndIconInfo(component);
 	}
-})
+}) // eslint-disable-line semi

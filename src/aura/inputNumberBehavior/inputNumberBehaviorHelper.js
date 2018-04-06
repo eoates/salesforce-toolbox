@@ -675,4 +675,4 @@
 
 		return this.utils.formatNumber(value, format.scale, thousands);
 	}
-})
+}) // eslint-disable-line semi

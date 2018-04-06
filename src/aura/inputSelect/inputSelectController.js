@@ -403,4 +403,4 @@
 	selectChange: function(component, event, helper) {
 		helper.setValueFromSelectElement(component);
 	}
-})
+}) // eslint-disable-line semi

@@ -56,4 +56,4 @@
 		helper.removeToast(component, name);
 		helper.showNextToastInQueue(component);
 	}
-})
+}) // eslint-disable-line semi

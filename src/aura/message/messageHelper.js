@@ -60,4 +60,4 @@
 		component.set('v.iconAlternativeText', iconAlternativeText);
 		component.set('v.iconInverse', iconInverse);
 	}
-})
+}) // eslint-disable-line semi

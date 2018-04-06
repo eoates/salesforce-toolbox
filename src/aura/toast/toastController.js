@@ -21,4 +21,4 @@
 		closeEvent.setParam('arguments', {});
 		closeEvent.fire();
 	}
-})
+}) // eslint-disable-line semi

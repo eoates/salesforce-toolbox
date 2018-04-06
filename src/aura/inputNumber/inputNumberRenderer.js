@@ -27,4 +27,4 @@
 		this.superRerender();
 		helper.setInputElementAttributesForMobile(component);
 	}
-})
+}) // eslint-disable-line semi

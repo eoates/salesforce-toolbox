@@ -169,4 +169,4 @@
 			helper.fireEvent(component, 'onfocusfirst');
 		}
 	}
-})
+}) // eslint-disable-line semi

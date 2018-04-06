@@ -1552,4 +1552,4 @@
 
 		return matches.call(element, selector);
 	}
-})
+}) // eslint-disable-line semi

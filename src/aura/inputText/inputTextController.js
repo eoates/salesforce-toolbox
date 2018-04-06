@@ -106,4 +106,4 @@
 			helper.fireEvent(component, 'onchange');
 		}
 	}
-})
+}) // eslint-disable-line semi

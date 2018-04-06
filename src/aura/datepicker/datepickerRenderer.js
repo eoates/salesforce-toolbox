@@ -29,4 +29,4 @@
 		helper.updateYearOptions(component, calendar);
 		helper.updateActiveCellTabIndex(component, false);
 	}
-})
+}) // eslint-disable-line semi

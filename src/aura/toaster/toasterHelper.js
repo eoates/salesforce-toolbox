@@ -147,4 +147,4 @@
 			this.createToast.apply(this, args);
 		}
 	}
-})
+}) // eslint-disable-line semi

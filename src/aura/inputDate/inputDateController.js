@@ -182,4 +182,4 @@
 	datepickerBlur: function(component, event, helper) {
 		helper.close(component);
 	}
-})
+}) // eslint-disable-line semi
