@@ -11,6 +11,8 @@
  *
  **************************************************************************************************/
 ({
+	/* eslint-disable no-console */
+
 	/**
 	 * Imports modules used by the component
 	 *
@@ -148,7 +150,7 @@
 		var endTime, duration;
 
 		return function(response, component) {
-			var success, failure, complete, context;
+			var context = (opts && opts.context) || this;
 			var state, result, error, message;
 			var name = self.getQualifiedActionName(component, response.getName());
 
@@ -162,12 +164,6 @@
 			duration = endTime - beginTime;
 			console.debug('Callout ' + name + ' completed in ' + duration + 'ms');
 
-			// Get options
-			success = opts && opts.success;
-			failure = opts && opts.failure;
-			complete = opts && opts.complete;
-			context = (opts && opts.context) || this;
-
 			// Handle the response
 			state = response.getState();
 			switch (state) {
@@ -175,7 +171,7 @@
 			case 'REFRESH':
 				// Action completed successfully
 				result = response.getReturnValue();
-				self.handleSuccess(name, state, result, context, success, failure, complete);
+				self.handleSuccess(name, state, result, context, opts);
 				break;
 
 			case 'ERROR':
@@ -186,25 +182,25 @@
 					message = error[0].message;
 				}
 
-				self.handleFailure(name, state, message, context, failure, complete);
+				self.handleFailure(name, state, message, context, opts);
 				break;
 
 			case 'INCOMPLETE':
 				// Lost connection to server
 				message = 'Lost connection to server.';
-				self.handleFailure(name, state, message, context, failure, complete);
+				self.handleFailure(name, state, message, context, opts);
 				break;
 
 			case 'ABORTED':
 				// Operation was aborted
 				message = 'Operation was aborted.';
-				self.handleFailure(name, state, message, context, failure, complete);
+				self.handleFailure(name, state, message, context, opts);
 				break;
 
 			default:
 				// Unknown error
 				message = 'Unknown error.';
-				self.handleFailure(name, state, message, context, failure, complete);
+				self.handleFailure(name, state, message, context, opts);
 				break;
 			}
 		};
@@ -215,20 +211,24 @@
 	 * exception occurs while executing the success callback and a failure callback is provided then
 	 * the failure callback will be executed. The complete callback, if provided, is always executed
 	 *
-	 * @param {string}   action   - The name of the action. This consists of the component name and
-	 *                              Apex method name
-	 * @param {string}   state    - The state returned by the platform. Possible values are
-	 *                              "SUCCESS" and "REFRESH"
-	 * @param {*}        result   - The value returned by the Apex method
-	 * @param {Object}   context  - The context in which to execute the callbacks
-	 * @param {Function} success  - A function to be executed on success
-	 * @param {Function} failure  - A function to be executed on failure
-	 * @param {Function} complete - A function to be executed on completion regardless success or
-	 *                              failure
+	 * @param {string}   action        - The name of the action. This consists of the component name
+	 *                                   and Apex method name
+	 * @param {string}   state         - The state returned by the platform. Possible values are
+	 *                                   "SUCCESS" and "REFRESH"
+	 * @param {*}        result        - The value returned by the Apex method
+	 * @param {Object}   context       - The context in which to execute the callbacks
+	 * @param {Object}   opts          - Object containing callback methods
+	 * @param {Function} opts.success  - A function to be executed on success
+	 * @param {Function} opts.failure  - A function to be executed on failure
+	 * @param {Function} opts.complete - A function to be executed on completion regardless success
+	 *                                   or failure
 	 *
 	 * @return {void}
 	 */
-	handleSuccess: function(action, state, result, context, success, failure, complete) {
+	handleSuccess: function(action, state, result, context, opts) {
+		var success = opts && opts.success;
+		var failure = opts && opts.failure;
+		var complete = opts && opts.complete;
 		var message;
 
 		// If a success callback is provided then execute it. If an exception occurs while executing
@@ -261,19 +261,23 @@
 	/**
 	 * Handles failed execution of an Apex method and executes the appropriate callbacks.
 	 *
-	 * @param {string}   action   - The name of the action. This consists of the component name and
-	 *                              Apex method name
-	 * @param {string}   state    - The state returned by the platform. Possible values are
-	 *                              "SUCCESS" and "REFRESH"
-	 * @param {string}   message  - An error message that describes what went wrong
-	 * @param {Object}   context  - The context in which to execute the callbacks
-	 * @param {Function} failure  - A function to be executed on failure
-	 * @param {Function} complete - A function to be executed on completion regardless success or
-	 *                              failure
+	 * @param {string}   action        - The name of the action. This consists of the component name
+	 *                                   and Apex method name
+	 * @param {string}   state         - The state returned by the platform. Possible values are
+	 *                                   "SUCCESS" and "REFRESH"
+	 * @param {string}   message       - An error message that describes what went wrong
+	 * @param {Object}   context       - The context in which to execute the callbacks
+	 * @param {Object}   opts          - Object containing callback methods
+	 * @param {Function} opts.failure  - A function to be executed on failure
+	 * @param {Function} opts.complete - A function to be executed on completion regardless success
+	 *                                   or failure
 	 *
 	 * @return {void}
 	 */
-	handleFailure: function(action, state, message, context, failure, complete) {
+	handleFailure: function(action, state, message, context, opts) {
+		var failure = opts && opts.failure;
+		var complete = opts && opts.complete;
+
 		// If a failure callback is provided then execute it; otherwise, just log the error to the
 		// console
 		if (failure) {
