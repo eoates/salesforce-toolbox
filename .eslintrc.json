@@ -10,7 +10,7 @@
 		"no-alert": "warn",
 		"no-caller": "error",
 		"no-eval": "error",
-		"no-extra-parens": [ "warn", "all", { "nestedBinaryExpressions": false } ],
+		//"no-extra-parens": [ "warn", "all", { "nestedBinaryExpressions": false } ],
 		"no-implied-eval": "error",
 		"no-invalid-this": "error",
 		"no-iterator": "error",
