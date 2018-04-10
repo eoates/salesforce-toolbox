@@ -2,6 +2,9 @@ config/
 debug/
 *.sublime-project
 *.sublime-workspace
+build.properties
 src/aura/testApplication/**
+src/aura/testApplicationDepends/**
 src/aura/testComponent/**
 src/classes/LtngTestComponentController.*
+src/pages/LightningOutTest.*

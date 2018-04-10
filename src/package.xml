@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>LtngTestComponentController</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>LightningOutTest</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>apex</members>
+        <members>datepicker</members>
+        <members>dialog</members>
+        <members>formElement</members>
+        <members>genericComponentEvent</members>
+        <members>inputBase</members>
+        <members>inputCheckbox</members>
+        <members>inputDate</members>
+        <members>inputNumber</members>
+        <members>inputNumberBehavior</members>
+        <members>inputSelect</members>
+        <members>inputText</members>
+        <members>inputTextarea</members>
+        <members>message</members>
+        <members>showToast</members>
+        <members>spinnerPanel</members>
+        <members>testApplication</members>
+        <members>testApplicationDepends</members>
+        <members>testComponent</members>
+        <members>toast</members>
+        <members>toaster</members>
+        <members>utils</members>
         <name>AuraDefinitionBundle</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>StaticResource</name>
     </types>
     <version>41.0</version>
 </Package>
