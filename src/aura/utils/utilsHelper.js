@@ -15,6 +15,79 @@
 	FORMAT_ISO_8601: 'yyyy-MM-dd',
 
 	/**
+	 * Returns information about the current UI context such as whether the site is being viewed in
+	 * Classic or Lightning Experience, in a desktop browser or on a mobile device, whether the
+	 * component is being hosted within a Visualforce page, etc.
+	 *
+	 * @return {Object} An object which contains several properties about the current UI context
+	 */
+	getUIContext: function() {
+		var host = window.location.hostname.toLowerCase();
+		var path = window.location.pathname.toLowerCase();
+		var query = window.location.search;
+		var pattern, matches;
+		var context = {
+			name: 'CLASSIC',
+			isDesktop: this.isDesktop(),
+			isMobile: this.isMobile(),
+			isTablet: this.isTablet(),
+			isPhone: this.isPhone(),
+			isIOS: this.isIOS(),
+			isAndroid: this.isAndroid(),
+			isVisualforce: false,
+			isCommunity: false,
+			communityPrefix: ''
+		};
+
+		if (this.endsWithIgnoreCase(host, '.visual.force.com')) {
+			// Component is hosted within a Visualforce page using Lightning Out
+			context.isVisualforce = true;
+
+			if ((/(?:\?|&)ltn_app_id=/i).test(query)) {
+				// The presence of a ltn_app_id parameter in the query string indicates that the
+				// user is viewing the site in Lightning Experience
+				context.name = 'LEX';
+			} else if ((/(?:\?|&)sfdcIFrameHost=hybrid\b/i).test(query)) {
+				// If the sfdcIFrameHost query string parmeter has a value of "hybrid" then the user
+				// is viewing the site in the iOS or Android Salesforce mobile app
+				context.name = 'MOBILE';
+			} else {
+				// If none of the above scenarios were met then assume the user is viewing the site
+				// in Classic
+				context.name = 'CLASSIC';
+			}
+		} else if (this.endsWithIgnoreCase(host, '.lightning.force.com')) {
+			// Standard Lightning environment
+			if (path === '/one/one.app') {
+				// When the path is "/one/one.app" then the user is viewing the site in Lightning
+				// Experience
+				context.name = 'LEX';
+			} else if (path === '/native/bridge.app') {
+				// When the path is "/native/bridge.app" then the user is viewing the site in the
+				// iOS or Android Salesforce mobile app
+				context.name = 'MOBILE';
+			} else if (this.startsWithIgnoreCase(path, '/c/')) {
+				// If path starts with "/c/" then the user is viewing a stand-alone Lightning app
+				context.name = 'APP';
+			}
+		} else {
+			// Possibly a Community page. Check if the URL matches known community patterns. The
+			// logic here may be incomplete. Needs further testing to make sure we handle all
+			// possible community URL patterns
+			pattern = /^\/([^/]+)\/(s|apex)\/(?:[^/]+)$/;
+			matches = path.match(pattern);
+			if (matches) {
+				context.name = 'COMMUNITY';
+				context.communityPrefix = matches[1];
+				context.isCommunity = true;
+				context.isVisualforce = matches[2] === 'apex';
+			}
+		}
+
+		return context;
+	},
+
+	/**
 	 * Returns true if the application running on a desktop browser. This method uses the $Browser
 	 * global variable to get the device type
 	 *
