@@ -19,6 +19,21 @@
 	 * Classic or Lightning Experience, in a desktop browser or on a mobile device, whether the
 	 * component is being hosted within a Visualforce page, etc.
 	 *
+	 * The name property of the context indicates how the user is viewing the site. Possible values
+	 * for this property are:
+	 * - CLASSIC: Salesforce Classic
+	 * - LEX: Lightning Experience
+	 * - MOBILE: iOS/Android native mobile app
+	 * - APP: Stand-alone Lightning app
+	 * - COMMUNITY: Lightning Community page
+	 * - UNKNOWN: Context could not be determined
+	 *
+	 * If is important to note that there is a possibility that the context will be UNKNOWN. This is
+	 * because the methods we are using for detecting the context rely on parsing the current URL.
+	 * Salesforce may make changes to the URL format (as they have in the past) which might break
+	 * our implementation. We need to keep on top of any and all changes made by Salesforce to the
+	 * URL formats so we can ensure the proper behavior of this method
+	 *
 	 * @return {Object} An object which contains several properties about the current UI context
 	 */
 	getUIContext: function() {
@@ -27,7 +42,7 @@
 		var query = window.location.search;
 		var pattern, matches;
 		var context = {
-			name: 'CLASSIC',
+			name: 'UNKNOWN',
 			isDesktop: this.isDesktop(),
 			isMobile: this.isMobile(),
 			isTablet: this.isTablet(),
@@ -58,9 +73,9 @@
 			}
 		} else if (this.endsWithIgnoreCase(host, '.lightning.force.com')) {
 			// Standard Lightning environment
-			if (path === '/one/one.app') {
-				// When the path is "/one/one.app" then the user is viewing the site in Lightning
-				// Experience
+			if ((path === '/one/one.app') || this.startsWithIgnoreCase(path, '/lightning/')) {
+				// When the path is "/one/one.app" (old style) or begins with "/lightning/" (new
+				// Summer '18 style) then the user is viewing the site in Lightning Experience
 				context.name = 'LEX';
 			} else if (path === '/native/bridge.app') {
 				// When the path is "/native/bridge.app" then the user is viewing the site in the
