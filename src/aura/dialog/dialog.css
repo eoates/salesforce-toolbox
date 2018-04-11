@@ -19,3 +19,8 @@
 	border: none;
 	background: none;
 }
+
+/* Make sure all content within a closed dialog is hidden */
+.THIS .slds-modal:not(.slds-fade-in-open) > * {
+	display: none !important;
+}
