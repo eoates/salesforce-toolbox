@@ -62,8 +62,15 @@
 	 *
 	 * @return {void}
 	 */
-	createToast: function(component, type, key, title, message, mode, duration) {
-		duration = parseFloat(duration);
+	createToast: function(component, args) {
+		var type = args.type;
+		var key = args.key;
+		var title = args.title;
+		var message = args.message;
+		var mode = args.mode;
+		var duration = args.duration;
+
+		duration = parseFloat(args.duration);
 		if (isNaN(duration) || !isFinite(duration)) {
 			duration = 5000;
 		} else if (duration < 0) {
@@ -92,8 +99,6 @@
 				}), duration);
 			}
 		} else {
-			var args = Array.prototype.slice.call(arguments, 1);
-
 			var queue = component.queue;
 			if (!queue) {
 				queue = component.queue = [];
@@ -142,9 +147,7 @@
 		var queue = component.queue || [];
 		if (queue.length > 0) {
 			var args = queue.shift();
-			args.splice(0, 0, component);
-
-			this.createToast.apply(this, args);
+			this.createToast(component, args);
 		}
 	}
 }) // eslint-disable-line semi

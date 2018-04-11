@@ -23,13 +23,7 @@
 			return;
 		}
 
-		var params = event.getParams(),
-			type = params.type,
-			key = params.key,
-			title = params.title,
-			message = params.message,
-			mode = params.mode,
-			duration = params.duration;
+		var params = event.getParams();
 
 		var toastEvent = $A.get('e.force:showToast');
 		if (toastEvent) {
@@ -39,7 +33,7 @@
 			toastEvent.fire();
 		} else {
 			// force:showToast is not available. We'll have to handle this ourselves
-			helper.createToast(component, type, key, title, message, mode, duration);
+			helper.createToast(component, params);
 		}
 	},
 
