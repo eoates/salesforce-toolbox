@@ -888,7 +888,7 @@
 	 * @return {string} The escaped string
 	 */
 	escapeRegExp: function(value) {
-		return this.asString(value).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+		return this.asString(value).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 	},
 
 	/**
@@ -918,6 +918,8 @@
 	 * @return {string} The formatted number
 	 */
 	formatNumber: function(value, scale, thousands, decimal) {
+		var negative, i, j;
+
 		if (!this.isNumber(value)) {
 			return '';
 		}
@@ -937,9 +939,9 @@
 			decimal = '.';
 		}
 
-		var negative = (value < 0) ? '-' : '',
-			i = parseInt(value = Math.abs(+value || 0).toFixed(scale), 10) + '',
-			j = ((j = i.length) > 3) ? (j % 3) : 0;
+		negative = (value < 0) ? '-' : '';
+		i = parseInt(value = Math.abs(+value || 0).toFixed(scale), 10) + '';
+		j = ((j = i.length) > 3) ? (j % 3) : 0;
 
 		return negative +
 			(j ? i.substr(0, j) + thousands : '') +
