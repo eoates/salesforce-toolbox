@@ -361,8 +361,8 @@
 					getInputType: function() {
 						return inputElement.type;
 					},
-					setInputValue: function(value) {
-						inputElement.value = value;
+					setInputValue: function(formattedValue) {
+						inputElement.value = formattedValue;
 					}
 				});
 			}
