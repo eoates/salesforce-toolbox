@@ -345,18 +345,16 @@
 
 				// Check for decimal and, if found, make sure all chars that appear after the
 				// decimal are numbers
-				if (format.scale > 0) {
-					indexOfDecimal = value.indexOf('.');
-					if (indexOfDecimal !== -1) {
-						for (i = (length - 1); i > indexOfDecimal; i--) {
-							charCode = value.charCodeAt(i);
-							if (!self.isNumberCharCode(charCode)) {
-								// Not a number
-								value = value.substring(0, i) + value.substring(i + 1);
-								length--;
-								if (i < selectionStart) {
-									selectionStart--;
-								}
+				indexOfDecimal = value.indexOf('.');
+				if (indexOfDecimal !== -1) {
+					for (i = (length - 1); i > indexOfDecimal; i--) {
+						charCode = value.charCodeAt(i);
+						if (!self.isNumberCharCode(charCode)) {
+							// Not a number
+							value = value.substring(0, i) + value.substring(i + 1);
+							length--;
+							if (i < selectionStart) {
+								selectionStart--;
 							}
 						}
 					}
