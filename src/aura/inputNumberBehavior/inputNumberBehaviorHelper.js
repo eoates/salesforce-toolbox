@@ -350,7 +350,7 @@
 					if (indexOfDecimal !== -1) {
 						for (i = (length - 1); i > indexOfDecimal; i--) {
 							charCode = value.charCodeAt(i);
-							if ((charCode < 48) || (charCode > 57)) {
+							if (!self.isNumberCharCode(charCode)) {
 								// Not a number
 								value = value.substring(0, i) + value.substring(i + 1);
 								length--;
@@ -389,7 +389,7 @@
 						tempChar = value.charAt(i);
 
 						charCode = value.charCodeAt(i);
-						if ((charCode >= 48) && (charCode <= 57)) {
+						if (self.isNumberCharCode(charCode)) {
 							// Char is a number; keep it
 							if ((tempValue.length > 0) && ((tempCounter % 3) === 0)) {
 								// Add a thousands separator every 3 digits
@@ -479,6 +479,17 @@
 		// Store the instance and return it
 		this.INSTANCES[componentId] = instance;
 		return instance;
+	},
+
+	/**
+	 * Returns true if the specified character code represents a number
+	 *
+	 * @param {number} charCode - The character code to test
+	 *
+	 * @return {boolean} true if the character code represents a number; otherwise, false
+	 */
+	isNumberCharCode: function(charCode) {
+		return (charCode >= 48) && (charCode <= 57);
 	},
 
 	/**
