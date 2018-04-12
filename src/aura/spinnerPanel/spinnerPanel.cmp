@@ -18,16 +18,13 @@
 	<aura:attribute access="GLOBAL" name="class" type="String"
 	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
 
-	<aura:attribute access="GLOBAL" name="fixed" type="Boolean" default="false"
-	                description="Set to true to use fixed positioning. This is equivalent to specifying the slds-is-fixed CSS style." />
-
 	<aura:attribute access="GLOBAL" name="showSpinner" type="Boolean" default="false"
 	                description="Specifies whether the spinner should be displayed." />
 	<!-- /attributes -->
 
 	<!-- component -->
 	<div class="slds-is-relative">
-		<div class="{!'slds-spinner_container' + if(v.fixed, ' slds-is-fixed', '') + if(v.showSpinner, '', ' slds-hide')}">
+		<div class="{!if(v.showSpinner, 'slds-spinner_container', 'slds-hide')}">
 			<div role="status" class="slds-spinner slds-spinner_medium">
 				<span class="slds-assistive-text">Loading</span>
 				<div class="slds-spinner__dot-a"></div>
