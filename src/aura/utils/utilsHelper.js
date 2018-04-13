@@ -456,6 +456,8 @@
 	 * @return {Date} The date value
 	 */
 	asDate: function(value) {
+		var pattern, matches, m, d, y;
+
 		if (this.isUndefinedOrNull(value)) {
 			return undefined;
 		}
@@ -470,6 +472,17 @@
 
 		value = this.trim(value);
 		if (value) {
+			// Special handling for the format Mdyyyy with optional delimiter. The delimiter can be
+			// a "-", ".", or "/"
+			pattern = /^(0?[1-9]|1[0-2])(-|.|\/)?(\d{1,2})\2(\d{4})$/;
+			matches = value.match(pattern);
+			if (matches) {
+				m = matches[1];
+				d = matches[3];
+				y = matches[4];
+				value = y + ((m.length < 2) ? '0' : '') + m + ((d.length < 2) ? '0' : '') + d;
+			}
+
 			try {
 				value = $A.localizationService.parseDateTime(value);
 				if (this.isNull(value)) {
