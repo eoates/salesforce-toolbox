@@ -32,11 +32,14 @@
 	<aura:attribute access="GLOBAL" name="disabled" type="Boolean" default="false"
 	                description="Specifies that an input element should be disabled. This value defaults to false." />
 
-    <aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false"
-                    description="Specifies that an input field is read-only. This value defaults to false." />
+	<aura:attribute access="GLOBAL" name="readonly" type="Boolean" default="false"
+	                description="Specifies that an input field is read-only. This value defaults to false." />
 
 	<aura:attribute access="GLOBAL" name="label" type="String"
 	                description="Text label for the input." />
+
+	<aura:attribute access="GLOBAL" name="helpText" type="String"
+	                description="Optional help text that describes the input." />
 
 	<aura:attribute access="GLOBAL" name="required" type="Boolean"
 	                description="Specifies that an input field must be filled out before submitting the form. This value defaults to false." />

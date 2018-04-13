@@ -33,6 +33,9 @@
 	<aura:attribute access="GLOBAL" name="label" type="String"
 	                description="The text displayed in the label." />
 
+	<aura:attribute access="GLOBAL" name="helpText" type="String"
+	                description="Optional help text that describes the input." />
+
 	<aura:attribute access="GLOBAL" name="required" type="Boolean"
 	                default="false"
 	                description="Specifies whether the field is required. Setting this to true only affects the appearance of the component." />
@@ -55,6 +58,14 @@
 			</label>
 		</aura:if>
 		<!-- /label -->
+
+		<!-- help text -->
+		<aura:if isTrue="{!not(empty(v.helpText))}">
+			<div class="slds-form-element__icon">
+				<lightning:helptext content="{!v.helpText}" tabindex="-1" />
+			</div>
+		</aura:if>
+		<!-- /help text -->
 
 		<!-- control -->
 		<div class="{!v.controlClass + ' slds-form-element__control'}">

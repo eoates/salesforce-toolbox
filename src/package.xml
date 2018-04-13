@@ -33,5 +33,9 @@
         <members>utils</members>
         <name>AuraDefinitionBundle</name>
     </types>
+    <types>
+        <members>SLDSPopoverFixForVF</members>
+        <name>StaticResource</name>
+    </types>
     <version>41.0</version>
 </Package>

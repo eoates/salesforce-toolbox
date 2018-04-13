@@ -17,6 +17,9 @@
 	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="value" type="Boolean" default="false"
 	                description="The value of the checkbox (checked = true, unchecked = false, indeterminate = undefined or null)." />
+
+	<aura:attribute access="GLOBAL" name="stacked" type="Boolean" default="false"
+	                description="If true the label will be displayed above the checkbox instead of to the right." />
 	<!-- /attributes -->
 
 	<!-- handlers -->
@@ -38,7 +41,7 @@
 	               required="{!v.required}"
 	               error="{!v.error}"
 	               errors="{!v.errors}">
-		<span class="{!v.class + ' slds-checkbox'}">
+		<span class="{!v.class + if(v.stacked, ' slds-checkbox_stacked', '') + ' slds-checkbox'}">
 			<input aura:id="input"
 			       id="{#globalId + '_input'}"
 			       type="checkbox"
@@ -52,7 +55,21 @@
 
 			<label for="{#globalId + '_input'}" class="{!v.labelClass + ' slds-checkbox__label'}">
 				<span class="slds-checkbox_faux"></span>
-				<span class="slds-form-element__label">{!v.label}</span>
+				<span class="slds-form-element__label">
+					{!v.label}
+
+					<aura:if isTrue="{!and(v.stacked, not(empty(v.helpText)))}">
+						<div class="slds-form-element__icon slds-m-left_small">
+							<lightning:helptext content="{!v.helpText}" tabindex="-1" />
+						</div>
+					</aura:if>
+				</span>
+
+				<aura:if isTrue="{!and(not(v.stacked), not(empty(v.helpText)))}">
+					<div class="slds-form-element__icon">
+						<lightning:helptext content="{!v.helpText}" tabindex="-1" />
+					</div>
+				</aura:if>
 			</label>
 		</span>
 	</c:formElement>

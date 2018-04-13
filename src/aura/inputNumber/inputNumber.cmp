@@ -91,6 +91,7 @@
 	               errorClass="{!v.errorClass}"
 	               controlId="{#globalId + '_input'}"
 	               label="{!v.label}"
+	               helpText="{!v.helpText}"
 	               required="{!v.required}"
 	               error="{!v.error}"
 	               errors="{!v.errors}">
