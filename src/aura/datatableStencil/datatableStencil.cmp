@@ -1,0 +1,43 @@
+<!--
+****************************************************************************************************
+* datatableStencil.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author   Eugene Oates
+* @date     2018-04-17
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
+<aura:component access="GLOBAL"
+                description="Displays a stencil which can be used in place of a datatable while data is being loaded.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS style to be attached to the component. This style is added in addition to base styles output by the component." />
+
+	<aura:attribute access="GLOBAL" name="cols" type="String[]"
+	                default="short,short,short,short,short"
+	                description="Specify the number of columns and their widths. Accepted values are short, medium, and long." />
+
+	<aura:attribute access="PRIVATE" name="rows" type="Integer[]"
+	                default="100,90,80,70,60,50,40,30,20,10"
+	                description="Internal use only! The array of rows. Each number is the opacity of the row at that position." />
+	<!-- /attributes -->
+
+	<!-- component -->
+	<div class="{!v.class + ' datatable-stencil'}">
+		<aura:iteration items="{!v.rows}" var="row">
+			<div class="{!'datatable-stencil__row datatable-stencil__row-opacity-' + row}">
+				<div class="datatable-stencil__col-container">
+					<aura:iteration items="{!v.cols}" var="col">
+						<div class="{!'datatable-stencil__col datatable-stencil__col-' + col}"></div>
+					</aura:iteration>
+				</div>
+			</div>
+		</aura:iteration>
+	</div>
+	<!-- /component -->
+</aura:component>

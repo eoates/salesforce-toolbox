@@ -1,0 +1,83 @@
+/**************************************************************************************************
+ * datatableStencil.css
+ **************************************************************************************************
+ * This is a shared component. Do not make modifications to this component without carefully
+ * considering the impact this may have on existing applications/components/pages/etc. that use this
+ * component.
+ *
+ * @author   Eugene Oates
+ * @date     2018-04-17
+ * @version  1.0.0
+ *
+ **************************************************************************************************/
+.THIS .datatable-stencil__row {
+	border-bottom: 1px solid rgb(221, 219, 218);
+	padding: 1rem 1.5rem 0.3rem;
+	background-color: rgb(255, 255, 255);
+}
+
+.THIS .datatable-stencil__row-opacity-100 {
+	opacity: 1;
+}
+
+.THIS .datatable-stencil__row-opacity-90 {
+	opacity: .90;
+}
+
+.THIS .datatable-stencil__row-opacity-80 {
+	opacity: .80;
+}
+
+.THIS .datatable-stencil__row-opacity-70 {
+	opacity: .70;
+}
+
+.THIS .datatable-stencil__row-opacity-60 {
+	opacity: .60;
+}
+
+.THIS .datatable-stencil__row-opacity-50 {
+	opacity: .50;
+}
+
+.THIS .datatable-stencil__row-opacity-40 {
+	opacity: .40;
+}
+
+.THIS .datatable-stencil__row-opacity-30 {
+	opacity: .30;
+}
+
+.THIS .datatable-stencil__row-opacity-20 {
+	opacity: .20;
+}
+
+.THIS .datatable-stencil__row-opacity-10 {
+	opacity: .10;
+}
+
+.THIS .datatable-stencil__col-container {
+	display: flex;
+	width: 100%;
+}
+
+.THIS .datatable-stencil__col {
+	display: inline-block;
+	height: .5rem;
+	margin-right: .75rem;
+	margin-bottom: .75rem;
+	border-radius: 14px;
+	background-color: rgb(243, 242, 242);
+}
+
+.THIS .datatable-stencil__col-short {
+	width: 45%;
+}
+
+.THIS .datatable-stencil__col-medium {
+	width: 60%;
+}
+
+.THIS .datatable-stencil__col-long {
+	width: 100%;
+}
