@@ -10,6 +10,7 @@
     </types>
     <types>
         <members>apex</members>
+        <members>datatableStencil</members>
         <members>datepicker</members>
         <members>dialog</members>
         <members>formElement</members>
