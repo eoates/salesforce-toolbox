@@ -49,17 +49,6 @@
 	                description="Content displayed to the right of the input element." />
 	<!-- /attributes -->
 
-	<!-- events -->
-	<aura:registerEvent access="GLOBAL" name="onfocus" type="c:genericComponentEvent"
-	                    description="Fired when the component receives focus." />
-
-	<aura:registerEvent access="GLOBAL" name="onblur" type="c:genericComponentEvent"
-	                    description="Fired when the component loses focus." />
-
-	<aura:registerEvent access="GLOBAL" name="onchange" type="c:genericComponentEvent"
-	                    description="Fired when the value changes." />
-	<!-- /events -->
-
 	<!-- handlers -->
 	<aura:handler value="{!this}" name="init" action="{!c.init}" />
 	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
