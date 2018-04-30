@@ -474,7 +474,7 @@
 		if (value) {
 			// Special handling for the format Mdyyyy with optional delimiter. The delimiter can be
 			// a "-", ".", or "/"
-			pattern = /^(0?[1-9]|1[0-2])(-|.|\/)?(\d{1,2})\2(\d{4})$/;
+			pattern = /^(0?[1-9]|1[0-2])(-|\.|\/)?(\d{1,2})\2(\d{4})$/;
 			matches = value.match(pattern);
 			if (matches) {
 				m = matches[1];
