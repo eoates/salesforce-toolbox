@@ -54,7 +54,7 @@
 			communityPrefix: ''
 		};
 
-		if (this.endsWithIgnoreCase(host, '.visual.force.com')) {
+		if (/\.visual\.?force\.com$/i.test(host)) {
 			// Component is hosted within a Visualforce page using Lightning Out
 			context.isVisualforce = true;
 
