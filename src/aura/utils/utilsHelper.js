@@ -894,6 +894,22 @@
 	},
 
 	/**
+	 * Escapes special HTML characters
+	 *
+	 * @param {string} value - The string to escape
+	 *
+	 * @return {string} The escaped string
+	 */
+	escapeHtml: function(value) {
+		return this.asString(value)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(new RegExp('"', 'g'), '&quot;')
+			.replace(new RegExp('\'', 'g'), '&#039;');
+	},
+
+	/**
 	 * Escapes special regular expression characters
 	 *
 	 * @param {string} value - The string to escape
