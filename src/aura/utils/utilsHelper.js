@@ -749,11 +749,13 @@
 			throw new TypeError('Argument \'fn\' must be a function');
 		}
 
+		var args = Array.prototype.slice.call(arguments, 2);
+
 		if (Function.prototype.bind) {
-			return fn.bind(thisArg);
+			args.unshift(thisArg);
+			return Function.prototype.bind.apply(fn, args);
 		}
 
-		var args = Array.prototype.slice.call(arguments, 2);
 		var nop = function() {};
 		var bound = function() {
 			return fn.apply(
