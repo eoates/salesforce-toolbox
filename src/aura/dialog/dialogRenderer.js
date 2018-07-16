@@ -18,6 +18,14 @@
 		this.superAfterRender();
 
 		helper.addDialogToContainer(component);
+
+		// If openAfterRender is true then automatically open the dialog
+		if (component.openAfterRender) {
+			component.openAfterRender = false;
+			setTimeout($A.getCallback(function() {
+				helper.openDialog(component);
+			}), 0);
+		}
 	},
 
 	/**

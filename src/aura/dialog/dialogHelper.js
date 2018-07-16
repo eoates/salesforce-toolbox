@@ -600,6 +600,13 @@
 	 * @return {void}
 	 */
 	openDialog: function(component) {
+		// If the dialog has not yet been rendered then set openAfterRender to true and exit. The
+		// dialog will be opened after rendering is complete
+		if (!component.isRendered()) {
+			component.openAfterRender = true;
+			return;
+		}
+
 		var dialogId = component.getGlobalId() + '_dialog';
 		var dialog = document.getElementById(dialogId);
 		if (!dialog) {
