@@ -773,6 +773,80 @@
 	},
 
 	/**
+	 * Wraps a function with another function that ensures that the target function may only be
+	 * called once within a specified period of time. After calling the returned function subsequent
+	 * calls are ignored until the specified time limit has passed
+	 *
+	 * @param {number}   limit     - The amount of time (in milliseconds) to wait between calls
+	 * @param {Function} fn        - The function to be throttled
+	 * @param {Object}   [thisArg] - The value to be passed as the this parameter to the target
+	 *                               function
+	 *
+	 * @return {Function} A wrapper function that throttles calls to the target function
+	 */
+	throttle: function(limit, fn, thisArg) {
+		limit = this.asNumber(limit);
+		if (!this.isNumber(limit) || (limit < 0)) {
+			throw new TypeError('Argument \'limit\' must be a number greater than or equal to 0');
+		}
+
+		if (!this.isFunction(fn)) {
+			throw new TypeError('Argument \'fn\' must be a function');
+		}
+
+		var wait = false;
+		return function() {
+			var args = Array.prototype.slice.call(arguments);
+			if (!wait) {
+				fn.apply(thisArg, args);
+
+				wait = true;
+				setTimeout(function() {
+					wait = false;
+				}, limit);
+			}
+		};
+	},
+
+	/**
+	 * Wraps a function with another function that waits a specified amount of time before calling
+	 * the target function. When the returned function is called it starts a timer which waits the
+	 * specified amount of time and then calls the target function. Each time the function is called
+	 * the timer is reset
+	 *
+	 * @param {number}   delay     - The amount of time (in milliseconds) to wait before calling the
+	 *                               target function
+	 * @param {Function} fn        - The function to wrap
+	 * @param {Object}   [thisArg] - The value to be passed as the this parameter to the target
+	 *                               function
+	 *
+	 * @return {Function} A wrapper function that waits a period of time before calling the target
+	 *                    function
+	 */
+	debounce: function(delay, fn, thisArg) {
+		delay = this.asNumber(delay);
+		if (!this.isNumber(delay) || (delay < 0)) {
+			throw new TypeError('Argument \'delay\' must be a number greater than or equal to 0');
+		}
+
+		if (!this.isFunction(fn)) {
+			throw new TypeError('Argument \'fn\' must be a function');
+		}
+
+		var timeout;
+		return function() {
+			var args = Array.prototype.slice.call(arguments);
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+
+			timeout = setTimeout(function() {
+				fn.apply(thisArg, args);
+			}, delay);
+		};
+	},
+
+	/**
 	 * Generates a random number between min (included) and max (excluded)
 	 *
 	 * @param {number} min - The minimum value
