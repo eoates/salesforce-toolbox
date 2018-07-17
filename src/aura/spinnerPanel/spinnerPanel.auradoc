@@ -49,7 +49,7 @@
     var lastName = component.get('v.lastName');
 
     // Send data to server
-    var apex = component.find('apex');
+    var apex = component.find('apex').getModule();
     apex.execute(component, 'createContact', {
       params: {
         firstName: firstName,
