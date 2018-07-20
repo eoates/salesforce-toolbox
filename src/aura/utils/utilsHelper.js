@@ -348,7 +348,7 @@
 			return (value.length === 0);
 		}
 
-		return false;
+		return this.isUndefinedOrNull(value);
 	},
 
 	/**
