@@ -16,11 +16,11 @@
 		<!-- /description -->
 
 		<!-- example -->
-		<h3 class="slds-text-heading_medium">Usage Example</h3>
+		<h4>Usage Example</h4>
 
 		<p>This example will demonstrate basic usage of the <code>c:utils</code> component.</p>
 
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component>
   <aura:handler value="this" name="init"
@@ -31,7 +31,7 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Controller</h4>
+		<h5>Component Controller</h5>
 <pre><![CDATA[// MyComponentController.js
 ({
   init: function(component, event, helper) {

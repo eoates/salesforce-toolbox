@@ -8,7 +8,7 @@
 		<!-- /description -->
 
 		<!-- editable -->
-		<h3 class="slds-text-heading_medium">Editable</h3>
+		<h4>Editable</h4>
 		<p>
 			By default the <code>c:inputSelect</code> presents a list of options from which the user
 			can select, but it does not allow users to enter a value that is not in the list of
@@ -24,7 +24,7 @@
 		<!-- /editable -->
 
 		<!-- options -->
-		<h3 class="slds-text-heading_medium">Options</h3>
+		<h4>Options</h4>
 		<p>
 			A <code>c:inputSelect</code> has options which are specified by its <code>options</code>
 			attribute. There are 2 main ways to populate the list of options. The easiest way is to
@@ -41,12 +41,12 @@
 		<!-- /options -->
 
 		<!-- example 1: declarative -->
-		<h3 class="slds-text-heading_medium">Example: Declarative Options</h3>
+		<h4>Example: Declarative Options</h4>
 		<p>
 			This example demonstrates how to declaratively set the options.
 		</p>
 
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component>
   <aura:attribute name="options" type="String"
@@ -58,11 +58,11 @@
 		<!-- /example 1: declarative -->
 
 		<!-- example 2: programmatic -->
-		<h3 class="slds-text-heading_medium">Example: Setting Options Programmatically</h3>
+		<h4>Example: Setting Options Programmatically</h4>
 		<p>
 			This example demonstrates how to programmatically set the options.
 		</p>
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component>
   <aura:attribute name="options" type="Object[]" />
@@ -73,14 +73,14 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Style</h4>
+		<h5>Component Style</h5>
 <pre><![CDATA[/* MyComponent.css */
 .THIS .invalid-option {
   color: red;
 }
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Controller</h4>
+		<h5>Component Controller</h5>
 <pre><![CDATA[// MyComponentController.js
 ({
   init: function(component, event, helper) {

@@ -12,13 +12,13 @@
 		<!-- /description -->
 
 		<!-- example -->
-		<h3 class="slds-text-heading_medium">Usage Example</h3>
+		<h4>Usage Example</h4>
 
 		<p>
 			This example will demonstrate basic usage of the <code>c:spinnerPanel</code> component.
 		</p>
 
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- CreateContact.cmp -->
 <aura:component controller="ContactController">
   <aura:attribute name="firstName" type="String" />
@@ -36,7 +36,7 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Controller</h4>
+		<h5>Component Controller</h5>
 <pre><![CDATA[// CreateContactController.js
 ({
   saveButtonClick: function(component, event, helper) {
@@ -70,7 +70,7 @@
 })
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Apex Class</h4>
+		<h5>Apex Class</h5>
 <pre><![CDATA[// ContactController.cls
 public class ContactController {
   // Creates a new contact and returns its ID

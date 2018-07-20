@@ -18,7 +18,7 @@
 		<!-- /description -->
 
 		<!-- options -->
-		<h3 class="slds-text-heading_medium">Options</h3>
+		<h4>Options</h4>
 
 		<p>
 			The <code>execute</code> method accepts an optional <code>opts</code> argument which can
@@ -27,48 +27,48 @@
 			via the <code>opts</code> argument.
 		</p>
 
-		<table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+		<table>
 			<thead>
-				<tr class="slds-text-title_caps">
-					<th scope="col">Name</th>
-					<th scope="col">Type</th>
-					<th scope="col">Description</th>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Description</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>params</td>
 					<td>Object</td>
-					<td class="slds-cell-wrap">
+					<td>
 						An object containing parameter values to be passed to the Apex method.
 					</td>
 				</tr>
 				<tr>
 					<td>abortable</td>
 					<td>Boolean</td>
-					<td class="slds-cell-wrap">
+					<td>
 						If true then the action is marked as abortable. For more information about
 						abortable actions refer to the
-						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_abortable_actions.htm" target="_blank">Lightning Components Developer Guide</a>.
+						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_abortable_actions.htm">Lightning Components Developer Guide</a>.
 					</td>
 				</tr>
 				<tr>
 					<td>storable</td>
 					<td>Boolean</td>
-					<td class="slds-cell-wrap">
+					<td>
 						If true then the action is marked as storable. For more information about
 						storable actions refer to the
-						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_storable_actions.htm" target="_blank">Lightning Components Developer Guide</a>.
+						<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_storable_actions.htm">Lightning Components Developer Guide</a>.
 					</td>
 				</tr>
 				<tr>
 					<td>success</td>
 					<td>Function</td>
-					<td class="slds-cell-wrap">
+					<td>
 						A function to be executed when the Apex method is successful. This function
 						will be called with the following arguments:
 
-						<ul class="slds-list_dotted">
+						<ul>
 							<li>
 								<strong>returnValue</strong> -
 								This is the value returned by the Apex method.
@@ -76,7 +76,7 @@
 							<li>
 								<strong>state</strong> -
 								This is the state returned by the server. Refer to the
-								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm" target="_blank">Lightning Components Developer Guide</a>
+								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm">Lightning Components Developer Guide</a>
 								for more information about action states.
 							</li>
 						</ul>
@@ -85,11 +85,11 @@
 				<tr>
 					<td>failure</td>
 					<td>Function</td>
-					<td class="slds-cell-wrap">
+					<td>
 						A function to be executed if the Apex method fails. This function will be
 						called with the following arguments:
 
-						<ul class="slds-list_dotted">
+						<ul>
 							<li>
 								<strong>error</strong> -
 								An <code>Error</code> object. Use the object's <code>message</code>
@@ -98,7 +98,7 @@
 							<li>
 								<strong>state</strong> -
 								This is the state returned by the server. Refer to the
-								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm" target="_blank">Lightning Components Developer Guide</a>
+								<a href="https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/controllers_server_actions_states.htm">Lightning Components Developer Guide</a>
 								for more information about action states.
 							</li>
 						</ul>
@@ -107,7 +107,7 @@
 				<tr>
 					<td>complete</td>
 					<td>Function</td>
-					<td class="slds-cell-wrap">
+					<td>
 						A function to be executed when the Apex method completes regardless of
 						success or failure. This function will be called with no arguments.
 					</td>
@@ -115,7 +115,7 @@
 				<tr>
 					<td>context</td>
 					<td>Object</td>
-					<td class="slds-cell-wrap">
+					<td>
 						If a value is specified then it will be used as the <code>this</code> object
 						in your callback functions. If a value is not specified, however, then
 						<code>this</code> will be <code>undefined</code> in your callback functions.
@@ -128,11 +128,11 @@
 		<!-- /options -->
 
 		<!-- example -->
-		<h3 class="slds-text-heading_medium">Usage Example</h3>
+		<h4>Usage Example</h4>
 
 		<p>This example will demonstrate basic usage of the <code>c:apex</code> component.</p>
 
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component controller="MyApexClass">
   <aura:attribute name="message" type="String" />
@@ -144,7 +144,7 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Controller</h4>
+		<h5>Component Controller</h5>
 <pre><![CDATA[// MyComponentController.js
 ({
   testButtonClick: function(component, event, helper) {
@@ -171,7 +171,7 @@
 })
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Apex Class</h4>
+		<h5>Apex Class</h5>
 <pre><![CDATA[// MyApexClass.cls
 public class MyApexClass {
   // A method which simply returns the input with some text added

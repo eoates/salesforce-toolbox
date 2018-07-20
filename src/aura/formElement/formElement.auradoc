@@ -4,13 +4,13 @@
 		<p>
 			The <code>c:formElement</code> component is used to represent an HTML form element. For
 			more information on form elements refer to the documentation in the
-			<a href="https://www.lightningdesignsystem.com/components/form-element" target="_blank">Lightning Design
+			<a href="https://www.lightningdesignsystem.com/components/form-element">Lightning Design
 			System</a>.
 		</p>
 		<!-- /description -->
 
 		<!-- example -->
-		<h3 class="slds-text-heading_medium">Usage Example</h3>
+		<h4>Usage Example</h4>
 
 		<p>
 			This example will demonstrate basic usage of the <code>c:formElement</code> component.

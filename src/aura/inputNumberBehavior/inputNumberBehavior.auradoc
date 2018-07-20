@@ -21,18 +21,19 @@
 			below for a better idea of how to implement in your own code.
 		</p>
 
-		<div class="slds-box slds-theme_warning slds-theme_alert-texture slds-m-vertical_small">
+		<p>
+			<strong>Note:</strong>
 			At this time the <code>c:inputNumberBehavior</code> component only works with native
 			input elements (e.g., <code>&lt;input type=&quot;text&quot;&gt;</code>). You cannot
 			apply this behavior to other components such as <code>ui:inputText</code> or
 			<code>lightning:input</code>. This is because the <code>c:inputNumberBehavior</code>
 			component needs access to the input element and since those other components are in a
 			different namespace it is not possible to access their inner DOM element(s).
-		</div>
+		</p>
 		<!-- /description -->
 
 		<!-- options -->
-		<h3 class="slds-text-heading_medium">Options</h3>
+		<h4>Options</h4>
 		<p>
 			The <code>onBlur</code>, <code>onKeyDown</code>, <code>onInput</code> and
 			<code>onChange</code> methods of the <code>c:inputNumberBehavior</code> component all
@@ -41,53 +42,53 @@
 			opts argument should be an object which has the following methods:
 		</p>
 
-		<table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+		<table>
 			<thead>
-				<tr class="slds-text-title_caps">
-					<th scope="col">Method Name</th>
-					<th scope="col">Description</th>
+				<tr>
+					<th>Method Name</th>
+					<th>Description</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>getSelectionStart</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Return your input element's <code>selectionStart</code> property.
 					</td>
 				</tr>
 				<tr>
 					<td>getSelectionEnd</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Return your input element's <code>selectionEnd</code> property.
 					</td>
 				</tr>
 				<tr>
 					<td>setSelectionRange</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Execute your input element's <code>setSelectionRange</code> method.
 					</td>
 				</tr>
 				<tr>
 					<td>getInputType</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Return your input element's <code>type</code> property.
 					</td>
 				</tr>
 				<tr>
 					<td>getInputValue</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Return your input element's <code>value</code> property.
 					</td>
 				</tr>
 				<tr>
 					<td>setInputValue</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Set your input element's <code>value</code> property.
 					</td>
 				</tr>
 				<tr>
 					<td>getValue</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Return your component's current value. Note that this is different than the
 						input element value. This is used to determine if the value the user entered
 						is different and whether a change event should be fired.
@@ -95,7 +96,7 @@
 				</tr>
 				<tr>
 					<td>setValue</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Update your component's current value. This method should return true if the
 						value changed or false if unchanged.
 					</td>
@@ -105,14 +106,14 @@
 		<!-- /options -->
 
 		<!-- example -->
-		<h3 class="slds-text-heading_medium">Usage Example</h3>
+		<h4>Usage Example</h4>
 
 		<p>
 			This example will demonstrate basic usage of the <code>c:inputNumberBehavior</code>
 			component.
 		</p>
 
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component>
   <aura:attribute name="value" type="Decimal" />
@@ -129,7 +130,7 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Controller</h4>
+		<h5>Component Controller</h5>
 <pre><![CDATA[// MyComponentController.js
 ({
   myInputBlur: function(component, event, helper) {
@@ -156,7 +157,7 @@
 })
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Helper</h4>
+		<h5>Component Helper</h5>
 <pre><![CDATA[// MyComponentHelper.js
 ({
   performBehaviorAction: function(component, event, name) {

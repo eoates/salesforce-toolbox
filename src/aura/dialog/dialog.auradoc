@@ -6,12 +6,12 @@
 			application. A modal dialog appears above all other elements on the page and prevents
 			the user from interacting with the page until the dialog is closed. For more
 			information on how dialogs behave and their usage refer to the
-			<a href="https://www.lightningdesignsystem.com/components/modals/" target="_blank">Salesforce Lightning Design System</a>.
+			<a href="https://www.lightningdesignsystem.com/components/modals/">Salesforce Lightning Design System</a>.
 		</p>
 		<!-- /description -->
 
 		<!-- opening -->
-		<h3 class="slds-text-heading_medium">Opening a Dialog</h3>
+		<h4>Opening a Dialog</h4>
 		<p>
 			Opening a dialog will make it visible and displayed above (i.e. in front of) all other
 			content on the page including other dialogs. In order to open a dialog you simply
@@ -22,7 +22,7 @@
 		<!-- /opening -->
 
 		<!-- closing -->
-		<h3 class="slds-text-heading_medium">Closing a Dialog</h3>
+		<h4>Closing a Dialog</h4>
 		<p>
 			To close a dialog call its <code>close</code> method. If there are other open dialogs
 			then the top/front dialog will become the active dialog. If there are no other open
@@ -31,7 +31,7 @@
 		<!-- /closing -->
 
 		<!-- keyboard navigation -->
-		<h3 class="slds-text-heading_medium">Keyboard Focus and the Tab Key</h3>
+		<h4>Keyboard Focus and the Tab Key</h4>
 		<p>
 			The expected behavior for dialogs is to set focus to the first element in the dialog
 			when it opens. When the dialog is closed focus should be set to the element that
@@ -51,36 +51,37 @@
 			expected behavior. It is up to you to provide the implementation of this behavior.
 		</p>
 
-		<div class="slds-box slds-theme_warning slds-theme_alert-texture slds-m-vertical_small">
+		<p>
+			<strong>Note:</strong>
 			If your dialog contains any focusable elements at all then it is very important that you
 			handle the <code>onfocusfirst</code> and <code>onfocuslast</code> events. The
 			<code>onclose</code> event should always be handled regardless of whether your dialog
 			contains any focusable elements.
-		</div>
+		</p>
 
-		<table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+		<table>
 			<thead>
-				<tr class="slds-text-title_caps">
-					<th scope="col">Event Name</th>
-					<th scope="col">Expected Behavior</th>
+				<tr>
+					<th>Event Name</th>
+					<th>Expected Behavior</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>onfocusfirst</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Set focus to the first focusable element in the dialog.
 					</td>
 				</tr>
 				<tr>
 					<td>onfocuslast</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Set focus to the last focusable element in the dialog.
 					</td>
 				</tr>
 				<tr>
 					<td>onclose</td>
-					<td class="slds-cell-wrap">
+					<td>
 						Set focus to the element that triggered the opening of the dialog. For
 						example, if the user clicked a button to open the dialog then set focus to
 						that button.
@@ -91,7 +92,7 @@
 		<!-- /keyboard navigation -->
 
 		<!-- close button -->
-		<h3 class="slds-text-heading_medium">Close Button and the Escape Key</h3>
+		<h4>Close Button and the Escape Key</h4>
 		<p>
 			By default dialogs do not have a close button, but you can add one easily by setting the
 			<code>closeButton</code> attribute to true. Setting the <code>closeButton</code>
@@ -104,7 +105,7 @@
 		<!-- /close button -->
 
 		<!-- default action -->
-		<h3 class="slds-text-heading_medium">Default Action and the Enter Key</h3>
+		<h4>Default Action and the Enter Key</h4>
 		<p>
 			When the user presses the enter key on the keyboard while an element within the dialog
 			has focus the <code>ondefaultaction</code> event is fired. If you need to explicitly
@@ -116,11 +117,11 @@
 		<!-- /default action -->
 
 		<!-- example -->
-		<h3 class="slds-text-heading_medium">Usage Example</h3>
+		<h4>Usage Example</h4>
 
 		<p>This example will demonstrate basic usage of the <code>c:dialog</code> component.</p>
 
-		<h4 class="slds-text-heading_small">Component Markup</h4>
+		<h5>Component Markup</h5>
 <pre><![CDATA[<!-- MyComponent.cmp -->
 <aura:component>
   <aura:attribute name="firstName" type="String" />
@@ -161,7 +162,7 @@
 </aura:component>
 ]]></pre>
 
-		<h4 class="slds-text-heading_small">Component Controller</h4>
+		<h5>Component Controller</h5>
 <pre><![CDATA[// MyComponentController.js
 ({
   openContactDialogButtonClick: function(component, event, helper) {
