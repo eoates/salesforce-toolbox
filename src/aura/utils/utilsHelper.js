@@ -261,6 +261,45 @@
 	},
 
 	/**
+	 * Returns true if the value is a 15 or 18 character Salesforce identifier. This method does not
+	 * verify that the ID is actually valid - only that it conforms to the pattern for Salesforce
+	 * identifiers
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {boolean} true if the value is a Salesforce identifier; otherwise, false
+	 */
+	isID: function(value) {
+		return this.isID15(value) || this.isID18(value);
+	},
+
+	/**
+	 * Returns true if the value is a 15 character Salesforce identifier. This method does not
+	 * verify that the ID is actually valid - only that it conforms to the pattern for 15 character
+	 * Salesforce identifiers
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {boolean} true if the value is a Salesforce identifier; otherwise, false
+	 */
+	isID15: function(value) {
+		return value && /^[a-z0-9]{15}$/i.test(value);
+	},
+
+	/**
+	 * Returns true if the value is a 18 character Salesforce identifier. This method does not
+	 * verify that the ID is actually valid - only that it conforms to the pattern for 18 character
+	 * Salesforce identifiers
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {boolean} true if the value is a Salesforce identifier; otherwise, false
+	 */
+	isID18: function(value) {
+		return value && /^[a-z0-9]{18}$/i.test(value);
+	},
+
+	/**
 	 * Returns true if the value is an array; otherwise, false
 	 *
 	 * @param {*} value - The value to check
@@ -495,6 +534,64 @@
 		}
 
 		return undefined;
+	},
+
+	/**
+	 * Returns a 15 character Salesforce identifier. 15 character identifiers are case-sensitive.
+	 * If the value is a string with 15 characters it is unchanged. If the value is a string with 18
+	 * characters then it is converted to a 15 character identifier. If the value is anything other
+	 * than a 15 or 18 character string then undefined is returned
+	 *
+	 * @param {*} value - The value to be converted
+	 *
+	 * @return {string} A 15 character identifier
+	 */
+	asID15: function(value) {
+		var id;
+
+		value = this.trim(value);
+		if (this.isID18(value)) {
+			id = value.substring(0, 15);
+		} else if (this.isID15(value)) {
+			id = value;
+		}
+
+		return id;
+	},
+
+	/**
+	 * Returns a 18 character Salesforce identifier. 18 character identifiers are case-insensitive.
+	 * If the value is a string with 15 characters then is converted to a 18 character identifier.
+	 * If the value is a string with 18 characters then it is unchanged. If the value is anything
+	 * other than a 15 or 18 character string then undefined is returned
+	 *
+	 * @param {*} value - The value to be converted
+	 *
+	 * @return {string} A 18 character identifier
+	 */
+	asID18: function(value) {
+		var id;
+		var i, j, f, c, s;
+
+		value = this.trim(value);
+		if (this.isID18(value)) {
+			id = value;
+		} else if (this.isID15(value)) {
+			s = '';
+			for (i = 0; i < 3; i++) {
+				f = 0;
+				for (j = 0; j < 5; j++) {
+					c = value.charAt((i * 5) + j);
+					if ((c >= 'A') && (c <= 'Z')) {
+						f += 1 << j;
+					}
+				}
+				s += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345'.charAt(f);
+			}
+			id = value + s;
+		}
+
+		return id;
 	},
 
 	/**
