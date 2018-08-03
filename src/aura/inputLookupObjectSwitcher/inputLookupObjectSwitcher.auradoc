@@ -1,0 +1,18 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>c:inputLookupObjectSwitcher</code> component provides a dropdown menu from
+			which a user may select from two (2) or more objects. This component is used by the
+			<code>c:inputLookup</code> component when it is configured to allow more than one (1)
+			object type.
+		</p>
+
+		<p>
+			<strong>Note:</strong>
+			This component is not intended to be used outside of the <code>c:inputLookup</code>
+			component.
+		</p>
+		<!-- /description -->
+	</aura:description>
+</aura:documentation>

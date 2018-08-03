@@ -1,0 +1,230 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>c:inputLookup</code> component attempts to provide a lookup component that
+			looks and behaves as close to a standard lookup as possible. For more information about
+			lookups refer to the documentation in the
+			<a href="https://www.lightningdesignsystem.com/components/lookups/">Lightning Design System</a>.
+		</p>
+		<!-- /description -->
+
+		<!-- types -->
+		<h4>Specifying S-Object Types</h4>
+		<p>
+			In order to use a lookup you must specify at least one S-Object type. In addition to
+			specifying the name of the S-Object types you can also specify various attributes about
+			the S-Object such as which icon to use, a singular and plural label, the list of fields
+			to display in the search dialog, etc. There are a couple of different ways to specify
+			this information and which method to use will depend on whether you are using more than
+			one S-Object type.
+		</p>
+
+		<h5>Single S-Object Type</h5>
+		<p>
+			If you only need the lookup to show records from a single S-Object type then you can use
+			the following attributes: <code>typeName</code>, <code>typeLabel</code>,
+			<code>typeLabelPlural</code>, <code>iconName</code>, <code>iconUrl</code>,
+			<code>iconClass</code>, <code>fieldNames</code>, <code>filter</code>,
+			<code>withoutSharing</code>, <code>allowAdd</code>, <code>allowSearch</code>, and
+			<code>providerName</code>. The only required attribute is <code>typeName</code> which
+			should contain the API name of the S-Object type. All of the other attributes will use
+			reasonable defaults or information retrieved from metadata.
+		</p>
+
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <c:inputLookup typeName="Account"
+    typeLabel="Person Account"
+    typeLabelPlural="Person Accounts"
+    iconName="standard:person_account"
+    fieldNames="Site, Phone, Website, Owner.Alias"
+    filter="IsPersonAccount = TRUE" />
+</aura:component>
+]]>
+</pre>
+
+		<h5>Multiple S-Object Types</h5>
+		<p>
+			To allow the user to select from more than one S-Object type then you must set the
+			<code>types</code> attribute. The <code>types</code> attribute must be an array of
+			strings or objects. String values are assumed to be the API name of an S-Object type.
+			Object values, however, can contain the following properties: <code>name</code>,
+			<code>label</code>, <code>labelPlural</code>, <code>iconName</code>,
+			<code>iconUrl</code>, <code>iconClass</code>, <code>fieldNames</code>,
+			<code>filter</code>, <code>withoutSharing</code>, <code>allowAdd</code>,
+			<code>allowSearch</code>, and <code>providerName</code>. Only the <code>name</code>
+			property is required. All other properties are optional.
+		</p>
+
+		<p>
+			In addition to specifying properties for each S-Object individually, you can provide
+			default values to be used for all S-Object types by setting the appropriate attribute
+			on the component itself. In the example below users will be able to perform an
+			advanced search for accounts and contacts because the component's
+			<code>allowSearch</code> attribute is set to <code>true</code>. Users will not be able
+			to perform an advanced search for opportunities, however, because the
+			<code>allowSearch</code> property for that type is explicitly set to <code>false</code>.
+		</p>
+
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <c:inputLookup types="[ 'Account', 'Contact', { name: 'Opportunity', allowSearch: false } ]"
+    allowSearch="true" />
+</aura:component>
+]]>
+</pre>
+		<!-- /types -->
+
+		<!-- value -->
+		<h4>Selected Items</h4>
+		<p>
+			The <code>value</code> and <code>values</code> attribute can both be used to get or set
+			the selected item or items. It is recommended to use <code>value</code> for single-value
+			lookups and <code>values</code> for multi-value lookups.
+		</p>
+
+		<p>
+			When the user selects an S-Object the component's <code>onchange</code> event will be
+			fired and you can get the IDs of the selected S-Objects from the <code>value</code>
+			and/or the <code>values</code> attribute. These attributes will only contain the IDs
+			of any selected S-Objects. If you need more information about the selected S-Objects
+			than just their IDs you can call the component's <code>getSelectedItems</code> method.
+			This method will return an array of objects representing the selected records. Each
+			object in the array will have 3 properties: <code>id</code>, <code>name</code>, and
+			<code>sObjectName</code>.
+		</p>
+
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <aura:attribute name="recordId" type="String" />
+
+  <c:inputLookup types="Account, Contact, Opportunity"
+    value="{!v.recordId}"
+    onchange="{!c.lookupChange}" />
+</aura:component>
+]]>
+</pre>
+
+<pre><![CDATA[// MyComponentController.js
+({
+  lookupChange: function(component, event, helper) {
+    var recordId, record, records;
+    var lookup = event.getSource();
+
+    // Get the ID of the selected record
+    recordId = component.get('v.recordId');
+    console.debug('v.recordId = ' + recordId);
+
+    // We could also have gotten the ID using the
+    // component's value attribute
+    recordId = lookup.get('v.value');
+    console.debug('lookup.value = ' + recordId);
+
+    // If we needed to know what type of S-Object was
+    // selected or if we need to know its name then
+    // we can call the component's getSelectedItems
+    // method. The getSelectedItems method returns
+    // an array even if multiple = false
+    records = lookup.getSelectedItems();
+    if (records.length > 0) {
+      record = records[0];
+      console.debug('Selected a ' + record.sObjectName
+        + ' record with the name ' + record.name
+        + ' and the ID ' + record.id);
+    } else {
+      console.debug('Nothing selected');
+    }
+  }
+})
+]]>
+</pre>
+		<!-- /value -->
+
+		<!-- data visibility -->
+		<h4>Data Visibility</h4>
+		<p>
+			You can control what records are available in the lookup by specifying a custom filter,
+			ignoring sharing rules, or by using a custom data provider. Custom filters and
+			ignoring sharing rules is done by simply setting an attribute or property for each
+			S-Object. Custom data providers require you to create an Apex class that implements the
+			<code>LtngInputLookupProvider</code> interface.
+		</p>
+
+		<p>
+			This example demonstrates the use of a custom filter to display only accounts created
+			this week and opportunities closed this week.
+		</p>
+
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <!-- if using a single S-Object type just use the filter attribute -->
+  <c:inputLookup typeName="Account" filter="CreatedDate = THIS_WEEK" />
+
+  <!-- if using multiple S-Object types then you can use a different filter for each -->
+  <c:inputLookup types="[
+    { name: 'Account', filter: 'CreatedDate = THIS_WEEK' },
+    { name: 'Opportunity', filter: 'IsClosed = TRUE AND CloseDate = THIS_WEEK' }]" />
+</aura:component>
+]]></pre>
+
+		<p>
+			This example demonstrates the use of a custom data provider. It is recommended that
+			custom data providers extend the <code>LtngInputLookupDefaultProvider</code> class, but
+			this is not required. As long as your class implements the
+			<code>LtngInputLookupProvider</code> interface it can be used as a provider.
+		</p>
+
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <c:inputLookup typeName="User" providerName="MyTestProvider" />
+</aura:component>
+]]></pre>
+
+<pre><![CDATA[// MyTestProvider.cls
+public class MyTestProvider extends LtngInputLookupDefaultProvider {
+  protected override List<Id> getRecentlyViewedRecordIds(String sObjectName) {
+    // Return the IDs of items to be displayed in the lookup as
+    // recent items. In this example we show how to effectively
+    // disable the recent items feature by returning null. In
+    // your implementation you may wish to do something
+    // completely different. If you don't override this method or
+    // getRecentItems() then the default behavior will be used
+    return null;
+  }
+
+  public override List<SObject> search(
+    String sObjectName,
+    List<String> fieldNames,
+    String searchText,
+    String filter,
+    String sortField,
+    Boolean sortAscending,
+    Integer howMany,
+    Boolean withoutSharing
+  ) {
+    // Return search results. You can get the results however
+    // makes sense for your use case. You could execute a SOQL
+    // query, perform a SOSL search, call a method on another
+    // class, etc. You must make sure that the records you
+    // return include all of the fields specified by the
+    // fieldNames argument or an exception will occur. In our
+    // example here we will do a simple SOSL search
+    String orderBy = '';
+    if (String.isNotBlank(sortField)) {
+      orderBy = ' ORDER BY ' + sortField + ' '
+        + (sortAscending ? 'ASC' : 'DESC');
+    }
+    String sosl = 'FIND :searchText'
+      + ' IN NAME FIELDS'
+      + ' RETURNING'
+      + ' User(' + String.join(fieldNames, ',') + orderBy + ')'
+      + ' LIMIT :howMany';
+
+    return Search.query(sosl)[0];
+  }
+}
+]]></pre>
+		<!-- /data visibility -->
+	</aura:description>
+</aura:documentation>

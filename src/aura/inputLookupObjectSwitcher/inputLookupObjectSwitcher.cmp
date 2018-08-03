@@ -1,0 +1,77 @@
+<!--
+****************************************************************************************************
+* inputLookupObjectSwitcher.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author   Eugene Oates
+* @date     2018-08-03
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
+<aura:component access="GLOBAL"
+                description="A dropdown menu that allows the user to select a single object type.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="types" type="Object[]"
+	                description="The list of available object types to select from." />
+	<aura:attribute access="GLOBAL" name="selectedType" type="Object"
+	                description="The selected object type." />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onselect" type="c:genericComponentEvent"
+	                    description="Fired when the user selects an object type from the dropdown menu." />
+	<!-- /events -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+
+	<div aura:id="objectSwitcher"
+	     class="object-switcher slds-listbox_object-switcher slds-dropdown-trigger slds-dropdown-trigger_click">
+		<button class="object-switcher-trigger slds-button slds-button_icon"
+		        aria-haspopup="true"
+		        title="{!v.selectedType.labelPlural}"
+		        onblur="{!c.objectSwitcherTriggerBlur}"
+		        onkeydown="{!c.objectSwitcherTriggerKeyDown}"
+		        onclick="{!c.objectSwitcherTriggerClick}">
+			<c:inputLookupItemIcon class="object-switcher-icon"
+			                       iconName="{!v.selectedType.iconName}"
+			                       iconUrl="{!v.selectedType.iconUrl}"
+			                       iconClass="{!v.selectedType.iconClass}" />
+
+			<lightning:icon class="object-switcher-arrow" iconName="utility:down" size="xx-small" />
+		</button>
+
+		<div class="object-switcher-menu slds-dropdown slds-dropdown_left slds-dropdown_small"
+		     onmousedown="{!c.objectSwitcherMouseDown}">
+			<ul class="slds-dropdown__list" role="menu">
+				<aura:iteration items="{!v.types}" var="type">
+					<li class="object-switcher-item slds-dropdown__item"
+					    role="presentation"
+					    onmousedown="{!c.objectSwitcherItemMouseDown}">
+						<a role="menuitem"
+						   tabindex="-1"
+						   data-name="{!type.name}">
+							<div class="slds-media slds-media_center">
+								<div class="slds-media__figure">
+									<c:inputLookupItemIcon iconName="{!type.iconName}"
+									                       iconUrl="{!type.iconUrl}"
+									                       iconClass="{!type.iconClass}" />
+								</div>
+								<div class="slds-media__body">{!type.labelPlural}</div>
+							</div>
+						</a>
+					</li>
+				</aura:iteration>
+			</ul>
+		</div>
+	</div>
+	<!-- /component -->
+</aura:component>

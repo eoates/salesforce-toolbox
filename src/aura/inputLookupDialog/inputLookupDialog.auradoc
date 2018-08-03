@@ -1,0 +1,19 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>c:inputLookupDialog</code> component is used by the <code>c:inputLookup</code>
+			to provide advanced search functionality. The dialog allows users to view more records
+			at once than is visible in the dropdown menu of the <code>c:inputLookup</code>
+			component. Additionally, the dialog can display more fields than just the name allowing
+			the user to pick the correct record.
+		</p>
+
+		<p>
+			<strong>Note:</strong>
+			This component is not intended to be used outside of the <code>c:inputLookup</code>
+			component.
+		</p>
+		<!-- /description -->
+	</aura:description>
+</aura:documentation>

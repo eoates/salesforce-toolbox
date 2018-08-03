@@ -1,0 +1,305 @@
+<!--
+****************************************************************************************************
+* inputLookupDialog.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author   Eugene Oates
+* @date     2018-08-03
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
+<aura:component access="GLOBAL" controller="LtngInputLookupController"
+                description="Advanced search dialog used by the inputLookup component.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="title" type="String"
+	                description="The dialog title." />
+	<aura:attribute access="GLOBAL" name="type" type="Object"
+	                description="An object that represents the object type to be searched." />
+
+	<aura:attribute access="PRIVATE" name="searchText" type="String"
+	                description="Internal use only! The search text entered by the user." />
+
+	<aura:attribute access="PRIVATE" name="pageNumber" type="Integer" default="1"
+	                description="Internal use only! The currently displayed page number." />
+
+	<aura:attribute access="PRIVATE" name="pageCount" type="Integer" default="1"
+	                description="Internal use only! Total number of pages." />
+
+	<aura:attribute access="PRIVATE" name="itemCount" type="Integer" default="0"
+	                description="Internal use only! Total number of items." />
+
+	<aura:attribute access="PRIVATE" name="sortField" type="String"
+	                description="Internal use only! API name of the field to sort by." />
+
+	<aura:attribute access="PRIVATE" name="sortDirection" type="String" default="asc"
+	                description="Internal use only! Direction to sort the results." />
+
+	<aura:attribute access="PRIVATE" name="sortFieldOptions" type="Object[]" default="[]"
+	                description="Internal use only! List of options for dropdown menu that allows the user to change the sort field." />
+
+	<aura:attribute access="PRIVATE" name="sortFieldLabel" type="String" default="Relevance"
+	                description="Internal use only! Label for the currently selected sort field." />
+
+	<aura:attribute access="PRIVATE" name="columns" type="Object[]" default="[]"
+	                description="Internal use only! Array of columns for the results table." />
+
+	<aura:attribute access="PRIVATE" name="items" type="Object[]" default="[]"
+	                description="Internal use only! Array of search result items." />
+
+	<aura:attribute access="PRIVATE" name="searchError" type="String"
+	                description="Internal use only! If an error occurs during the search this will contain the error message." />
+
+	<aura:attribute access="PRIVATE" name="workCounter" type="Integer" default="0"
+	                description="Internal use only! Counts the number of running asynchronous operations." />
+	<!-- /attributes -->
+
+	<!-- events -->
+	<aura:registerEvent access="GLOBAL" name="onselect" type="c:genericComponentEvent"
+	                    description="Fired when the user selects an item from the list of results." />
+
+	<aura:registerEvent access="GLOBAL" name="oncancel" type="c:genericComponentEvent"
+	                    description="Fired when the user closes the dialog without selecting an item." />
+	<!-- /events -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
+	<!-- methods -->
+	<aura:method access="GLOBAL" name="open" action="{!c.open}"
+	             description="Opens the dialog and pre-fills the search text input." >
+		<aura:attribute name="searchText" type="String"
+		                description="Initial search text value." />
+	</aura:method>
+	<!-- /methods -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+	<c:apex aura:id="apex" />
+
+	<c:dialog aura:id="dialog"
+	          contentClass="slds-p-around_medium"
+	          title="{!v.title}"
+	          large="true"
+	          closeButton="true"
+	          onopen="{!c.dialogOpen}"
+	          onclose="{!c.dialogClose}"
+	          onclosebutton="{!c.closeButtonClick}"
+	          onfocusfirst="{!c.dialogFocusFirst}"
+	          onfocuslast="{!c.dialogFocusLast}">
+		<!-- content -->
+		<div class="slds-is-relative slds-scrollable_none">
+			<!-- spinner -->
+			<lightning:spinner class="{!if(v.workCounter eq 0, 'slds-hide', '')}"
+			                   variant="brand"
+			                   alternativeText="Searching" />
+			<!-- /spinner -->
+
+			<!-- search text -->
+			<form class="search-input-container slds-p-bottom_xx-small"
+			      onsubmit="{!c.searchFormSubmit}">
+				<input type="submit" value="Search" tabindex="-1" />
+
+				<lightning:layout horizontalAlign="spread" verticalAlign="center" pullToBoundary="small">
+					<lightning:layoutItem flexibility="grow" padding="horizontal-small">
+						<c:formElement controlId="{#globalId + '_searchTextInput'}"
+						               controlClass="slds-input-has-icon slds-input-has-icon_right">
+							<lightning:icon class="slds-input__icon slds-input__icon_right"
+							                iconName="utility:search"
+							                size="xx-small" />
+							<input aura:id="searchTextInput"
+							       id="{#globalId + '_searchTextInput'}"
+							       class="slds-input"
+							       type="text"
+							       placeholder="{!'Search ' + v.type.labelPlural + '...'}"
+							       maxlength="500" />
+						</c:formElement>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem flexibility="no-flex" padding="horizontal-small">
+						<lightning:button label="Search"
+						                  variant="brand"
+						                  disabled="{!v.workCounter gt 0}"
+						                  onclick="{!c.searchButtonClick}" />
+					</lightning:layoutItem>
+				</lightning:layout>
+			</form>
+			<!-- /search text -->
+
+			<div class="search-results-container slds-is-relative">
+				<div class="full-width full-height slds-grid">
+					<div id="{#globalId + '_results_container'}" class="full-width full-height slds-is-relative slds-scrollable_none">
+						<div class="full-height slds-is-relative slds-grid slds-grid_vertical">
+							<!-- stencil -->
+							<c:datatableStencil class="{!if(and(v.workCounter gt 0, empty(v.columns)), 'slds-card', 'slds-hide')}" />
+							<!-- /stencil -->
+
+							<!-- results -->
+							<div class="{!if(empty(v.items) || not(empty(v.searchError)), 'slds-hide', 'slds-m-top_medium')}">
+								<div class="slds-page-header slds-has-bottom-magnet">
+									<div class="slds-grid slds-grid_vertical-align-center">
+										<div class="slds-col slds-wrap slds-text-body_small slds-text-color_weak">
+											<h2 class="slds-m-bottom_xx-small">
+												<div class="slds-text-heading_medium slds-text-color_default">{!v.type.labelPlural}</div>
+											</h2>
+											<div class="slds-list_horizontal" aria-live="polite" aria-atomic="true">
+												<div class="slds-text-body_small slds-text-color_weak">
+													<lightning:formattedNumber value="{!v.itemCount}" />
+													Results
+												</div>
+												<span class="dot slds-p-horizontal_xx-small">&bull;</span>
+												Sorted by
+												<ui:menu class="slds-p-horizontal_xx-small">
+													<ui:menuTriggerLink class="slds-text-color_weak slds-type-focus slds-button slds-button_reset">
+														<span class="slds-m-right_x-small">{!v.sortFieldLabel}</span>
+														<lightning:icon iconName="utility:down" size="xx-small" />
+													</ui:menuTriggerLink>
+													<ui:menuList class="sort-menu-list slds-dropdown__list slds-dropdown_xx-small">
+														<aura:iteration items="{!v.sortFieldOptions}" var="option">
+															<ui:radioMenuItem label="{!option.label}"
+															                  selected="{!option.selected}"
+															                  hideMenuAfterSelected="true"
+															                  click="{!c.sortFieldOptionClick}" />
+														</aura:iteration>
+													</ui:menuList>
+												</ui:menu>
+											</div>
+										</div>
+										<div class="slds-col slds-no-flex">
+											<div class="{!if(v.pageCount eq 1, 'slds-hide', '')}">
+												<span class="slds-p-horizontal_small">
+													Page
+													<lightning:formattedNumber value="{!v.pageNumber}" />
+													of
+													<lightning:formattedNumber value="{!v.pageCount}" />
+												</span>
+
+												<lightning:buttonGroup>
+													<lightning:button label="Previous"
+													                  iconName="utility:left"
+													                  disabled="{!v.workCounter gt 0 || v.pageNumber eq 1}"
+													                  onclick="{!c.previousPageClick}" />
+
+													<lightning:button label="Next"
+													                  iconName="utility:right"
+													                  iconPosition="right"
+													                  disabled="{!v.workCounter gt 0 || v.pageNumber eq v.pageCount}"
+													                  onclick="{!c.nextPageClick}" />
+												</lightning:buttonGroup>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div id="{#globalId + '_results_table'}">
+									<div class="slds-is-relative" style="height: 100%;">
+										<div class="slds-table_header-fixed_container slds-scrollable_x" style="height: 100%;">
+											<div class="slds-scrollable_y">
+												<table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-max-medium-table_stacked-horizontal slds-table_header-fixed"
+												       role="grid"
+												       style="table-layout: fixed;">
+													<thead>
+														<tr class="slds-line-height_reset">
+															<aura:iteration items="{!v.columns}" var="column">
+																<th class="{#'slds-text-title_caps' + if(column.sortable, ' slds-is-sortable' + if(column.name eq v.sortField, ' slds-is-sorted slds-is-sorted_' + v.sortDirection, ''), '')}"
+																    scope="col"
+																    aria-sort="{#if(column.sortable, if(column.name eq v.sortField, if(v.sortDirection eq 'asc', 'ascending', 'descending'), 'none'), '')}"
+																    aria-label="{#column.label}"
+																    data-column="{#column.name}">
+																    <span class="slds-cell-fixed">
+																		<a class="slds-th__action slds-text-link_reset"
+																		   role="button"
+																		   tabindex="-1"
+																		   onclick="{!c.columnHeaderClick}">
+																			<span class="slds-assistive-text">Sort by: </span>
+																			<span class="slds-truncate" title="{#column.label}">{#column.label}</span>
+																			<lightning:icon class="slds-is-sortable__icon"
+																			                iconName="utility:arrowdown"
+																			                size="xx-small"
+																			                alternativeText="Sort" />
+																		</a>
+																		<span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted {#if(column.name eq v.sortField, if(v.sortDirection eq 'asc', 'ascending', 'descending'), 'none')}</span>
+																	</span>
+																</th>
+															</aura:iteration>
+														</tr>
+													</thead>
+													<tbody>
+														<aura:iteration items="{!v.items}" var="item">
+															<tr class="slds-hint-parent">
+																<th scope="row"
+																    role="gridcell"
+																    data-label="{#v.columns[0].label}">
+																	<a data-item="{#item.id}"
+																	   onclick="{!c.itemNameClick}">{#item.name}</a>
+																</th>
+																<aura:iteration items="{#item.fields}" var="field" start="2">
+																	<td role="gridcell" data-label="{#field.label}">
+																		<div class="slds-truncate">
+																			<c:inputLookupField field="{#field}" />
+																		</div>
+																	</td>
+																</aura:iteration>
+															</tr>
+														</aura:iteration>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /results -->
+
+							<!-- no results -->
+							<div class="{!if(v.workCounter gt 0 || not(empty(v.items)) || not(empty(v.searchError)), 'slds-hide', 'message-panel slds-text-body_regular slds-box slds-theme_default')}">
+								<div class="slds-p-vertical_xx-large slds-m-top_large slds-align_absolute-center slds-grid_vertical slds-text-align_center slds-text-color_weak">
+									<figure class="slds-p-bottom_xx-large">
+										<img src="/img/search/no-results.png" alt="No results found" />
+									</figure>
+									<div class="message-panel__title slds-text-heading_large slds-p-bottom_large">
+										No results for &quot;{!v.searchText}&quot; in {!v.type.label}.
+									</div>
+									<div class="message-panel__text slds-text-heading_small">
+										You may find what you're looking for under Search Results or Show More.
+									</div>
+								</div>
+							</div>
+							<!-- /no results -->
+
+							<!-- error -->
+							<div class="{!if(empty(v.searchError), 'slds-hide', 'message-panel slds-text-body_regular slds-box slds-theme_default')}">
+								<div class="slds-p-vertical_xx-large slds-m-top_large slds-align_absolute-center slds-grid_vertical slds-text-align_center slds-text-color_weak">
+									<figure class="slds-p-bottom_xx-large">
+										<img src="/img/search/error.svg" alt="An error occurred" />
+									</figure>
+									<div class="message-panel__title slds-text-heading_large slds-p-bottom_large">
+										Hmm...something's not right
+									</div>
+									<div class="message-panel__text slds-text-heading_small">
+										{!v.searchError}
+									</div>
+								</div>
+							</div>
+							<!-- /error -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /content -->
+
+		<!-- footer -->
+		<aura:set attribute="footer">
+			<lightning:button aura:id="closeButton"
+			                  label="Cancel"
+			                  onclick="{!c.closeButtonClick}" />
+		</aura:set>
+		<!-- /footer -->
+	</c:dialog>
+	<!-- /component -->
+</aura:component>

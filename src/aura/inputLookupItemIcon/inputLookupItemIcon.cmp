@@ -1,0 +1,43 @@
+<!--
+****************************************************************************************************
+* inputLookupItemIcon.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author   Eugene Oates
+* @date     2018-08-03
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
+<aura:component access="GLOBAL"
+                description="Displays the icon for an item in an inputLookup component.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="iconName" type="String"
+	                description="The name of the icon to display." />
+
+	<aura:attribute access="GLOBAL" name="iconUrl" type="String"
+	                description="The URL of the icon display. If a value is provided it will supersede the iconName attribute." />
+
+	<aura:attribute access="GLOBAL" name="iconClass" type="String"
+	                description="A CSS class to use for the icon. This attribute is only used if a value is provided for iconUrl." />
+
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS class to apply to the icon. This attribute differs from iconClass in that the CSS class in that it is always applied." />
+
+	<aura:attribute access="GLOBAL" name="size" type="String" default="small"
+	                description="The icon size." />
+	<!-- /attributes -->
+
+	<!-- component -->
+	<aura:if isTrue="{!empty(v.iconUrl)}">
+		<lightning:icon iconName="{!v.iconName}" class="{!v.class}" size="{!v.size}" />
+
+		<aura:set attribute="else">
+			<lightning:icon src="{!v.iconUrl}" class="{!v.class + ' ' + v.iconClass}" size="{!v.size}" />
+		</aura:set>
+	</aura:if>
+	<!-- /component -->
+</aura:component>

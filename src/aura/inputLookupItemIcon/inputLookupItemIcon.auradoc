@@ -1,0 +1,24 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			Displays the icon for an item in a <code>c:inputLookup</code> or
+			<code>c:inputLookupObjectSwitcher</code> component. The component has three (3) key
+			attributes which determine its behavior. If no value is provided for the
+			<code>iconUrl</code> attribute then <code>iconName</code> will be used. If a value is
+			provided for <code>iconUrl</code> then <code>iconName</code> will be ignored even if it
+			has a value. The <code>iconClass</code> attribute is only used when <code>iconUrl</code>
+			is set. If <code>iconClass</code> has a value, but <code>iconUrl</code> is empty then
+			<code>iconClass</code> is ignored. The <code>class</code> attribute is applied to the
+			rendered icon regardless of whether <code>iconName</code> or <code>iconUrl</code> is
+			used.
+		</p>
+
+		<p>
+			<strong>Note:</strong>
+			This component is not intended to be used outside of the <code>c:inputLookup</code>
+			and <code>c:inputLookupObjectSwitcher</code> components.
+		</p>
+		<!-- /description -->
+	</aura:description>
+</aura:documentation>

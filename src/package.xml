@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>LtngInputLookupController</members>
+        <members>LtngInputLookupControllerTest</members>
+        <members>LtngInputLookupDefaultProvider</members>
+        <members>LtngInputLookupDefaultProviderTest</members>
+        <members>LtngInputLookupProvider</members>
         <members>LtngTestComponentController</members>
         <name>ApexClass</name>
     </types>
@@ -18,6 +23,11 @@
         <members>inputBase</members>
         <members>inputCheckbox</members>
         <members>inputDate</members>
+        <members>inputLookup</members>
+        <members>inputLookupDialog</members>
+        <members>inputLookupField</members>
+        <members>inputLookupItemIcon</members>
+        <members>inputLookupObjectSwitcher</members>
         <members>inputNumber</members>
         <members>inputNumberBehavior</members>
         <members>inputSelect</members>

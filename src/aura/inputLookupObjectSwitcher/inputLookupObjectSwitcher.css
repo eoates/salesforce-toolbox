@@ -1,0 +1,31 @@
+/**************************************************************************************************
+ * inputLookupObjectSwitcher.css
+ **************************************************************************************************
+ * This is a shared component. Do not make modifications to this component without carefully
+ * considering the impact this may have on existing applications/components/pages/etc. that use this
+ * component.
+ *
+ * @author   Eugene Oates
+ * @date     2018-08-03
+ * @version  1.0.0
+ *
+ **************************************************************************************************/
+.THIS .object-switcher-arrow svg {
+	width: .5rem;
+	height: .5rem;
+	margin-left: .125rem;
+}
+
+.THIS .object-switcher-item.slds-has-focus {
+	background-color: rgb(249, 249, 250);
+}
+
+/**
+ * This is important. We set pointer-events to none for ALL icons in our object switcher. Without
+ * doing this then if a user clicks on the actual lightning:icon component we won't be able to
+ * figure out which item was clicked. This is because in the event handler event.target will be
+ * undefined due to Lightning's use of CSP
+ */
+.THIS .object-switcher-item .slds-media__figure * {
+    pointer-events: none !important;
+}

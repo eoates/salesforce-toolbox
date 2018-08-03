@@ -1,0 +1,38 @@
+<!--
+****************************************************************************************************
+* inputLookupField.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author   Eugene Oates
+* @date     2018-08-03
+* @version  1.0.0
+*
+****************************************************************************************************
+-->
+<aura:component access="GLOBAL"
+                description="Displays an individual field value.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="field" type="Object" required="true"
+	                description="An object which contains the field information." />
+	<aura:attribute access="GLOBAL" name="actionable" type="Boolean" default="true"
+	                description="Specifies whether the component's output should be actionable. If true then certain field types such as phone, email and URL will be displayed as clickable links." />
+	<!-- /attributes -->
+
+	<!-- handlers -->
+	<aura:handler value="{!this}" name="init" action="{!c.init}" />
+	<!-- /handlers -->
+
+	<!-- component -->
+	<c:utils aura:id="utils" />
+	<aura:if isTrue="{!and(v.field.dataType eq 'BOOLEAN', v.actionable)}">
+		<ui:outputCheckbox value="{!v.field.value}" />
+
+		<aura:set attribute="else">
+			<aura:unescapedHtml aura:id="output" />
+		</aura:set>
+	</aura:if>
+	<!-- /component -->
+</aura:component>

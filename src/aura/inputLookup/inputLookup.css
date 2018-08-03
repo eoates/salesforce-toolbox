@@ -1,0 +1,30 @@
+/**************************************************************************************************
+ * inputLookup.css
+ **************************************************************************************************
+ * This is a shared component. Do not make modifications to this component without carefully
+ * considering the impact this may have on existing applications/components/pages/etc. that use this
+ * component.
+ *
+ * @author   Eugene Oates
+ * @date     2018-08-03
+ * @version  1.0.0
+ *
+ **************************************************************************************************/
+
+/**
+ * This is important. We set pointer-events to none for ALL icons in our lookup menu. Without doing
+ * this then if a user clicks on the actual lightning:icon component we won't be able to figure out
+ * which item was clicked. This is because in the event handler event.target will be undefined due
+ * to Lightning's use of CSP
+ */
+.THIS .lookup-menu-item .slds-media__figure *,
+.THIS .lookup-menu-item .search-icon {
+    pointer-events: none !important;
+}
+
+/**
+ * Hide the remove button for pills when the component is disabled
+ */
+.THIS .lookup-selected-items[data-disabled="true"] .slds-pill__remove {
+	display: none !important;
+}

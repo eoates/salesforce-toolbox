@@ -1,0 +1,21 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>c:inputLookupField</code> component displays the value of a field. The
+			component has an <code>actionable</code> attribute which is used to specify whether the
+			rendered output should allow any interactivity. When <code>actionable</code> is
+			<code>true</code> certain field types (e.g., phone numbers, email addresses, etc.) will
+			be rendered as a hyperlink. If <code>actionable</code> is <code>false</code>, however,
+			then all field types except for checkbox/boolean fields will be rendered as read-only
+			text. Checkbox/boolean fields will always be displayed as an image.
+		</p>
+
+		<p>
+			<strong>Note:</strong>
+			This component is not intended to be used outside of the <code>c:inputLookup</code>
+			and <code>c:inputLookupDialog</code> components.
+		</p>
+		<!-- /description -->
+	</aura:description>
+</aura:documentation>
