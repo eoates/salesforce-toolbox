@@ -27,13 +27,13 @@
 	},
 
 	/**
- 	 * Returns a bound copy of the named function for exporting
- 	 *
- 	 * @param {string} name - The name of the function to export. This name must refer to a function
- 	 *                        on the helper
- 	 *
- 	 * @return {Function} A function bound to the helper
- 	 */
+	 * Returns a bound copy of the named function for exporting
+	 *
+	 * @param {string} name - The name of the function to export. This name must refer to a function
+	 *                        on the helper
+	 *
+	 * @return {Function} A function bound to the helper
+	 */
 	export: function(name) {
 		return this.utils.bind(this[name], this);
 	},
