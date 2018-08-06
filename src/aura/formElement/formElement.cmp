@@ -86,7 +86,7 @@
 		<!-- help text -->
 		<aura:if isTrue="{!not(empty(v.helpText))}">
 			<div class="{!'form-element-icon' + if(v.defaultStyles, ' slds-form-element__icon', '')}">
-				<lightning:helptext content="{!v.helpText}" tabindex="-1" />
+				<lightning:helptext content="{!v.helpText}" />
 			</div>
 		</aura:if>
 		<!-- /help text -->
