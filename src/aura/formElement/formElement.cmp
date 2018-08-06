@@ -45,15 +45,39 @@
 
 	<aura:attribute access="GLOBAL" name="errors" type="String[]"
 	                description="An array of error messages to be displayed next to this component. Use either error or errors - do not set both." />
+
+	<aura:attribute access="GLOBAL" name="defaultStyles" type="Boolean" default="true"
+	                description="Specifies whether SLDS classes are applied to the component." />
 	<!-- /attributes -->
 
 	<!-- component -->
-	<div class="{!v.class + ' slds-form-element' + if(and(empty(v.error), empty(v.errors)), '', ' slds-has-error')}">
+	<div class="{!
+	              v.class
+	              + ' form-element'
+	              + if(v.defaultStyles, ' slds-form-element', '')
+	              + if(
+	                    and(empty(v.error), empty(v.errors)),
+	                    '',
+	                    ' has-error' + if(v.defaultStyles, ' slds-has-error', '')
+	                )
+	            }">
 
 		<!-- label -->
 		<aura:if isTrue="{!not(empty(v.label))}">
-			<label class="{!v.labelClass + ' slds-form-element__label'}" for="{!v.controlId}">
-				<abbr class="{!if(v.required, 'slds-required', 'slds-hide')}" title="Required">*</abbr>
+			<label class="{!
+			                v.labelClass
+			                + ' form-element-label'
+			                + if(v.defaultStyles, ' slds-form-element__label', '')
+			              }"
+			       for="{!v.controlId}">
+				<abbr class="{!
+				               if(
+				                   v.required,
+				                   'is-required' + if(v.defaultStyles, ' slds-required', ''),
+				                   'hide slds-hide'
+				               )
+				             }"
+				      title="Required">*</abbr>
 				{!v.label}
 			</label>
 		</aura:if>
@@ -61,20 +85,32 @@
 
 		<!-- help text -->
 		<aura:if isTrue="{!not(empty(v.helpText))}">
-			<div class="slds-form-element__icon">
+			<div class="{!'form-element-icon' + if(v.defaultStyles, ' slds-form-element__icon', '')}">
 				<lightning:helptext content="{!v.helpText}" tabindex="-1" />
 			</div>
 		</aura:if>
 		<!-- /help text -->
 
 		<!-- control -->
-		<div class="{!v.controlClass + ' slds-form-element__control'}">
+		<div class="{!
+		              v.controlClass
+		              + ' form-element-control'
+		              + if(v.defaultStyles, ' slds-form-element__control', '')
+		            }">
 			{!v.body}
 		</div>
 		<!-- /control -->
 
 		<!-- error -->
-		<div class="{!if(and(empty(v.error), empty(v.errors)), 'slds-hide', v.errorClass + ' slds-form-element__help')}">
+		<div class="{!
+		              if(
+		                  and(empty(v.error), empty(v.errors)),
+		                  'hide slds-hide',
+		                  v.errorClass
+		                  + ' form-element-help'
+		                  + if(v.defaultStyles, ' slds-form-element__help', '')
+		              )
+		            }">
 			<ul>
 				<aura:if isTrue="{!not(empty(v.error))}">
 					<li>{!v.error}</li>

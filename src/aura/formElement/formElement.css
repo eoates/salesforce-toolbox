@@ -10,6 +10,10 @@
  * @version  1.0.0
  *
  **************************************************************************************************/
-.THIS .slds-form-element__help ul li {
+.THIS .hide {
+	display: none;
+}
+
+.THIS .form-element-help ul li {
 	white-space: normal;
 }
