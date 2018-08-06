@@ -126,7 +126,8 @@
 	               helpText="{!v.helpText}"
 	               required="{!v.required}"
 	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               errors="{!v.errors}"
+	               defaultStyles="{!v.formElement}">
 		<!-- container -->
 		<div class="{!if(
 		                and(

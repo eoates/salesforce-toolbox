@@ -52,7 +52,8 @@
 	               helpText="{!v.helpText}"
 	               required="{!v.required}"
 	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               errors="{!v.errors}"
+	               defaultStyles="{!v.formElement}">
 		<aura:if isTrue="{#$Browser.formFactor eq 'DESKTOP'}">
 			<!-- desktop -->
 			<div aura:id="container"

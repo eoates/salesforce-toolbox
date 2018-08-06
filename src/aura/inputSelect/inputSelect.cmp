@@ -94,7 +94,8 @@
 	               helpText="{!v.helpText}"
 	               required="{!v.required}"
 	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               errors="{!v.errors}"
+	               defaultStyles="{!v.formElement}">
 		<div aura:id="container"
 		     class="{!v.containerClass + if(v.editable, ' is-editable', '') + ' slds-select_container'}"
 		     onfocusin="{!c.containerFocusIn}"

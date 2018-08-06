@@ -56,7 +56,8 @@
 	               helpText="{!v.helpText}"
 	               required="{!v.required}"
 	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               errors="{!v.errors}"
+	               defaultStyles="{!v.formElement}">
 		<div class="slds-grid slds-grid_vertical">
 			<!-- input -->
 			<textarea aura:id="input"

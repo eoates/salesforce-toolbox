@@ -40,7 +40,8 @@
 	               errorClass="{!v.errorClass}"
 	               required="{!v.required}"
 	               error="{!v.error}"
-	               errors="{!v.errors}">
+	               errors="{!v.errors}"
+	               defaultStyles="{!v.formElement}">
 		<span class="{!v.class + if(v.stacked, ' slds-checkbox_stacked', '') + ' slds-checkbox'}">
 			<input aura:id="input"
 			       id="{#globalId + '_input'}"

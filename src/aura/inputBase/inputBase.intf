@@ -51,16 +51,19 @@
 	                description="Multiple error messages associated with this input. Use either error or errors - do not set both." />
 
 	<aura:attribute access="GLOBAL" name="elementClass" type="String"
-	                description="Optional CSS style to apply to the inner form element (slds-form-element)." />
+	                description="Optional CSS style to apply to the inner form element." />
 
 	<aura:attribute access="GLOBAL" name="labelClass" type="String"
-	                description="Optional CSS style to apply to the label (slds-form-element__label)." />
+	                description="Optional CSS style to apply to the label." />
 
 	<aura:attribute access="GLOBAL" name="controlClass" type="String"
-	                description="Optional CSS style to apply to the control container (slds-form-element__control)." />
+	                description="Optional CSS style to apply to the control container." />
 
 	<aura:attribute access="GLOBAL" name="errorClass" type="String"
-	                description="Optional CSS style to apply to the error message (slds-form-element__help)." />
+	                description="Optional CSS style to apply to the error message." />
+
+	<aura:attribute access="GLOBAL" name="formElement" type="Boolean" default="true"
+	                description="Specifies whether Salesforce Lightning Design System (SLDS) styles are applied to the input's container." />
 	<!-- /attributes -->
 
 	<!-- events -->
