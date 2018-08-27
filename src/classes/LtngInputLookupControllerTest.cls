@@ -1,9 +1,7 @@
 /**
  * Contains test methods for the LtngInputLookupController class
  *
- * @author  Eugene Oates
- * @since   2018-08-03
- * @version 1.0.0
+ * @author Eugene Oates
  */
 @IsTest
 private class LtngInputLookupControllerTest {

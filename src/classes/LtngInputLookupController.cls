@@ -1,9 +1,7 @@
 /**
  * Apex controller for the inputLookup Lightning component
  *
- * @author  Eugene Oates
- * @since   2018-08-03
- * @version 1.0.0
+ * @author Eugene Oates
  */
 global with sharing class LtngInputLookupController {
 	/**

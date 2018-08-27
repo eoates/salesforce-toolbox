@@ -2,9 +2,7 @@
  * This class provides a default implementation of the LtngInputLookupProvider interface. Custom
  * providers can either extend this class or implement LtngInputLookupProvider directly
  *
- * @author  Eugene Oates
- * @since   2018-08-03
- * @version 1.0.0
+ * @author Eugene Oates
  */
 global virtual class LtngInputLookupDefaultProvider implements LtngInputLookupProvider {
 	private static Map<String, Schema.SObjectType> globalDescribe;
