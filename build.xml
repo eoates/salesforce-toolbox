@@ -1,4 +1,4 @@
-<project name="MassMutual DEV" default="clean" basedir="." xmlns:sf="antlib:com.salesforce">
+<project name="Personal DE" default="clean" basedir="." xmlns:sf="antlib:com.salesforce">
     <!-- Create a file named build.properties in the same directory as this build.xml file. The
          file should contain the following properties:
          - sf.classpath - Path to the the ant-salesforce.jar on your machine
