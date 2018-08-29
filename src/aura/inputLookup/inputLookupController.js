@@ -164,6 +164,10 @@
 	 * Handles the onselect event of the object switcher. Sets the selected search object
 	 */
 	objectSwitcherSelect: function(component, event, helper) {
+		if (helper.isDisabledOrReadOnly(component)) {
+			return;
+		}
+
 		var args = event.getParam('arguments');
 		var selectedType = args.selectedType;
 		var name = selectedType && selectedType.name;
@@ -193,8 +197,10 @@
 	 * Handles the blur event of the searchTextInput element
 	 */
 	searchTextInputBlur: function(component, event, helper) {
-		var inputElement = event.target;
-		inputElement.value = helper.utils.trim(inputElement.value);
+		if (!helper.isDisabledOrReadOnly(component)) {
+			var inputElement = event.target;
+			inputElement.value = helper.utils.trim(inputElement.value);
+		}
 
 		helper.closeMenu(component);
 		helper.fireEvent(component, 'onblur');
@@ -204,6 +210,10 @@
 	 * Handles the keydown event of the searchTextInput element
 	 */
 	searchTextInputKeyDown: function(component, event, helper) {
+		if (helper.isDisabledOrReadOnly(component)) {
+			return;
+		}
+
 		var which = event.keyCode || event.which || 0;
 		switch (which) {
 		case 9: // Tab
@@ -257,6 +267,10 @@
 	 * Handles the input event of the searchTextInput element
 	 */
 	searchTextInputInput: function(component, event, helper) {
+		if (helper.isDisabledOrReadOnly(component)) {
+			return;
+		}
+
 		var inputElement = event.target;
 		var searchText = helper.utils.trim(inputElement.value);
 
@@ -272,6 +286,10 @@
 	 * Handles the click event of the searchTextInput element
 	 */
 	searchTextInputClick: function(component, event, helper) {
+		if (helper.isDisabledOrReadOnly(component)) {
+			return;
+		}
+
 		helper.toggleMenu(component);
 	},
 
@@ -293,6 +311,10 @@
 	 * Handles the keydown event of the selectedItemInput element
 	 */
 	selectedItemInputKeyDown: function(component, event, helper) {
+		if (helper.isDisabledOrReadOnly(component)) {
+			return;
+		}
+
 		var which = event.keyCode || event.which || 0;
 		switch (which) {
 		case 8: // Backspace
@@ -307,6 +329,10 @@
 	 * Handles the click event of the selectedItemRemoveButton
 	 */
 	selectedItemRemoveButtonClick: function(component, event, helper) {
+		if (helper.isDisabledOrReadOnly(component)) {
+			return;
+		}
+
 		helper.handleSelectedItemRemoveButtonClick(component);
 	},
 
@@ -340,8 +366,7 @@
 	selectedItemPillRemove: function(component, event, helper) {
 		event.preventDefault();
 
-		var disabled = component.get('v.disabled');
-		if (disabled) {
+		if (helper.isDisabledOrReadOnly(component)) {
 			return;
 		}
 
@@ -386,9 +411,7 @@
 	 * search overlay to allow the user to find a record
 	 */
 	mobileSelectedItemInputClick: function(component, event, helper) {
-		var disabled = component.get('v.disabled');
-		var readOnly = component.get('v.readonly');
-		if (disabled || readOnly) {
+		if (helper.isDisabledOrReadOnly(component)) {
 			return;
 		}
 
@@ -417,9 +440,7 @@
 	 * remove the selected item and fire the "onchange" event
 	 */
 	mobileSelectedItemSearchOrClearButtonClick: function(component, event, helper) {
-		var disabled = component.get('v.disabled');
-		var readOnly = component.get('v.readonly');
-		if (disabled || readOnly) {
+		if (helper.isDisabledOrReadOnly(component)) {
 			return;
 		}
 

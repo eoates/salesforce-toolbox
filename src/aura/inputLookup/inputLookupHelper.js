@@ -411,6 +411,19 @@
 	},
 
 	/**
+	 * Returns true if the component is either disabled or read-only; otherwise, false
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {boolean} true if the component is disabled or read-only
+	 */
+	isDisabledOrReadOnly: function(component) {
+		var disabled = component.get('v.disabled');
+		var readOnly = component.get('v.readonly');
+		return disabled || readOnly;
+	},
+
+	/**
 	 * Initializes the value and values attribute. A user of this component should only specify a
 	 * value for one attribute or the other. If a value is provided for the values attribute then
 	 * the is used to set the value attribute. If no value is provided for the values attribute,

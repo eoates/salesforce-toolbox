@@ -121,6 +121,7 @@
 		<!-- ============================================================ -->
 		<!-- DESKTOP -->
 		<!-- ============================================================ -->
+
 		<c:formElement class="{!v.elementClass}"
 		               labelClass="{!v.labelClass}"
 		               controlClass="{!v.controlClass}"
@@ -155,7 +156,7 @@
 				<!-- ======================================== -->
 				<!-- object switcher -->
 				<!-- ======================================== -->
-				<aura:if isTrue="{!and(not(v.disabled), and(v.searchObjects.length gt 1, or(v.multiple, empty(v.selectedItems))))}">
+				<aura:if isTrue="{!and(not(or(v.disabled, v.readonly)), and(v.searchObjects.length gt 1, or(v.multiple, empty(v.selectedItems))))}">
 					<c:inputLookupObjectSwitcher types="{!v.searchObjects}"
 					                             selectedType="{!v.selectedSearchObject}"
 					                             onselect="{!c.objectSwitcherSelect}" />
@@ -188,6 +189,7 @@
 							       placeholder="{!if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...')}"
 							       tabindex="{!v.tabindex}"
 							       disabled="{!if(v.disabled, 'disabled', '')}"
+							       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
 							       onfocus="{!c.searchTextInputFocus}"
 							       onblur="{!c.searchTextInputBlur}"
 							       onkeydown="{!c.searchTextInputKeyDown}"
@@ -204,7 +206,7 @@
 								</div>
 								<!-- /spinner -->
 
-								<lightning:icon class="slds-input__icon slds-input__icon_right"
+								<lightning:icon class="{!if(or(v.disabled, v.readonly), 'slds-hide', 'slds-input__icon slds-input__icon_right')}"
 								                iconName="utility:search"
 								                size="xx-small" />
 							</div>
@@ -237,7 +239,7 @@
 								       onblur="{!c.selectedItemInputBlur}"
 								       onkeydown="{!c.selectedItemInputKeyDown}" />
 
-								<button class="{!if(v.disabled, 'slds-hide', 'slds-button slds-button_icon slds-input__icon slds-input__icon_right')}"
+								<button class="{!if(or(v.disabled, v.readonly), 'slds-hide', 'slds-button slds-button_icon slds-input__icon slds-input__icon_right')}"
 								        title="Remove selected option"
 								        disabled="{!if(v.disabled, 'disabled', '')}"
 								        tabindex="-1"
@@ -372,7 +374,7 @@
 				    role="listbox"
 				    aria-label="Selected Options:"
 				    aria-orientation="horizontal"
-				    data-disabled="{!if(v.disabled, 'true', 'false')}">
+				    data-disabled="{!if(or(v.disabled, v.readonly), 'true', 'false')}">
 					<aura:iteration items="{!v.selectedItems}" var="item">
 						<li class="slds-listbox__item" role="presentation">
 							<lightning:pill name="{!item.id}" label="{!item.name}" onremove="{!c.selectedItemPillRemove}">
@@ -387,13 +389,14 @@
 				</ul>
 			</aura:if>
 			<!-- /selected items (multiple = true) -->
+
+			<c:inputLookupDialog aura:id="searchDialog"
+			                     title="{!v.label}"
+			                     type="{!v.selectedSearchObject}"
+			                     onselect="{!c.searchDialogSelect}"
+			                     oncancel="{!c.searchDialogCancel}" />
 		</c:formElement>
 
-		<c:inputLookupDialog aura:id="searchDialog"
-		                     title="{!v.label}"
-		                     type="{!v.selectedSearchObject}"
-		                     onselect="{!c.searchDialogSelect}"
-		                     oncancel="{!c.searchDialogCancel}" />
 		<!-- ============================================================ -->
 		<!-- /DESKTOP -->
 		<!-- ============================================================ -->
@@ -436,203 +439,203 @@
 						                size="x-small" />
 					</div>
 				</a>
-			</c:formElement>
 
-			<!-- search overlay -->
-			<div aura:id="mobileSearchOverlayContainer">
-				<div aura:id="mobileSearchOverlay"
-				     class="lookup-mobile-search-overlay slds-theme_shade slds-scrollable_none slds-hide"
-				     tabnidex="-1"
-				     onkeydown="{!c.mobileSearchOverlayKeyDown}">
-					<!-- top focus trap -->
-					<a class="lookup-mobile-focus-trap"
-					   onfocus="{!c.mobileCancelSearchButtonClick}">#</a>
-					<!-- /top focus trap -->
+				<!-- search overlay -->
+				<div aura:id="mobileSearchOverlayContainer">
+					<div aura:id="mobileSearchOverlay"
+					     class="lookup-mobile-search-overlay slds-theme_shade slds-scrollable_none slds-hide"
+					     tabnidex="-1"
+					     onkeydown="{!c.mobileSearchOverlayKeyDown}">
+						<!-- top focus trap -->
+						<a class="lookup-mobile-focus-trap"
+						   onfocus="{!c.mobileCancelSearchButtonClick}">#</a>
+						<!-- /top focus trap -->
 
-					<!-- header -->
-					<div class="lookup-mobile-search-overlay_header slds-theme_default slds-border_bottom">
-						<lightning:layout horizontalAlign="spread" verticalAlign="center">
-							<lightning:layoutItem flexibility="no-flex" padding="around-medium">
-								<lightning:button aura:id="mobileCancelSearchButton"
-								                  label="Cancel"
-								                  onclick="{!c.mobileCancelSearchButtonClick}" />
-							</lightning:layoutItem>
-							<lightning:layoutItem flexibility="grow"
-							                      padding="around-medium"
-							                      class="slds-text-heading_medium slds-text-align_center slds-text-color_default slds-has-flexi-truncate">
-								<h2 class="slds-truncate">{!v.label}</h2>
-							</lightning:layoutItem>
-						</lightning:layout>
-					</div>
-					<!-- /header -->
+						<!-- header -->
+						<div class="lookup-mobile-search-overlay_header slds-theme_default slds-border_bottom">
+							<lightning:layout horizontalAlign="spread" verticalAlign="center">
+								<lightning:layoutItem flexibility="no-flex" padding="around-medium">
+									<lightning:button aura:id="mobileCancelSearchButton"
+									                  label="Cancel"
+									                  onclick="{!c.mobileCancelSearchButtonClick}" />
+								</lightning:layoutItem>
+								<lightning:layoutItem flexibility="grow"
+								                      padding="around-medium"
+								                      class="slds-text-heading_medium slds-text-align_center slds-text-color_default slds-has-flexi-truncate">
+									<h2 class="slds-truncate">{!v.label}</h2>
+								</lightning:layoutItem>
+							</lightning:layout>
+						</div>
+						<!-- /header -->
 
-					<div class="lookup-mobile-search-overlay_body slds-scrollable_y">
-						<!-- search text -->
-						<div class="slds-p-around_x-small slds-border_top slds-border_bottom">
-							<div class="slds-form-element">
-								<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
-									<input aura:id="mobileSearchTextInput"
-									       id="{#globalId + '_mobile_search_text'}"
-									       type="text"
-									       class="slds-input"
-									       placeholder="{!'Search ' + v.selectedSearchObject.label}"
-									       oninput="{!c.mobileSearchTextInputInput}" />
+						<div class="lookup-mobile-search-overlay_body slds-scrollable_y">
+							<!-- search text -->
+							<div class="slds-p-around_x-small slds-border_top slds-border_bottom">
+								<div class="slds-form-element">
+									<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+										<input aura:id="mobileSearchTextInput"
+										       id="{#globalId + '_mobile_search_text'}"
+										       type="text"
+										       class="slds-input"
+										       placeholder="{!'Search ' + v.selectedSearchObject.label}"
+										       oninput="{!c.mobileSearchTextInputInput}" />
 
-									<a aura:id="mobileSearchTextSearchOrClearButton"
-									   id="{#globalId + '_mobile_search_text_search_or_clear'}"
-									   class="lookup-mobile-search-or-clear"
-									   onclick="{!c.mobileSearchTextSearchOrClearButtonClick}">
-										<div class="lookup-mobile-search-or-clear_icon">
-											<lightning:icon aura:id="mobileSearchTextSearchIcon"
-											                iconName="utility:search"
-											                size="x-small"
-											                class="slds-hide" />
+										<a aura:id="mobileSearchTextSearchOrClearButton"
+										   id="{#globalId + '_mobile_search_text_search_or_clear'}"
+										   class="lookup-mobile-search-or-clear"
+										   onclick="{!c.mobileSearchTextSearchOrClearButtonClick}">
+											<div class="lookup-mobile-search-or-clear_icon">
+												<lightning:icon aura:id="mobileSearchTextSearchIcon"
+												                iconName="utility:search"
+												                size="x-small"
+												                class="slds-hide" />
 
-											<lightning:icon aura:id="mobileSearchTextClearIcon"
-											                iconName="utility:close"
-											                size="x-small"
-											                class="slds-hide" />
-										</div>
-									</a>
+												<lightning:icon aura:id="mobileSearchTextClearIcon"
+												                iconName="utility:close"
+												                size="x-small"
+												                class="slds-hide" />
+											</div>
+										</a>
+									</div>
 								</div>
 							</div>
-						</div>
-						<!-- /search text -->
+							<!-- /search text -->
 
-						<!-- object switcher -->
-						<div class="slds-is-relative">
-							<div class="slds-p-around_small slds-border_bottom">
-								<c:inputLookupItemIcon iconName="{!v.selectedSearchObject.iconName}"
-								                       iconUrl="{!v.selectedSearchObject.iconUrl}"
-								                       iconClass="{!v.selectedSearchObject.iconClass}"
-								                       size="medium" />
+							<!-- object switcher -->
+							<div class="slds-is-relative">
+								<div class="slds-p-around_small slds-border_bottom">
+									<c:inputLookupItemIcon iconName="{!v.selectedSearchObject.iconName}"
+									                       iconUrl="{!v.selectedSearchObject.iconUrl}"
+									                       iconClass="{!v.selectedSearchObject.iconClass}"
+									                       size="medium" />
 
-								<span class="lookup-mobile-object-switcher_label slds-p-left_x-small slds-p-top_x-small">
-									{!v.selectedSearchObject.labelPlural}
-								</span>
+									<span class="lookup-mobile-object-switcher_label slds-p-left_x-small slds-p-top_x-small">
+										{!v.selectedSearchObject.labelPlural}
+									</span>
 
-								<lightning:icon iconName="utility:down"
-								                size="xx-small"
-								                class="{!if(v.searchObjects.length lt 2, 'slds-hide', 'slds-p-around_x-small')}" />
+									<lightning:icon iconName="utility:down"
+									                size="xx-small"
+									                class="{!if(v.searchObjects.length lt 2, 'slds-hide', 'slds-p-around_x-small')}" />
+								</div>
+
+								<select aura:id="mobileObjectSwitcherSelect"
+								        id="{#globalId + '_mobile_object_switcher'}"
+								        class="{!if(v.searchObjects.length lt 2, 'slds-hide', 'lookup-mobile-object-switcher_select')}"
+								        onchange="{!c.mobileObjectSwitcherSelectChange}">
+									<aura:iteration items="{!v.searchObjects}" var="searchObject">
+										<option value="{!searchObject.name}"
+										        selected="{!if(searchObject.name eq v.selectedSearchObject.name, 'selected', '')}">
+											{!searchObject.labelPlural}
+										</option>
+									</aura:iteration>
+								</select>
 							</div>
+							<!-- /object switcher -->
 
-							<select aura:id="mobileObjectSwitcherSelect"
-							        id="{#globalId + '_mobile_object_switcher'}"
-							        class="{!if(v.searchObjects.length lt 2, 'slds-hide', 'lookup-mobile-object-switcher_select')}"
-							        onchange="{!c.mobileObjectSwitcherSelectChange}">
-								<aura:iteration items="{!v.searchObjects}" var="searchObject">
-									<option value="{!searchObject.name}"
-									        selected="{!if(searchObject.name eq v.selectedSearchObject.name, 'selected', '')}">
-										{!searchObject.labelPlural}
-									</option>
-								</aura:iteration>
-							</select>
-						</div>
-						<!-- /object switcher -->
-
-						<!-- item list -->
-						<ul class="lookup-mobile-items slds-has-dividers_top slds-has-divider_bottom slds-theme_default">
-							<!-- spinner -->
-							<li class="{!if(v.workCounter gt 0, 'slds-p-around_small slds-item', 'slds-hide')}">
-								<a>
-									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
-										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
-											<span class="slds-align_absolute-center slds-p-vertical_xx-small">
-												<img src="/img/spinner.gif"
-												     alt="Searching"
-												     border="0"
-												     width="24"
-												     height="24" />
-											</span>
-										</div>
-									</div>
-								</a>
-							</li>
-							<!-- /spinner -->
-
-							<!-- search button -->
-							<li aura:id="mobileSearchButton" class="slds-p-around_small slds-item slds-hide">
-								<a onclick="{!c.mobileSearchButtonClick}">
-									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
-										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
-											<lightning:icon iconName="utility:search"
-											                class="slds-m-right_small slds-button__icon"
-											                size="xx-small" />
-
-											<span aura:id="mobileSearchMessage"></span>
-										</div>
-									</div>
-								</a>
-							</li>
-							<!-- /search button -->
-
-							<!-- lookup items -->
-							<aura:iteration items="{!v.lookupItems}" var="item">
-								<li class="slds-p-around_small slds-item">
-									<a data-value="{!item.id}" onclick="{!c.mobileLookupItemClick}">
+							<!-- item list -->
+							<ul class="lookup-mobile-items slds-has-dividers_top slds-has-divider_bottom slds-theme_default">
+								<!-- spinner -->
+								<li class="{!if(v.workCounter gt 0, 'slds-p-around_small slds-item', 'slds-hide')}">
+									<a>
 										<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
 											<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
-												{!item.name}
-											</div>
-											<div class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-size_1-of-1 slds-text-color_weak slds-text-body_small slds-truncate')}">
-												<c:inputLookupField field="{!item.highlightField}" actionable="false" />
+												<span class="slds-align_absolute-center slds-p-vertical_xx-small">
+													<img src="/img/spinner.gif"
+													     alt="Searching"
+													     border="0"
+													     width="24"
+													     height="24" />
+												</span>
 											</div>
 										</div>
 									</a>
 								</li>
-							</aura:iteration>
-							<!-- /lookup items -->
+								<!-- /spinner -->
 
-							<!-- empty message -->
-							<li aura:id="mobileEmptyListItem" class="slds-p-around_small slds-item">
-								<a>
-									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
-										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
-											<span aura:id="mobileEmptyListMessage"></span>
+								<!-- search button -->
+								<li aura:id="mobileSearchButton" class="slds-p-around_small slds-item slds-hide">
+									<a onclick="{!c.mobileSearchButtonClick}">
+										<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+											<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+												<lightning:icon iconName="utility:search"
+												                class="slds-m-right_small slds-button__icon"
+												                size="xx-small" />
+
+												<span aura:id="mobileSearchMessage"></span>
+											</div>
 										</div>
-									</div>
-								</a>
-							</li>
-							<!-- /empty message -->
+									</a>
+								</li>
+								<!-- /search button -->
 
-							<!-- add button -->
-							<li aura:id="mobileAddButton"
-							    class="{!if(
-							               and(
-							                   and(
-							                       v.selectedSearchObject.allowAdd,
-							                       v.selectedSearchObject.createable
-							                   ),
-							                   v.workCounter eq 0
-							               ),
-							               'slds-p-around_small slds-item',
-							               'slds-hide'
-							             )
-							           }">
-								<a onclick="{!c.mobileAddButtonClick}">
-									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
-										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
-											<lightning:icon iconName="utility:add"
-											                class="slds-m-right_small slds-button__icon"
-											                size="x-small" />
+								<!-- lookup items -->
+								<aura:iteration items="{!v.lookupItems}" var="item">
+									<li class="slds-p-around_small slds-item">
+										<a data-value="{!item.id}" onclick="{!c.mobileLookupItemClick}">
+											<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+												<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+													{!item.name}
+												</div>
+												<div class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-size_1-of-1 slds-text-color_weak slds-text-body_small slds-truncate')}">
+													<c:inputLookupField field="{!item.highlightField}" actionable="false" />
+												</div>
+											</div>
+										</a>
+									</li>
+								</aura:iteration>
+								<!-- /lookup items -->
 
-											<span>New {!v.selectedSearchObject.label}</span>
+								<!-- empty message -->
+								<li aura:id="mobileEmptyListItem" class="slds-p-around_small slds-item">
+									<a>
+										<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+											<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+												<span aura:id="mobileEmptyListMessage"></span>
+											</div>
 										</div>
-									</div>
-								</a>
-							</li>
-							<!-- /add button -->
-						</ul>
-						<!-- /item list -->
+									</a>
+								</li>
+								<!-- /empty message -->
+
+								<!-- add button -->
+								<li aura:id="mobileAddButton"
+								    class="{!if(
+								               and(
+								                   and(
+								                       v.selectedSearchObject.allowAdd,
+								                       v.selectedSearchObject.createable
+								                   ),
+								                   v.workCounter eq 0
+								               ),
+								               'slds-p-around_small slds-item',
+								               'slds-hide'
+								             )
+								           }">
+									<a onclick="{!c.mobileAddButtonClick}">
+										<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+											<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+												<lightning:icon iconName="utility:add"
+												                class="slds-m-right_small slds-button__icon"
+												                size="x-small" />
+
+												<span>New {!v.selectedSearchObject.label}</span>
+											</div>
+										</div>
+									</a>
+								</li>
+								<!-- /add button -->
+							</ul>
+							<!-- /item list -->
+						</div>
+
+						<!-- bottom focus trap -->
+						<a class="lookup-mobile-focus-trap"
+						   onfocus="{!c.mobileCancelSearchButtonClick}">#</a>
+						<!-- /bottom focus trap -->
 					</div>
-
-					<!-- bottom focus trap -->
-					<a class="lookup-mobile-focus-trap"
-					   onfocus="{!c.mobileCancelSearchButtonClick}">#</a>
-					<!-- /bottom focus trap -->
 				</div>
-			</div>
-			<!-- /search overlay -->
+				<!-- /search overlay -->
+			</c:formElement>
 
 			<!-- ============================================================ -->
 			<!-- /MOBILE -->
