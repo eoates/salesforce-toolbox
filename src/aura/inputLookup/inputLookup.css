@@ -26,3 +26,75 @@
 .THIS .lookup-selected-items[data-disabled="true"] .slds-pill__remove {
 	display: none !important;
 }
+
+.THIS .lookup-mobile-search-or-clear {
+	position: absolute;
+	right: 0;
+	width: 2rem;
+	height: 100%;
+}
+
+.THIS .lookup-mobile-search-or-clear_icon {
+	width: 100%;
+	height: 100%;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-ms-flex-line-pack: center;
+	align-content: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin: auto;
+}
+
+.THIS .lookup-mobile-search-overlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	z-index: 10000;
+}
+
+.THIS .lookup-mobile-search-overlay_header {
+	/* If you change the header height make sure to also update body height to compensate */
+	height: 65px;
+	overflow: hidden;
+}
+
+.THIS .lookup-mobile-search-overlay_body {
+	/* Body height should be 100% minus the height of the header */
+	height: calc(100% - 65px);
+}
+
+.THIS .lookup-mobile-focus-trap {
+	position: absolute;
+	width: 0;
+	height: 0;
+	padding: 0;
+	border: none;
+	background: none;
+	overflow: hidden;
+}
+
+.THIS .lookup-mobile-object-switcher_label {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.THIS .lookup-mobile-object-switcher_select {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	opacity: 0;
+}
+
+.THIS .lookup-mobile-item {
+	min-height: 3rem;
+}

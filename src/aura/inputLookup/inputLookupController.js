@@ -13,9 +13,13 @@
 	 * Sets focus on the component, if it can be focused
 	 */
 	focus: function(component, event, helper) {
-		var inputElement = helper.getInputElement(component);
-		if (inputElement) {
-			inputElement.focus();
+		if (helper.mobileEnabled(component)) {
+			helper.mobileFocus(component);
+		} else {
+			var inputElement = helper.getInputElement(component);
+			if (inputElement) {
+				inputElement.focus();
+			}
 		}
 	},
 
@@ -116,10 +120,23 @@
 	},
 
 	/**
+	 * Handles change to the multiple attribute
+	 */
+	multipleChange: function(component, event, helper) {
+		helper.handleComponentAttributeChange(component, 'multiple', function(multiple) {
+			helper.mobileHideSearchOverlay(component);
+		});
+	},
+
+	/**
 	 * Handles change to the searchText attribute
 	 */
 	searchTextChange: function(component, event, helper) {
 		helper.handleComponentAttributeChange(component, 'searchText', function(searchText) {
+			if (helper.mobileEnabled(component)) {
+				return;
+			}
+
 			helper.cancelSearch(component);
 
 			helper.setSearchTextInputValue(component, searchText);
@@ -353,5 +370,226 @@
 	 */
 	searchDialogCancel: function(component, event, helper) {
 		component.focus();
+	},
+
+	/**
+	 * Handles the aura:locationChange application event. This event is fired as the user navigates
+	 * between pages/views. We need to close the search overlay if it is visible; otherwise, the
+	 * overlay will remain visible and the user will not be able to see the page/view transition
+	 */
+	locationChange: function(component, event, helper) {
+		helper.mobileHideSearchOverlay(component);
+	},
+
+	/**
+	 * When the user clicks the selected item input field (or the search icon) we want to open the
+	 * search overlay to allow the user to find a record
+	 */
+	mobileSelectedItemInputClick: function(component, event, helper) {
+		var disabled = component.get('v.disabled');
+		var readOnly = component.get('v.readonly');
+		if (disabled || readOnly) {
+			return;
+		}
+
+		var searchText = '';
+		var selectedItems = helper.getSelectedItems(component);
+		if (selectedItems.length > 0) {
+			searchText = selectedItems[0].name;
+		}
+
+		helper.mobileSetSearchTextInputValue(component, searchText);
+		helper.mobileToggleClearSearchTextButton(component, searchText);
+		helper.mobileHideSearchButton(component);
+		helper.mobileHideEmptyListItem(component);
+		helper.mobileFilterRecentItems(component, searchText, true);
+		helper.mobileShowSearchOverlay(component);
+		helper.mobileFocus(component);
+
+		// Just in case the user somehow changed the text
+		component.find('mobileSelectedItemInput').getElement().value = searchText;
+	},
+
+	/**
+	 * When the user clicks on the search/clear button within the selected item input field we
+	 * perform a context-sensitive action. If a record is not currently selected then we open the
+	 * search overlay to allow the user to find a record. If a record is selected, however, then we
+	 * remove the selected item and fire the "onchange" event
+	 */
+	mobileSelectedItemSearchOrClearButtonClick: function(component, event, helper) {
+		var disabled = component.get('v.disabled');
+		var readOnly = component.get('v.readonly');
+		if (disabled || readOnly) {
+			return;
+		}
+
+		var selectedItems = helper.getSelectedItems(component);
+		if (selectedItems.length === 0) {
+			helper.mobileSetSearchTextInputValue(component, '');
+			helper.mobileToggleClearSearchTextButton(component, '');
+			helper.mobileHideSearchButton(component);
+			helper.mobileHideEmptyListItem(component);
+			helper.mobileFilterRecentItems(component, '', false);
+			helper.mobileShowSearchOverlay(component);
+			helper.mobileFocus(component);
+		} else {
+			helper.setSelectedItems(component, []);
+			helper.setValue(component, undefined);
+			helper.setValues(component, []);
+			helper.mobileFocus(component);
+
+			helper.fireEvent(component, 'onchange');
+		}
+	},
+
+	/**
+	 * When the user presses the ESCAPE key while the search overlay is visible we want to cancel
+	 * the search and close the overlay
+	 */
+	mobileSearchOverlayKeyDown: function(component, event, helper) {
+		if (event.defaultPrevented) {
+			return;
+		}
+
+		var keyCode = event.keyCode || event.which || 0;
+		if (keyCode === 27) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			helper.mobileHideSearchOverlay(component);
+			helper.mobileResetSelectedSearchObject(component);
+			helper.setLookupItems(component, []);
+			helper.mobileFocus(component);
+		}
+	},
+
+	/**
+	 * When the user clicks the "Cancel" button in the search overlay header we cancel the search
+	 * and close the search overlay
+	 */
+	mobileCancelSearchButtonClick: function(component, event, helper) {
+		helper.mobileHideSearchOverlay(component);
+		helper.mobileResetSelectedSearchObject(component);
+		helper.setLookupItems(component, []);
+		helper.mobileFocus(component);
+	},
+
+	/**
+	 * As the user enters data into the search text field we filter the recent items to display only
+	 * items that match the entered text
+	 */
+	mobileSearchTextInputInput: function(component, event, helper) {
+		var searchText = helper.mobileGetSearchTextInputValue(component);
+		helper.mobileToggleClearSearchTextButton(component, searchText);
+		helper.mobileToggleSearchButton(component, searchText);
+		helper.mobileHideEmptyListItem(component);
+		helper.mobileFilterRecentItems(component, searchText, false);
+	},
+
+	/**
+	 * When the user clicks on the search/clear button within the search text input field we perform
+	 * a context-sensitive action. If the field contains text then the text is cleared and the
+	 * item list is updated. If the field is empty, however, then nothing happens
+	 */
+	mobileSearchTextSearchOrClearButtonClick: function(component, event, helper) {
+		var searchText = helper.mobileGetSearchTextInputValue(component);
+		if (searchText) {
+			helper.mobileSetSearchTextInputValue(component, '');
+			helper.mobileToggleClearSearchTextButton(component, '');
+			helper.mobileToggleSearchButton(component, '');
+			helper.mobileHideEmptyListItem(component);
+			helper.mobileFilterRecentItems(component, '', false);
+		}
+	},
+
+	/**
+	 * When the user selects a different object type to search for we refresh the list of recent
+	 * items and filter the list based on the currently entered search text
+	 */
+	mobileObjectSwitcherSelectChange: function(component, event, helper) {
+		var name = event.target.value;
+		if (name === helper.getSelectedSearchObjectName(component)) {
+			return;
+		}
+
+		helper.mobileHideSearchButton(component);
+		helper.mobileHideEmptyListItem(component);
+		helper.setSelectedSearchObjectByName(component, name);
+		helper.setLookupItems(component, []);
+		helper.setRecentItems(component, []);
+		helper.loadRecentItems(component, function() {
+			var searchText = helper.mobileGetSearchTextInputValue(component);
+			helper.mobileFilterRecentItems(component, searchText, false);
+		});
+	},
+
+	/**
+	 * When the user clicks on an item in the items list we select that item and fire the "onchange"
+	 * event
+	 */
+	mobileLookupItemClick: function(component, event, helper) {
+		event.preventDefault();
+
+		var changed = false;
+		var itemId = event.currentTarget.getAttribute('data-value');
+		var items = helper.getLookupItems(component);
+		var item = helper.findItemById(items, itemId);
+		if (item) {
+			helper.setSelectedItems(component, [ item ]);
+			helper.setValue(component, item.id);
+			helper.setValues(component, [ item.id ]);
+			changed = true;
+		}
+
+		helper.mobileHideSearchOverlay(component);
+		helper.setLookupItems(component, []);
+		helper.mobileFocus(component);
+
+		if (changed) {
+			helper.fireEvent(component, 'onchange');
+		}
+	},
+
+	/**
+	 * When the user clicks on the search button in the items list we perform a search with the
+	 * entered text
+	 */
+	mobileSearchButtonClick: function(component, event, helper) {
+		event.preventDefault();
+
+		var searchText = helper.mobileGetSearchTextInputValue(component);
+		var simplifiedSearchText = helper.stripSpecialChars(searchText);
+		if (simplifiedSearchText.length < helper.minSearchTextLength) {
+			return;
+		}
+
+		helper.setSearchText(component, searchText);
+		helper.mobileHideSearchButton(component);
+		helper.setLookupItems(component, []);
+		helper.loadLookupItems(component, searchText, function() {
+			helper.mobileToggleEmptyListItem(component);
+		});
+	},
+
+	/**
+	 * When the user clicks on the add button in the items list we close the search overlay and fire
+	 * the "onadd" event
+	 */
+	mobileAddButtonClick: function(component, event, helper) {
+		event.preventDefault();
+
+		var selectedSearchObject = helper.getSelectedSearchObject(component);
+		if (!selectedSearchObject || !selectedSearchObject.allowAdd) {
+			return;
+		}
+
+		helper.mobileHideSearchOverlay(component);
+		helper.setLookupItems(component, []);
+		helper.mobileFocus(component);
+
+		helper.fireEvent(component, 'onadd', {
+			type: selectedSearchObject.name,
+			text: helper.getSearchText(component)
+		});
 	}
 }) // eslint-disable-line semi

@@ -18,8 +18,14 @@
 	/** Number of items displayed in the recent items list */
 	numRecentItems: 5,
 
+	/** Number of items displayed in the recent items list on mobile devices */
+	numRecentItemsMobile: 25,
+
 	/** Number of items returned by a search */
 	numLookupItems: 5,
+
+	/** Number of items returned by a search on mobile devices */
+	numLookupItemsMobile: 25,
 
 	/** Icon name to use when one is not specified and cannot be discovered */
 	defaultIconName: 'standard:custom',
@@ -813,15 +819,25 @@
 	/**
 	 * Retrieves recent items for the currently selected search object from the server
 	 *
-	 * @param {Aura.Component} component - The inputLookup component
+	 * @param {Aura.Component} component  - The inputLookup component
+	 * @param {Function}       [callback] - An optional callback function to be called once the
+	 *                                      items have been loaded
 	 *
 	 * @return {void}
 	 */
-	loadRecentItems: function(component) {
+	loadRecentItems: function(component, callback) {
 		var selectedSearchObject = this.getSelectedSearchObject(component);
 		if (!selectedSearchObject) {
 			this.setRecentItems(component, []);
+			if (callback) {
+				callback.call(this);
+			}
 			return;
+		}
+
+		var howMany = this.numRecentItems;
+		if (this.mobileEnabled(component)) {
+			howMany = this.numRecentItemsMobile;
 		}
 
 		this.incrementWorkCounter(component);
@@ -834,7 +850,7 @@
 				sObjectName: selectedSearchObject.name,
 				fieldNames: selectedSearchObject.fieldNames,
 				filter: selectedSearchObject.filter,
-				howMany: this.numRecentItems,
+				howMany: howMany,
 				providerName: selectedSearchObject.providerName
 			},
 			success: function(items) {
@@ -851,6 +867,7 @@
 			},
 			complete: function() {
 				this.decrementWorkCounter(component);
+				this.waitForRender(callback);
 			}
 		});
 	},
@@ -882,6 +899,11 @@
 			return;
 		}
 
+		var howMany = this.numLookupItems;
+		if (this.mobileEnabled(component)) {
+			howMany = this.numLookupItemsMobile;
+		}
+
 		this.incrementWorkCounter(component);
 
 		this.apex.execute(component, 'getLookupItems', {
@@ -893,7 +915,7 @@
 				searchText: searchText,
 				filter: selectedSearchObject.filter,
 				withoutSharing: selectedSearchObject.withoutSharing,
-				howMany: this.numLookupItems,
+				howMany: howMany,
 				providerName: selectedSearchObject.providerName
 			},
 			success: function(items) {
@@ -2056,5 +2078,306 @@
 		var event = component.getEvent(name);
 		event.setParam('arguments', args || {});
 		event.fire();
+	},
+
+	/**
+	 * Returns true if the component should display a mobile-specific UI; otherwise, false. If
+	 * the multiple attribute is true then mobileEnabled() will return false even when the current
+	 * device is a mobile device as mobile multi-select lookups are not presently supported by this
+	 * component
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {boolean} true if the component should display a mobile-specific UI
+	 */
+	mobileEnabled: function(component) {
+		var multiple = this.getMultiple(component);
+		return this.utils.isMobile() && !multiple;
+	},
+
+	/**
+	 * Sets the selected search object to the S-Object type of the selected item. If there is no
+	 * selected item then the selected search object is not updated
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileResetSelectedSearchObject: function(component) {
+		var selectedItems = this.getSelectedItems(component);
+		if (selectedItems.length === 0) {
+			return;
+		}
+
+		var sObjectName = selectedItems[0].sObjectName;
+		if (sObjectName === this.getSelectedSearchObjectName(component)) {
+			return;
+		}
+
+		this.setSelectedSearchObjectByName(component, sObjectName);
+		this.setRecentItems(component, []);
+		this.setLookupItems(component, []);
+		this.loadRecentItems(component);
+	},
+
+	/**
+	 * Returns true if the mobile search overlay is visible; otherwise, false
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {boolean} true if the mobile search overlay is visible; otherwise, false
+	 */
+	mobileIsSearchOverlayVisible: function(component) {
+		var overlay = component.find('mobileSearchOverlay');
+		if (!overlay) {
+			return false;
+		}
+		return !this.utils.hasClass(overlay.getElement(), 'slds-hide');
+	},
+
+	/**
+	 * Shows the mobile search overlay
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileShowSearchOverlay: function(component) {
+		var overlay = component.find('mobileSearchOverlay');
+		if (!overlay || this.mobileIsSearchOverlayVisible(component)) {
+			return;
+		}
+
+		var containerId = 'cInputLookup_mobile_search_overlay_container';
+		var container = document.getElementById(containerId);
+		if (!container) {
+			container = document.createElement('div');
+			container.id = containerId;
+			container.className = 'slds-scope ' + component.getName();
+			document.body.appendChild(container);
+		}
+
+		container.appendChild(overlay.getElement());
+		this.utils.removeClass(overlay.getElement(), 'slds-hide');
+	},
+
+	/**
+	 * Hides the mobile search overlay
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileHideSearchOverlay: function(component) {
+		if (!this.mobileIsSearchOverlayVisible(component)) {
+			return;
+		}
+
+		var overlay = component.find('mobileSearchOverlay');
+		if (!overlay) {
+			return;
+		}
+		this.utils.addClass(overlay.getElement(), 'slds-hide');
+
+		var container = component.find('mobileSearchOverlayContainer');
+		if (!container) {
+			return;
+		}
+		container.getElement().appendChild(overlay.getElement());
+	},
+
+	/**
+	 * Filters the list of recent items and adds all items that match the search text to the list of
+	 * lookup items to be selected
+	 *
+	 * @param {Aura.Component} component         - The inputLookup component
+	 * @param {string}         searchText        - The entered search text
+	 * @param {boolean}        [includeSelected] - If true then the currently selected items will be
+	 *                                             added to the list of matching items
+	 *
+	 * @return {void}
+	 */
+	mobileFilterRecentItems: function(component, searchText, includeSelected) {
+		searchText = this.utils.asString(searchText).replace(/^\s+/g, '');
+
+		var recentItems = this.getRecentItems(component);
+		var lookupItems = recentItems.slice(0);
+		if (includeSelected) {
+			var selectedItems = this.getSelectedItems(component);
+			selectedItems.forEach(function(item) {
+				if (!this.findItemById(lookupItems, item.id)) {
+					lookupItems.splice(0, 0, item);
+				}
+			}, this);
+		}
+
+		if (searchText) {
+			var searchTextLower = searchText.toLowerCase();
+
+			var matches = [];
+			lookupItems.forEach(function(item) {
+				var itemName = item.name;
+				var itemNameLower = itemName.toLowerCase();
+				if (itemNameLower.indexOf(searchTextLower) > -1) {
+					matches.push(item);
+				}
+			});
+
+			lookupItems = matches;
+		}
+
+		this.setLookupItems(component, lookupItems);
+	},
+
+	/**
+	 * Returns the value of the search text input field
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {string} The value of the search text input field
+	 */
+	mobileGetSearchTextInputValue: function(component) {
+		return component.find('mobileSearchTextInput').getElement().value;
+	},
+
+	/**
+	 * Sets the value of the search text input field
+	 *
+	 * @param {Aura.Component} component  - The inputLookup component
+	 * @param {string}         searchText - The value
+	 *
+	 * @return {void}
+	 */
+	mobileSetSearchTextInputValue: function(component, searchText) {
+		component.find('mobileSearchTextInput').getElement().value = searchText;
+	},
+
+	/**
+	 * Shows the "X" button within the search text input field when search text has been entered and
+	 * hides the button when the text is empty
+	 *
+	 * @param {Aura.Component} component  - The inputLookup component
+	 * @param {string}         searchText - The entered search text
+	 *
+	 * @return {void}
+	 */
+	mobileToggleClearSearchTextButton: function(component, searchText) {
+		if (searchText) {
+			$A.util.addClass(component.find('mobileSearchTextSearchIcon'), 'slds-hide');
+			$A.util.removeClass(component.find('mobileSearchTextClearIcon'), 'slds-hide');
+		} else {
+			$A.util.removeClass(component.find('mobileSearchTextSearchIcon'), 'slds-hide');
+			$A.util.addClass(component.find('mobileSearchTextClearIcon'), 'slds-hide');
+		}
+	},
+
+	/**
+	 * Shows the search button in the item list
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileShowSearchButton: function(component) {
+		$A.util.removeClass(component.find('mobileSearchButton'), 'slds-hide');
+	},
+
+	/**
+	 * Hides the search button in the item list
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileHideSearchButton: function(component) {
+		$A.util.addClass(component.find('mobileSearchButton'), 'slds-hide');
+	},
+
+	/**
+	 * Shows the search button in the item list when search text has been entered and its length is
+	 * greater than or equal to the minimum text length required to perform a search. If the search
+	 * text is empty or is too short then the search button is hidden
+	 *
+	 * @param {Aura.Component} component  - The inputLookup component
+	 * @param {string}         searchText - The entered search text
+	 *
+	 * @return {void}
+	 */
+	mobileToggleSearchButton: function(component, searchText) {
+		searchText = this.utils.trim(searchText);
+
+		var simplifiedSearchText = this.stripSpecialChars(searchText);
+		if (simplifiedSearchText.length < this.minSearchTextLength) {
+			this.mobileHideSearchButton(component);
+		} else {
+			component.find('mobileSearchMessage').getElement().innerText = '"' + searchText + '"';
+			this.mobileShowSearchButton(component);
+		}
+	},
+
+	/**
+	 * Shows the empty item list message
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileShowEmptyListItem: function(component) {
+		$A.util.removeClass(component.find('mobileEmptyListItem'), 'slds-hide');
+	},
+
+	/**
+	 * Hides the empty item list message
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileHideEmptyListItem: function(component) {
+		$A.util.addClass(component.find('mobileEmptyListItem'), 'slds-hide');
+	},
+
+	/**
+	 * Shows the empty item list message when the list of lookup items is empty and hides the
+	 * message when the list contains 1 or more items
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileToggleEmptyListItem: function(component) {
+		var lookupItems = this.getLookupItems(component);
+		if (lookupItems.length > 0) {
+			this.mobileHideEmptyListItem(component);
+		} else {
+			var searchText = this.getSearchText(component);
+			var selectedSearchObject = this.getSelectedSearchObject(component);
+
+			var emptyListMessage = 'No results for "' + searchText + '"';
+			if (selectedSearchObject) {
+				emptyListMessage += ' in ' + selectedSearchObject.label;
+			}
+
+			component.find('mobileEmptyListMessage').getElement().innerText = emptyListMessage;
+
+			this.mobileShowEmptyListItem(component);
+		}
+	},
+
+	/**
+	 * Sets focus to the component. If the search overlay is open then focus is set to the overlay's
+	 * "Cancel" button; otherwise, focus is set to the search/clear button within the selected item
+	 * input field
+	 *
+	 * @param {Aura.Component} component - The inputLookup component
+	 *
+	 * @return {void}
+	 */
+	mobileFocus: function(component) {
+		if (this.mobileIsSearchOverlayVisible(component)) {
+			component.find('mobileCancelSearchButton').focus();
+		} else {
+			component.find('mobileSelectedItemSearchOrClearButton').getElement().focus();
+		}
 	}
 }) // eslint-disable-line semi

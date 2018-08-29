@@ -157,10 +157,10 @@ global with sharing class LtngInputLookupController {
 	// Constants
 	private static final Integer MAX_FIELD_COUNT = 10;
 	private static final Integer MIN_RECENT_ITEMS = 1;
-	private static final Integer MAX_RECENT_ITEMS = 10;
+	private static final Integer MAX_RECENT_ITEMS = 25;
 	private static final Integer DEFAULT_RECENT_ITEMS = 5;
 	private static final Integer MIN_LOOKUP_ITEMS = 1;
-	private static final Integer MAX_LOOKUP_ITEMS = 10;
+	private static final Integer MAX_LOOKUP_ITEMS = 25;
 	private static final Integer DEFAULT_LOOKUP_ITEMS = 5;
 	private static final Integer MIN_SEARCH_TEXT_LENGTH = 3;
 	private static final Integer MIN_PAGE_SIZE = 1;

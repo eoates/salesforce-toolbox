@@ -97,7 +97,9 @@
 	<aura:handler value="{!v.values}" name="change" action="{!c.valuesChange}" />
 	<aura:handler value="{!v.types}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.typeName}" name="change" action="{!c.typeNameChange}" />
+	<aura:handler value="{!v.multiple}" name="change" action="{!c.multipleChange}" />
 	<aura:handler value="{!v.searchText}" name="change" action="{!c.searchTextChange}" />
+	<aura:handler event="aura:locationChange" action="{!c.locationChange}" />
 	<!-- /handlers -->
 
 	<!-- methods -->
@@ -115,278 +117,527 @@
 	<c:utils aura:id="utils" />
 	<c:apex aura:id="apex" />
 
-	<c:formElement class="{!v.elementClass}"
-	               labelClass="{!v.labelClass}"
-	               controlClass="{!v.controlClass}"
-	               errorClass="{!v.errorClass}"
-	               controlId="{#globalId + '_input'}"
-	               label="{!v.label}"
-	               helpText="{!v.helpText}"
-	               required="{!v.required}"
-	               error="{!v.error}"
-	               errors="{!v.errors}"
-	               defaultStyles="{!v.formElement}">
-		<!-- container -->
-		<div class="{!if(
-		                and(
-		                  not(v.disabled),
-		                  and(
-		                    v.searchObjects.length gt 1,
-		                    or(v.multiple, empty(v.selectedItems))
-		                  )
-		                ),
-		                if(
-		                  v.hasInputFocus,
-		                  ' slds-has-input-focus',
-		                  ''
-		                ) + ' slds-has-object-switcher',
-		                ''
-		              )
-		              + ' slds-combobox_container'
-		            }"
-		     onfocusin="{!c.containerFocusIn}"
-		     onfocusout="{!c.containerFocusOut}">
-			<!-- ======================================== -->
-			<!-- object switcher -->
-			<!-- ======================================== -->
-			<aura:if isTrue="{!and(not(v.disabled), and(v.searchObjects.length gt 1, or(v.multiple, empty(v.selectedItems))))}">
-				<c:inputLookupObjectSwitcher types="{!v.searchObjects}"
-				                             selectedType="{!v.selectedSearchObject}"
-				                             onselect="{!c.objectSwitcherSelect}" />
-			</aura:if>
-			<!-- /object switcher -->
-
-			<!-- combobox -->
-			<div aura:id="combobox"
-			     class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
-			     aria-expanded="false"
-			     aria-haspopup="listbox"
-			     role="combobox">
+	<aura:if isTrue="{!or($Browser.formFactor eq 'DESKTOP', v.multiple)}">
+		<!-- ============================================================ -->
+		<!-- DESKTOP -->
+		<!-- ============================================================ -->
+		<c:formElement class="{!v.elementClass}"
+		               labelClass="{!v.labelClass}"
+		               controlClass="{!v.controlClass}"
+		               errorClass="{!v.errorClass}"
+		               controlId="{#globalId + '_input'}"
+		               label="{!v.label}"
+		               helpText="{!v.helpText}"
+		               required="{!v.required}"
+		               error="{!v.error}"
+		               errors="{!v.errors}"
+		               defaultStyles="{!v.formElement}">
+			<!-- container -->
+			<div class="{!if(
+			                and(
+			                  not(v.disabled),
+			                  and(
+			                    v.searchObjects.length gt 1,
+			                    or(v.multiple, empty(v.selectedItems))
+			                  )
+			                ),
+			                if(
+			                  v.hasInputFocus,
+			                  ' slds-has-input-focus',
+			                  ''
+			                ) + ' slds-has-object-switcher',
+			                ''
+			              )
+			              + ' slds-combobox_container'
+			            }"
+			     onfocusin="{!c.containerFocusIn}"
+			     onfocusout="{!c.containerFocusOut}">
 				<!-- ======================================== -->
-				<!-- input -->
+				<!-- object switcher -->
 				<!-- ======================================== -->
-				<aura:if isTrue="{!or(v.multiple, empty(v.selectedItems))}">
-					<!-- search text -->
-					<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
-					     role="none">
-						<input aura:id="searchTextInput"
-						       id="{#globalId + '_input'}"
-						       name="{!v.name}"
-						       type="text"
-						       accesskey="{!v.accesskey}"
-						       class="slds-input slds-combobox__input"
-						       aria-autocomplete="list"
-						       aria-controls="{#globalId + '_menu'}"
-						       aria-activedescendant=""
-						       role="textbox"
-						       placeholder="{!if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...')}"
-						       tabindex="{!v.tabindex}"
-						       disabled="{!if(v.disabled, 'disabled', '')}"
-						       onfocus="{!c.searchTextInputFocus}"
-						       onblur="{!c.searchTextInputBlur}"
-						       onkeydown="{!c.searchTextInputKeyDown}"
-						       oninput="{!c.searchTextInputInput}"
-						       onclick="{!c.searchTextInputClick}" />
+				<aura:if isTrue="{!and(not(v.disabled), and(v.searchObjects.length gt 1, or(v.multiple, empty(v.selectedItems))))}">
+					<c:inputLookupObjectSwitcher types="{!v.searchObjects}"
+					                             selectedType="{!v.selectedSearchObject}"
+					                             onselect="{!c.objectSwitcherSelect}" />
+				</aura:if>
+				<!-- /object switcher -->
 
-						<div class="slds-input__icon-group slds-input__icon-group_right">
-							<!-- spinner -->
-							<div class="{!if(v.workCounter gt 0, 'slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner', 'slds-hide')}"
-							     role="status">
-								<span class="slds-assistive-text">Loading</span>
-								<div class="slds-spinner__dot-a"></div>
-								<div class="slds-spinner__dot-b"></div>
-							</div>
-							<!-- /spinner -->
-
-							<lightning:icon class="slds-input__icon slds-input__icon_right"
-							                iconName="utility:search"
-							                size="xx-small" />
-						</div>
-					</div>
-					<!-- /search text -->
-
-					<aura:set attribute="else">
-						<!-- selected item (multiple = false) -->
-						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+				<!-- combobox -->
+				<div aura:id="combobox"
+				     class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+				     aria-expanded="false"
+				     aria-haspopup="listbox"
+				     role="combobox">
+					<!-- ======================================== -->
+					<!-- input -->
+					<!-- ======================================== -->
+					<aura:if isTrue="{!or(v.multiple, empty(v.selectedItems))}">
+						<!-- search text -->
+						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
 						     role="none">
-							<c:inputLookupItemIcon class="slds-combobox__input-entity-icon"
-							                       iconName="{!v.selectedItems[0].iconName}"
-							                       iconUrl="{!v.selectedItems[0].iconUrl}"
-							                       iconClass="{!v.selectedItems[0].iconClass}" />
-
-							<input aura:id="selectedItemInput"
+							<input aura:id="searchTextInput"
 							       id="{#globalId + '_input'}"
 							       name="{!v.name}"
 							       type="text"
 							       accesskey="{!v.accesskey}"
-							       class="slds-input slds-combobox__input slds-combobox__input-value"
+							       class="slds-input slds-combobox__input"
 							       aria-autocomplete="list"
 							       aria-controls="{#globalId + '_menu'}"
+							       aria-activedescendant=""
 							       role="textbox"
-							       readonly="readonly"
-							       disabled="{!if(v.disabled, 'disabled', '')}"
-							       value="{!v.selectedItems[0].name}"
+							       placeholder="{!if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...')}"
 							       tabindex="{!v.tabindex}"
-							       onfocus="{!c.selectedItemInputFocus}"
-							       onblur="{!c.selectedItemInputBlur}"
-							       onkeydown="{!c.selectedItemInputKeyDown}" />
+							       disabled="{!if(v.disabled, 'disabled', '')}"
+							       onfocus="{!c.searchTextInputFocus}"
+							       onblur="{!c.searchTextInputBlur}"
+							       onkeydown="{!c.searchTextInputKeyDown}"
+							       oninput="{!c.searchTextInputInput}"
+							       onclick="{!c.searchTextInputClick}" />
 
-							<button class="{!if(v.disabled, 'slds-hide', 'slds-button slds-button_icon slds-input__icon slds-input__icon_right')}"
-							        title="Remove selected option"
-							        disabled="{!if(v.disabled, 'disabled', '')}"
-							        tabindex="-1"
-							        onclick="{!c.selectedItemRemoveButtonClick}">
-								<lightning:icon class="slds-button__icon" iconName="utility:close" size="xx-small" />
-								<span class="slds-assistive-text">Remove selected option</span>
-							</button>
+							<div class="slds-input__icon-group slds-input__icon-group_right">
+								<!-- spinner -->
+								<div class="{!if(v.workCounter gt 0, 'slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner', 'slds-hide')}"
+								     role="status">
+									<span class="slds-assistive-text">Loading</span>
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+								<!-- /spinner -->
+
+								<lightning:icon class="slds-input__icon slds-input__icon_right"
+								                iconName="utility:search"
+								                size="xx-small" />
+							</div>
 						</div>
-						<!-- /selected item (multiple = false) -->
-					</aura:set>
-				</aura:if>
-				<!-- /input -->
+						<!-- /search text -->
 
-				<!-- ======================================== -->
-				<!-- menu -->
-				<!-- ======================================== -->
-				<div aura:id="menu"
-				     id="{#globalId + '_menu'}"
-				     class="lookup-menu slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-dropdown_length-with-icon-10 slds-dropdown_left"
-				     role="listbox"
-				     onmousedown="{!c.menuMouseDown}">
-					<!-- advanced search -->
-					<div id="{#globalId + '_menu_search'}"
-					     class="lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center"
-					     role="option"
-					     data-category="search"
-					     data-value="search"
-					     onmousedown="{!c.menuItemMouseDown}">
-						<div class="search-icon">
-							<lightning:icon class="slds-m-right_x-small" iconName="utility:search" size="x-small" />
-						</div>
-						<div class="slds-truncate" title="{!'&quot;' + v.searchText + '&quot; in ' + v.selectedSearchObject.labelPlural}">&quot;{!v.searchText}&quot; in {!v.selectedSearchObject.labelPlural}</div>
-					</div>
-					<!-- /advanced search -->
+						<aura:set attribute="else">
+							<!-- selected item (multiple = false) -->
+							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+							     role="none">
+								<c:inputLookupItemIcon class="slds-combobox__input-entity-icon"
+								                       iconName="{!v.selectedItems[0].iconName}"
+								                       iconUrl="{!v.selectedItems[0].iconUrl}"
+								                       iconClass="{!v.selectedItems[0].iconClass}" />
 
-					<!-- recent items -->
-					<div id="{#globalId + '_menu_group_0_header'}"
-					     class="{!if(and(empty(v.searchText), v.recentItems.length gt 0), 'lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center', 'slds-hide')}"
-					     role="option"
-					     data-category="recent-items-header"
-					     data-selectable="false"
-					     onmousedown="{!c.menuItemMouseDown}">
-						<div class="slds-p-horizontal_small slds-truncate">
-							<h3 class="slds-text-title_caps slds-m-top_x-small" title="{!'Recent ' + v.selectedSearchObject.labelPlural}" role="presentation">Recent {!v.selectedSearchObject.labelPlural}</h3>
-						</div>
-					</div>
+								<input aura:id="selectedItemInput"
+								       id="{#globalId + '_input'}"
+								       name="{!v.name}"
+								       type="text"
+								       accesskey="{!v.accesskey}"
+								       class="slds-input slds-combobox__input slds-combobox__input-value"
+								       aria-autocomplete="list"
+								       aria-controls="{#globalId + '_menu'}"
+								       role="textbox"
+								       readonly="readonly"
+								       disabled="{!if(v.disabled, 'disabled', '')}"
+								       value="{!v.selectedItems[0].name}"
+								       tabindex="{!v.tabindex}"
+								       onfocus="{!c.selectedItemInputFocus}"
+								       onblur="{!c.selectedItemInputBlur}"
+								       onkeydown="{!c.selectedItemInputKeyDown}" />
 
-					<aura:iteration items="{!v.recentItems}" var="item" indexVar="index">
-						<div id="{!globalId + '_menu_group_0_item_' + index}"
+								<button class="{!if(v.disabled, 'slds-hide', 'slds-button slds-button_icon slds-input__icon slds-input__icon_right')}"
+								        title="Remove selected option"
+								        disabled="{!if(v.disabled, 'disabled', '')}"
+								        tabindex="-1"
+								        onclick="{!c.selectedItemRemoveButtonClick}">
+									<lightning:icon class="slds-button__icon" iconName="utility:close" size="xx-small" />
+									<span class="slds-assistive-text">Remove selected option</span>
+								</button>
+							</div>
+							<!-- /selected item (multiple = false) -->
+						</aura:set>
+					</aura:if>
+					<!-- /input -->
+
+					<!-- ======================================== -->
+					<!-- menu -->
+					<!-- ======================================== -->
+					<div aura:id="menu"
+					     id="{#globalId + '_menu'}"
+					     class="lookup-menu slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-dropdown_length-with-icon-10 slds-dropdown_left"
+					     role="listbox"
+					     onmousedown="{!c.menuMouseDown}">
+						<!-- advanced search -->
+						<div id="{#globalId + '_menu_search'}"
 						     class="lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center"
 						     role="option"
-						     data-category="recent-items"
-						     data-value="{!item.id}"
+						     data-category="search"
+						     data-value="search"
 						     onmousedown="{!c.menuItemMouseDown}">
-							<span class="slds-media__figure">
-								<c:inputLookupItemIcon iconName="{!item.iconName}"
-								                       iconUrl="{!item.iconUrl}"
-								                       iconClass="{!item.iconClass}" />
-							</span>
-							<span class="slds-media__body">
-								<span class="slds-listbox__option-text slds-listbox__option-text_entity" title="{!item.name}">
-									<span class="slds-truncate">{!item.name}</span>
-								</span>
-								<span class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-listbox__option-meta slds-listbox__option-meta_entity')}">
-									<span class="slds-truncate">
-										<c:inputLookupField field="{!item.highlightField}"
-										                    actionable="false" />
-									</span>
-								</span>
-							</span>
+							<div class="search-icon">
+								<lightning:icon class="slds-m-right_x-small" iconName="utility:search" size="x-small" />
+							</div>
+							<div class="slds-truncate" title="{!'&quot;' + v.searchText + '&quot; in ' + v.selectedSearchObject.labelPlural}">&quot;{!v.searchText}&quot; in {!v.selectedSearchObject.labelPlural}</div>
 						</div>
-					</aura:iteration>
-					<!-- /recent items -->
+						<!-- /advanced search -->
 
-					<!-- lookup items -->
-					<aura:iteration items="{!v.lookupItems}" var="item" indexVar="index">
-						<div id="{!globalId + '_menu_group_1_item_' + index}"
-						     class="lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center"
+						<!-- recent items -->
+						<div id="{#globalId + '_menu_group_0_header'}"
+						     class="{!if(and(empty(v.searchText), v.recentItems.length gt 0), 'lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center', 'slds-hide')}"
 						     role="option"
-						     data-category="lookup-items"
-						     data-value="{!item.id}"
+						     data-category="recent-items-header"
+						     data-selectable="false"
+						     onmousedown="{!c.menuItemMouseDown}">
+							<div class="slds-p-horizontal_small slds-truncate">
+								<h3 class="slds-text-title_caps slds-m-top_x-small" title="{!'Recent ' + v.selectedSearchObject.labelPlural}" role="presentation">Recent {!v.selectedSearchObject.labelPlural}</h3>
+							</div>
+						</div>
+
+						<aura:iteration items="{!v.recentItems}" var="item" indexVar="index">
+							<div id="{!globalId + '_menu_group_0_item_' + index}"
+							     class="lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center"
+							     role="option"
+							     data-category="recent-items"
+							     data-value="{!item.id}"
+							     onmousedown="{!c.menuItemMouseDown}">
+								<span class="slds-media__figure">
+									<c:inputLookupItemIcon iconName="{!item.iconName}"
+									                       iconUrl="{!item.iconUrl}"
+									                       iconClass="{!item.iconClass}" />
+								</span>
+								<span class="slds-media__body">
+									<span class="slds-listbox__option-text slds-listbox__option-text_entity" title="{!item.name}">
+										<span class="slds-truncate">{!item.name}</span>
+									</span>
+									<span class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-listbox__option-meta slds-listbox__option-meta_entity')}">
+										<span class="slds-truncate">
+											<c:inputLookupField field="{!item.highlightField}"
+											                    actionable="false" />
+										</span>
+									</span>
+								</span>
+							</div>
+						</aura:iteration>
+						<!-- /recent items -->
+
+						<!-- lookup items -->
+						<aura:iteration items="{!v.lookupItems}" var="item" indexVar="index">
+							<div id="{!globalId + '_menu_group_1_item_' + index}"
+							     class="lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center"
+							     role="option"
+							     data-category="lookup-items"
+							     data-value="{!item.id}"
+							     onmousedown="{!c.menuItemMouseDown}">
+								<span class="slds-media__figure">
+									<c:inputLookupItemIcon iconName="{!item.iconName}"
+									                       iconUrl="{!item.iconUrl}"
+									                       iconClass="{!item.iconClass}" />
+								</span>
+								<span class="slds-media__body">
+									<span class="slds-listbox__option-text slds-listbox__option-text_entity" title="{!item.name}">
+										<span class="slds-truncate">{!item.name}</span>
+									</span>
+									<span class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-listbox__option-meta slds-listbox__option-meta_entity')}">
+										<span class="slds-truncate">
+											<c:inputLookupField field="{!item.highlightField}"
+											                    actionable="false" />
+										</span>
+									</span>
+								</span>
+							</div>
+						</aura:iteration>
+						<!-- /lookup items -->
+
+						<!-- new item -->
+						<div id="{#globalId + '_menu_add'}"
+						     class="{!if(and(v.selectedSearchObject.allowAdd, v.selectedSearchObject.createable), 'lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center', 'slds-hide')}"
+						     role="option"
+						     data-category="new-item"
+						     data-value="new-item"
 						     onmousedown="{!c.menuItemMouseDown}">
 							<span class="slds-media__figure">
-								<c:inputLookupItemIcon iconName="{!item.iconName}"
-								                       iconUrl="{!item.iconUrl}"
-								                       iconClass="{!item.iconClass}" />
+								<lightning:icon iconName="utility:add" size="small" />
 							</span>
 							<span class="slds-media__body">
-								<span class="slds-listbox__option-text slds-listbox__option-text_entity" title="{!item.name}">
-									<span class="slds-truncate">{!item.name}</span>
-								</span>
-								<span class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-listbox__option-meta slds-listbox__option-meta_entity')}">
-									<span class="slds-truncate">
-										<c:inputLookupField field="{!item.highlightField}"
-										                    actionable="false" />
-									</span>
+								<span class="slds-listbox__option-text slds-listbox__option-text_entity" title="{!'New ' + v.selectedSearchObject.label}">
+									<span class="slds-truncate">New {!v.selectedSearchObject.label}</span>
 								</span>
 							</span>
 						</div>
-					</aura:iteration>
-					<!-- /lookup items -->
-
-					<!-- new item -->
-					<div id="{#globalId + '_menu_add'}"
-					     class="{!if(and(v.selectedSearchObject.allowAdd, v.selectedSearchObject.createable), 'lookup-menu-item slds-media slds-listbox__option slds-listbox__option_plain slds-media_center', 'slds-hide')}"
-					     role="option"
-					     data-category="new-item"
-					     data-value="new-item"
-					     onmousedown="{!c.menuItemMouseDown}">
-						<span class="slds-media__figure">
-							<lightning:icon iconName="utility:add" size="small" />
-						</span>
-						<span class="slds-media__body">
-							<span class="slds-listbox__option-text slds-listbox__option-text_entity" title="{!'New ' + v.selectedSearchObject.label}">
-								<span class="slds-truncate">New {!v.selectedSearchObject.label}</span>
-							</span>
-						</span>
+						<!-- /new item -->
 					</div>
-					<!-- /new item -->
+					<!-- /menu -->
 				</div>
-				<!-- /menu -->
+				<!-- /combobox -->
 			</div>
-			<!-- /combobox -->
-		</div>
-		<!-- /container -->
+			<!-- /container -->
 
-		<!-- ======================================== -->
-		<!-- selected items (multiple = true) -->
-		<!-- ======================================== -->
-		<aura:if isTrue="{!and(v.multiple, not(empty(v.selectedItems)))}">
-			<ul class="lookup-selected-items slds-listbox slds-listbox_horizontal slds-listbox_inline slds-p-top_xxx-small"
-			    role="listbox"
-			    aria-label="Selected Options:"
-			    aria-orientation="horizontal"
-			    data-disabled="{!if(v.disabled, 'true', 'false')}">
-				<aura:iteration items="{!v.selectedItems}" var="item">
-					<li class="slds-listbox__item" role="presentation">
-						<lightning:pill name="{!item.id}" label="{!item.name}" onremove="{!c.selectedItemPillRemove}">
-							<aura:set attribute="media">
-								<c:inputLookupItemIcon iconName="{!item.iconName}"
-								                       iconUrl="{!item.iconUrl}"
-								                       iconClass="{!item.iconClass}" />
-							</aura:set>
-						</lightning:pill>
-					</li>
-				</aura:iteration>
-			</ul>
-		</aura:if>
-		<!-- /selected items (multiple = true) -->
-	</c:formElement>
+			<!-- ======================================== -->
+			<!-- selected items (multiple = true) -->
+			<!-- ======================================== -->
+			<aura:if isTrue="{!and(v.multiple, not(empty(v.selectedItems)))}">
+				<ul class="lookup-selected-items slds-listbox slds-listbox_horizontal slds-listbox_inline slds-p-top_xxx-small"
+				    role="listbox"
+				    aria-label="Selected Options:"
+				    aria-orientation="horizontal"
+				    data-disabled="{!if(v.disabled, 'true', 'false')}">
+					<aura:iteration items="{!v.selectedItems}" var="item">
+						<li class="slds-listbox__item" role="presentation">
+							<lightning:pill name="{!item.id}" label="{!item.name}" onremove="{!c.selectedItemPillRemove}">
+								<aura:set attribute="media">
+									<c:inputLookupItemIcon iconName="{!item.iconName}"
+									                       iconUrl="{!item.iconUrl}"
+									                       iconClass="{!item.iconClass}" />
+								</aura:set>
+							</lightning:pill>
+						</li>
+					</aura:iteration>
+				</ul>
+			</aura:if>
+			<!-- /selected items (multiple = true) -->
+		</c:formElement>
 
-	<c:inputLookupDialog aura:id="searchDialog"
-	                     title="{!v.label}"
-	                     type="{!v.selectedSearchObject}"
-	                     onselect="{!c.searchDialogSelect}"
-	                     oncancel="{!c.searchDialogCancel}" />
+		<c:inputLookupDialog aura:id="searchDialog"
+		                     title="{!v.label}"
+		                     type="{!v.selectedSearchObject}"
+		                     onselect="{!c.searchDialogSelect}"
+		                     oncancel="{!c.searchDialogCancel}" />
+		<!-- ============================================================ -->
+		<!-- /DESKTOP -->
+		<!-- ============================================================ -->
+
+		<aura:set attribute="else">
+			<!-- ============================================================ -->
+			<!-- MOBILE -->
+			<!-- ============================================================ -->
+
+			<c:formElement class="{!v.elementClass}"
+			               labelClass="{!v.labelClass}"
+			               controlClass="{!'slds-input-has-icon slds-input-has-icon_right ' + v.controlClass}"
+			               errorClass="{!v.errorClass}"
+			               controlId="{#globalId + '_mobile_input'}"
+			               label="{!v.label}"
+			               helpText="{!v.helpText}"
+			               required="{!v.required}"
+			               error="{!v.error}"
+			               errors="{!v.errors}">
+				<input aura:id="mobileSelectedItemInput"
+				       id="{#globalId + '_mobile_input'}"
+				       name="{!v.name}"
+				       type="text"
+				       value="{!if(empty(v.selectedItems), '', v.selectedItems[0].name)}"
+				       accesskey="{!v.accesskey}"
+				       class="slds-input"
+				       tabindex="-1"
+				       disabled="{!if(v.disabled, 'disabled', '')}"
+				       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
+				       onclick="{!c.mobileSelectedItemInputClick}"
+				       onchange="{!c.mobileSelectedItemInputClick}" />
+
+				<a aura:id="mobileSelectedItemSearchOrClearButton"
+				   id="{#globalId + '_mobile_input_search_or_clear'}"
+				   class="{!if(or(v.disabled, v.readonly), 'slds-hide', 'lookup-mobile-search-or-clear')}"
+				   tabindex="{!v.tabindex}"
+				   onclick="{!c.mobileSelectedItemSearchOrClearButtonClick}">
+					<div class="lookup-mobile-search-or-clear_icon">
+						<lightning:icon iconName="{!if(empty(v.selectedItems), 'utility:search', 'utility:close')}"
+						                size="x-small" />
+					</div>
+				</a>
+			</c:formElement>
+
+			<!-- search overlay -->
+			<div aura:id="mobileSearchOverlayContainer">
+				<div aura:id="mobileSearchOverlay"
+				     class="lookup-mobile-search-overlay slds-theme_shade slds-scrollable_none slds-hide"
+				     tabnidex="-1"
+				     onkeydown="{!c.mobileSearchOverlayKeyDown}">
+					<!-- top focus trap -->
+					<a class="lookup-mobile-focus-trap"
+					   onfocus="{!c.mobileCancelSearchButtonClick}">#</a>
+					<!-- /top focus trap -->
+
+					<!-- header -->
+					<div class="lookup-mobile-search-overlay_header slds-theme_default slds-border_bottom">
+						<lightning:layout horizontalAlign="spread" verticalAlign="center">
+							<lightning:layoutItem flexibility="no-flex" padding="around-medium">
+								<lightning:button aura:id="mobileCancelSearchButton"
+								                  label="Cancel"
+								                  onclick="{!c.mobileCancelSearchButtonClick}" />
+							</lightning:layoutItem>
+							<lightning:layoutItem flexibility="grow"
+							                      padding="around-medium"
+							                      class="slds-text-heading_medium slds-text-align_center slds-text-color_default slds-has-flexi-truncate">
+								<h2 class="slds-truncate">{!v.label}</h2>
+							</lightning:layoutItem>
+						</lightning:layout>
+					</div>
+					<!-- /header -->
+
+					<div class="lookup-mobile-search-overlay_body slds-scrollable_y">
+						<!-- search text -->
+						<div class="slds-p-around_x-small slds-border_top slds-border_bottom">
+							<div class="slds-form-element">
+								<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+									<input aura:id="mobileSearchTextInput"
+									       id="{#globalId + '_mobile_search_text'}"
+									       type="text"
+									       class="slds-input"
+									       placeholder="{!'Search ' + v.selectedSearchObject.label}"
+									       oninput="{!c.mobileSearchTextInputInput}" />
+
+									<a aura:id="mobileSearchTextSearchOrClearButton"
+									   id="{#globalId + '_mobile_search_text_search_or_clear'}"
+									   class="lookup-mobile-search-or-clear"
+									   onclick="{!c.mobileSearchTextSearchOrClearButtonClick}">
+										<div class="lookup-mobile-search-or-clear_icon">
+											<lightning:icon aura:id="mobileSearchTextSearchIcon"
+											                iconName="utility:search"
+											                size="x-small"
+											                class="slds-hide" />
+
+											<lightning:icon aura:id="mobileSearchTextClearIcon"
+											                iconName="utility:close"
+											                size="x-small"
+											                class="slds-hide" />
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<!-- /search text -->
+
+						<!-- object switcher -->
+						<div class="slds-is-relative">
+							<div class="slds-p-around_small slds-border_bottom">
+								<c:inputLookupItemIcon iconName="{!v.selectedSearchObject.iconName}"
+								                       iconUrl="{!v.selectedSearchObject.iconUrl}"
+								                       iconClass="{!v.selectedSearchObject.iconClass}"
+								                       size="medium" />
+
+								<span class="lookup-mobile-object-switcher_label slds-p-left_x-small slds-p-top_x-small">
+									{!v.selectedSearchObject.labelPlural}
+								</span>
+
+								<lightning:icon iconName="utility:down"
+								                size="xx-small"
+								                class="{!if(v.searchObjects.length lt 2, 'slds-hide', 'slds-p-around_x-small')}" />
+							</div>
+
+							<select aura:id="mobileObjectSwitcherSelect"
+							        id="{#globalId + '_mobile_object_switcher'}"
+							        class="{!if(v.searchObjects.length lt 2, 'slds-hide', 'lookup-mobile-object-switcher_select')}"
+							        onchange="{!c.mobileObjectSwitcherSelectChange}">
+								<aura:iteration items="{!v.searchObjects}" var="searchObject">
+									<option value="{!searchObject.name}"
+									        selected="{!if(searchObject.name eq v.selectedSearchObject.name, 'selected', '')}">
+										{!searchObject.labelPlural}
+									</option>
+								</aura:iteration>
+							</select>
+						</div>
+						<!-- /object switcher -->
+
+						<!-- item list -->
+						<ul class="lookup-mobile-items slds-has-dividers_top slds-has-divider_bottom slds-theme_default">
+							<!-- spinner -->
+							<li class="{!if(v.workCounter gt 0, 'slds-p-around_small slds-item', 'slds-hide')}">
+								<a>
+									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+											<span class="slds-align_absolute-center slds-p-vertical_xx-small">
+												<img src="/img/spinner.gif"
+												     alt="Searching"
+												     border="0"
+												     width="24"
+												     height="24" />
+											</span>
+										</div>
+									</div>
+								</a>
+							</li>
+							<!-- /spinner -->
+
+							<!-- search button -->
+							<li aura:id="mobileSearchButton" class="slds-p-around_small slds-item slds-hide">
+								<a onclick="{!c.mobileSearchButtonClick}">
+									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+											<lightning:icon iconName="utility:search"
+											                class="slds-m-right_small slds-button__icon"
+											                size="xx-small" />
+
+											<span aura:id="mobileSearchMessage"></span>
+										</div>
+									</div>
+								</a>
+							</li>
+							<!-- /search button -->
+
+							<!-- lookup items -->
+							<aura:iteration items="{!v.lookupItems}" var="item">
+								<li class="slds-p-around_small slds-item">
+									<a data-value="{!item.id}" onclick="{!c.mobileLookupItemClick}">
+										<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+											<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+												{!item.name}
+											</div>
+											<div class="{!if(empty(item.highlightField.value), 'slds-hide', 'slds-size_1-of-1 slds-text-color_weak slds-text-body_small slds-truncate')}">
+												<c:inputLookupField field="{!item.highlightField}" actionable="false" />
+											</div>
+										</div>
+									</a>
+								</li>
+							</aura:iteration>
+							<!-- /lookup items -->
+
+							<!-- empty message -->
+							<li aura:id="mobileEmptyListItem" class="slds-p-around_small slds-item">
+								<a>
+									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+											<span aura:id="mobileEmptyListMessage"></span>
+										</div>
+									</div>
+								</a>
+							</li>
+							<!-- /empty message -->
+
+							<!-- add button -->
+							<li aura:id="mobileAddButton"
+							    class="{!if(
+							               and(
+							                   and(
+							                       v.selectedSearchObject.allowAdd,
+							                       v.selectedSearchObject.createable
+							                   ),
+							                   v.workCounter eq 0
+							               ),
+							               'slds-p-around_small slds-item',
+							               'slds-hide'
+							             )
+							           }">
+								<a onclick="{!c.mobileAddButtonClick}">
+									<div class="lookup-mobile-item slds-grid slds-grid_vertical-align-center slds-wrap">
+										<div class="slds-size_1-of-1 slds-text-color_default slds-text-body_regular slds-truncate">
+											<lightning:icon iconName="utility:add"
+											                class="slds-m-right_small slds-button__icon"
+											                size="x-small" />
+
+											<span>New {!v.selectedSearchObject.label}</span>
+										</div>
+									</div>
+								</a>
+							</li>
+							<!-- /add button -->
+						</ul>
+						<!-- /item list -->
+					</div>
+
+					<!-- bottom focus trap -->
+					<a class="lookup-mobile-focus-trap"
+					   onfocus="{!c.mobileCancelSearchButtonClick}">#</a>
+					<!-- /bottom focus trap -->
+				</div>
+			</div>
+			<!-- /search overlay -->
+
+			<!-- ============================================================ -->
+			<!-- /MOBILE -->
+			<!-- ============================================================ -->
+		</aura:set>
+	</aura:if>
 	<!-- /component -->
 </aura:component>
