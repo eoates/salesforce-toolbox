@@ -169,29 +169,20 @@
 					return;
 				}
 
+				// The oninput event works a bit differently on Android devices. Until we come up
+				// with a solution we will just not perform real-time formatting on Android devices
+				if (self.utils.isAndroid()) {
+					return;
+				}
+
 				// Do not perform real-time formatting for number inputs
 				var type = opts.getInputType();
 				if (type === 'number') {
 					return;
 				}
 
-				// Check whether we are running on an Android device
-				if (self.utils.isAndroid()) {
-					// Due to some strange behavior with the selectionStart and selectionEnd
-					// properties on Android devices we use setTimeout() to wait a very small amount
-					// of time before applying our formatting
-					var that = this;
-					if (that.formatTimeout) {
-						clearTimeout(that.formatTimeout);
-						that.formatTimeout = undefined;
-					}
-					that.formatTimeout = setTimeout($A.getCallback(function() {
-						that.formatOnInput(opts);
-					}), 10);
-				} else {
-					// Handling for all other devices is the same
-					this.formatOnInput(opts);
-				}
+				// Apply the formatting
+				this.formatOnInput(opts);
 			},
 
 			/**
