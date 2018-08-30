@@ -415,7 +415,8 @@
 			               helpText="{!v.helpText}"
 			               required="{!v.required}"
 			               error="{!v.error}"
-			               errors="{!v.errors}">
+			               errors="{!v.errors}"
+			               defaultStyles="{!v.formElement}">
 				<input aura:id="mobileSelectedItemInput"
 				       id="{#globalId + '_mobile_input'}"
 				       name="{!v.name}"
