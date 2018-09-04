@@ -64,6 +64,9 @@
 	<aura:attribute access="GLOBAL" name="searchText" type="String"
 	                description="The text to search for." />
 
+	<aura:attribute access="GLOBAL" name="placeholder" type="String"
+	                description="Text that is displayed when the field is empty, to prompt the user for a valid entry." />
+
 	<aura:attribute access="PRIVATE" name="hasInputFocus" type="Boolean" default="false"
 	                description="Internal use only! Indicates whether the component has input focus." />
 
@@ -186,7 +189,7 @@
 							       aria-controls="{#globalId + '_menu'}"
 							       aria-activedescendant=""
 							       role="textbox"
-							       placeholder="{!if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...')}"
+							       placeholder="{!if(empty(v.placeholder), if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...'), v.placeholder)}"
 							       tabindex="{!v.tabindex}"
 							       disabled="{!if(v.disabled, 'disabled', '')}"
 							       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
@@ -424,7 +427,7 @@
 				       value="{!if(empty(v.selectedItems), '', v.selectedItems[0].name)}"
 				       accesskey="{!v.accesskey}"
 				       class="slds-input"
-				       placeholder="{!if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...')}"
+				       placeholder="{!if(empty(v.placeholder), if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...'), v.placeholder)}"
 				       tabindex="-1"
 				       disabled="{!if(v.disabled, 'disabled', '')}"
 				       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
