@@ -424,6 +424,7 @@
 				       value="{!if(empty(v.selectedItems), '', v.selectedItems[0].name)}"
 				       accesskey="{!v.accesskey}"
 				       class="slds-input"
+				       placeholder="{!if(empty(v.selectedSearchObject), '', 'Search ' + v.selectedSearchObject.labelPlural + '...')}"
 				       tabindex="-1"
 				       disabled="{!if(v.disabled, 'disabled', '')}"
 				       readonly="{!if(and(not(v.disabled), v.readonly), 'readonly', '')}"
