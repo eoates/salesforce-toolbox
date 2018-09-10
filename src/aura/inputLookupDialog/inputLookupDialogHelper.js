@@ -47,9 +47,6 @@
 		if (!this.utils) {
 			this.utils = component.find('utils').getModule();
 		}
-		if (!this.apex) {
-			this.apex = component.find('apex').getModule();
-		}
 	},
 
 	/**
@@ -411,7 +408,7 @@
 		this.incrementWorkCounter(component);
 		this.setSearchError(component, '');
 
-		this.apex.execute(component, 'search', {
+		this.apex(component, 'search', {
 			context: this,
 			abortable: true,
 			params: {
@@ -788,5 +785,91 @@
 		var event = component.getEvent(name);
 		event.setParam('arguments', args || {});
 		event.fire();
+	},
+
+	/**
+	 * Executes server-side Apex method
+	 *
+	 * @param {Aura.Component} component        - The component
+	 * @param {string}         name             - Name of the Apex method to execute
+	 * @param {Object}         opts             - Execution options
+	 * @param {Object}         [opts.context]   - The value of the this keyword in callback methods
+	 * @param {boolean}        [opts.abortable] - Specifies whether the action is abortable
+	 * @param {boolean}        [opts.storable]  - Specifies whether the action is storable
+	 * @param {Function}       [opts.success]   - Function that is called upon success
+	 * @param {Function}       [opts.failure]   - Function that is called when an error occurs
+	 * @param {Function}       [opts.complete]  - Function that is called when the action is
+	 *                                            complete regardless of whether the action was
+	 *                                            successful or an error occurred
+	 *
+	 * @return {void}
+	 */
+	apex: function(component, name, opts) {
+		var beginTime, endTime, duration;
+		var action = component.get('c.' + name);
+		var nop = function() {};
+		var success = opts.success || nop;
+		var failure = opts.failure || nop;
+		var complete = opts.complete || nop;
+		var context = opts.context || this;
+
+		if (opts.params) {
+			action.setParams(opts.params);
+		}
+		if (opts.abortable) {
+			action.setAbortable();
+		}
+		if (opts.storable) {
+			action.setStorable();
+		}
+
+		action.setCallback(context, function(response) {
+			var state, result, error, message;
+
+			if (!component.isValid()) {
+				return;
+			}
+
+			endTime = Date.now();
+			duration = endTime - beginTime;
+			console.debug('Callout ' + name + ' completed in ' + duration + 'ms');
+
+			state = response.getState();
+			switch (state) {
+			case 'SUCCESS':
+			case 'REFRESH':
+				result = response.getReturnValue();
+				success.call(context, result, state);
+				complete.call(context);
+				break;
+			case 'ERROR':
+				message = 'An error occurred.';
+				error = response.getError();
+				if (error && (error.length > 0) && error[0] && error[0].message) {
+					message = error[0].message;
+				}
+				failure.call(context, new Error(message), state);
+				complete.call(context);
+				break;
+			case 'INCOMPLETE':
+				message = 'Lost connection to server.';
+				failure.call(context, new Error(message), state);
+				complete.call(context);
+				break;
+			case 'ABORTED':
+				message = 'Operation was aborted.';
+				failure.call(context, new Error(message), state);
+				complete.call(context);
+				break;
+			default:
+				message = 'Unknown error.';
+				failure.call(context, new Error(message), state);
+				complete.call(context);
+				break;
+			}
+		}, 'ALL');
+
+		beginTime = Date.now();
+		$A.enqueueAction(action);
 	}
 }) // eslint-disable-line semi

@@ -77,7 +77,6 @@
 
 	<!-- component -->
 	<c:utils aura:id="utils" />
-	<c:apex aura:id="apex" />
 
 	<c:dialog aura:id="dialog"
 	          contentClass="slds-p-around_medium"

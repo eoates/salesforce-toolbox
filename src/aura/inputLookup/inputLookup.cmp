@@ -118,7 +118,6 @@
 
 	<!-- component -->
 	<c:utils aura:id="utils" />
-	<c:apex aura:id="apex" />
 
 	<aura:if isTrue="{!or($Browser.formFactor eq 'DESKTOP', v.multiple)}">
 		<!-- ============================================================ -->

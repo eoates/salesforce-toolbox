@@ -26,8 +26,6 @@
   <aura:attribute name="saving" type="Boolean"
     default="false" />
 
-  <c:apex aura:id="apex" />
-
   <c:spinnerPanel showSpinner="{!v.saving}">
     <ui:inputText label="First Name" value="{!v.firstName}" />
     <ui:inputText label="Last Name" value="{!v.lastName}" />
@@ -49,23 +47,32 @@
     var lastName = component.get('v.lastName');
 
     // Send data to server
-    var apex = component.find('apex').getModule();
-    apex.execute(component, 'createContact', {
-      params: {
-        firstName: firstName,
-        lastName: lastName
-      },
-      success: function(result, state) {
-        // Make sure to set saving back to false to hide the spinner
-        component.set('v.saving', false);
-        console.log('Contact created', result);
-      },
-      failure: function(error, state) {
-        // Make sure to set saving back to false to hide the spinner
-        component.set('v.saving', false);
-        console.error('Failed to create contact', error);
-      }
+    var action = component.get('c.createContact');
+    action.setParams({
+      firstName: firstName,
+      lastName: lastName
     });
+    action.setCallback(this, function(response) {
+      if (!component.isValid()) {
+        return;
+      }
+
+      var state = response.getState();
+      switch (state) {
+      case 'SUCCESS':
+        // Make sure to set saving back to false to hide the spinner
+        component.set('v.saving', false);
+        console.log('Contact created', response.getReturnValue());
+        break;
+      case 'ERROR':
+        // Make sure to set saving back to false to hide the spinner
+        component.set('v.saving', false);
+        console.error('Failed to create contact', response.getError());
+        break;
+      }
+    }, 'ALL');
+
+    $A.enqueueAction(action);
   }
 })
 ]]></pre>
