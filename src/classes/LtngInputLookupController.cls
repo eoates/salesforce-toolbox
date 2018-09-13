@@ -170,6 +170,10 @@ global with sharing class LtngInputLookupController {
 	private static final Integer MAX_SEARCH_ITEMS = 2000;
 	private static final Integer DEFAULT_SEARCH_ITEMS = 500;
 
+	private static final String ID_FIELD_NAME = 'Id';
+	private static final String FIELD_PREFIX_IMPORTANT = '!';
+	private static final List<String> FIELD_PREFIXES = new List<String> { FIELD_PREFIX_IMPORTANT };
+
 	// Static fields
 	private static Map<String, String> objectIconNames;
 	private static Map<String, Schema.SObjectType> globalDescribe;
@@ -513,11 +517,18 @@ global with sharing class LtngInputLookupController {
 		Schema.DescribeSObjectResult typeInfo,
 		Schema.DescribeFieldResult nameField
 	) {
+		String prefixes = String.join(FIELD_PREFIXES, '');
 		List<String> fieldNameList = new List<String>();
 		List<String> names = new List<String>();
 		Map<String, String> labels = new Map<String, String>();
+		Set<String> importantFields = new Set<String>();
 		Set<String> distinctNames = new Set<String>();
 		List<ItemField> fieldList = new List<ItemField>();
+
+		// The ID and Name field should ALWAYS be included so add them to the list of important
+		// fields so they bypass the accessibility check
+		importantFields.add(ID_FIELD_NAME.toLowerCase());
+		importantFields.add(nameField.getName().toLowerCase());
 
 		// Get the individual field names. If fieldNames starts with the prefix "fieldset://" then
 		// retrieve the fields from the specified field set
@@ -542,20 +553,41 @@ global with sharing class LtngInputLookupController {
 		for (Integer i = 0, n = fieldNameList.size(); i < n; i++) {
 			String name = fieldNameList[i].trim();
 			String label = '';
+			Boolean important = false;
 
+			// Check for special field prefixes. Currently we only have one prefix which is the
+			// "!" character. Prefixing a field name with "!" which indicates that the field should
+			// be considered important and should appear in the search results even if user does not
+			// have access to the field normally
+			while (name.indexOfAny(prefixes) == 0) {
+				if (name.startsWith(FIELD_PREFIX_IMPORTANT)) {
+					important = true;
+					name = name.substring(1).trim();
+				}
+			}
+
+			// Check for a label override. Label overrides use the syntax "Name|Label" where the
+			// name appears to the left of the "|" and the label appears to the right
 			Integer indexOfBar = name.indexOf('|');
 			if (indexOfBar != -1) {
 				label = name.substring(indexOfBar + 1).trim();
 				name = name.substring(0, indexOfBar).trim();
 			}
 
+			// Make sure we only process each field once. If a field name appears in the fieldNames
+			// string more than once only the first occurence is used
 			name = name.toLowerCase();
 			if (String.isBlank(name) || distinctNames.contains(name)) {
 				continue;
 			}
 
+			// Store the field info
 			if (String.isNotBlank(label)) {
 				labels.put(name, label);
+			}
+
+			if (important) {
+				importantFields.add(name);
 			}
 
 			names.add(name);
@@ -566,8 +598,8 @@ global with sharing class LtngInputLookupController {
 		removeFieldName(names, nameField.getName());
 		addFieldNameAtStart(names, nameField.getName());
 
-		removeFieldName(names, 'Id');
-		addFieldNameAtStart(names, 'Id');
+		removeFieldName(names, ID_FIELD_NAME);
+		addFieldNameAtStart(names, ID_FIELD_NAME);
 
 		// Make sure the list does not exceed the maximum number of fields allowed
 		truncateList(names, MAX_FIELD_COUNT);
@@ -579,18 +611,25 @@ global with sharing class LtngInputLookupController {
 		for (Integer i = 0, n = names.size(); i < n; i++) {
 			String name = names[i];
 			String label = labels.get(name);
+			Boolean important = importantFields.contains(name);
 
 			List<String> namePath = new List<String>();
 			List<String> labelPath = new List<String>();
 			Schema.DescribeFieldResult fieldInfo = getField(typeInfo, name, namePath, labelPath);
-			if ((fieldInfo == null) || !fieldInfo.isAccessible()) {
+			if (fieldInfo == null) {
+				// Invali field name
+				continue;
+			} else if (!important && !fieldInfo.isAccessible()) {
+				// Field is not accessible and is not marked as important so skip it
 				continue;
 			}
 
+			// If a label override was not specified then use the default label
 			if (String.isBlank(label)) {
 				label = String.join(labelPath, ': ');
 			}
 
+			// Add the field to the list
 			ItemField f = new ItemField();
 			f.name = String.join(namePath, '.');
 			f.label = label;
@@ -786,7 +825,7 @@ global with sharing class LtngInputLookupController {
 			Schema.DescribeFieldResult nameField = getNameField(typeInfo);
 
 			List<String> fieldNames = new List<String>();
-			fieldNames.add('Id');
+			fieldNames.add(ID_FIELD_NAME);
 			fieldNames.add(nameField.getName());
 
 			List<SObject> records = query.getRecordsById(
