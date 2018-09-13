@@ -64,12 +64,9 @@
 				</aura:if>
 
 				<div class="slds-col slds-align-middle">
-					<aura:if isTrue="{!not(empty(v.title))}">
-						<h2 class="slds-text-heading_small">{!v.title}</h2>
-					</aura:if>
-					<aura:if isTrue="{!not(empty(v.message))}">
-						{!v.message}
-					</aura:if>
+					<h2 class="{!if(empty(v.title), 'slds-hide', 'slds-text-heading_small')}">{!v.title}</h2>
+					{!v.message}
+					{!v.body}
 				</div>
 			</div>
 		</div>
