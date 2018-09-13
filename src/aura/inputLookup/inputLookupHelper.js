@@ -2061,11 +2061,7 @@
 
 		var selectedItems = this.getSelectedItems(component);
 		var values = selectedItems.map(function(selectedItem) {
-			return {
-				id: selectedItem.id,
-				name: selectedItem.name,
-				sObjectName: selectedItem.sObjectName
-			};
+			return selectedItem.id;
 		});
 
 		this.setValue(component, values.length > 0 ? values[0] : undefined);
