@@ -34,6 +34,7 @@
 	<div aura:id="objectSwitcher"
 	     class="object-switcher slds-listbox_object-switcher slds-dropdown-trigger slds-dropdown-trigger_click">
 		<button class="object-switcher-trigger slds-button slds-button_icon"
+		        type="button"
 		        aria-haspopup="true"
 		        title="{!v.selectedType.labelPlural}"
 		        onblur="{!c.objectSwitcherTriggerBlur}"
