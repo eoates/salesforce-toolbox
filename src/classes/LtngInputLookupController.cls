@@ -345,6 +345,52 @@ global with sharing class LtngInputLookupController {
 	}
 
 	/**
+	 * Returns a field by name
+	 *
+	 * @param typeInfo The S-Object type
+	 * @param fieldName The name of the field to return
+	 *
+	 * @return A Schema.DescribeFieldResult object or null if the field was not found
+	 */
+	private static Schema.DescribeFieldResult getFieldByName(
+		Schema.DescribeSObjectResult typeInfo,
+		String fieldName
+	) {
+		Map<String, Schema.SObjectField> fieldTokens = typeInfo.fields.getMap();
+		Schema.SObjectField fieldToken = fieldTokens.get(fieldName);
+
+		Schema.DescribeFieldResult fieldInfo;
+		if (fieldToken != null) {
+			fieldInfo = fieldToken.getDescribe();
+		}
+		return fieldInfo;
+	}
+
+	/**
+	 * Returns a field by relationship name
+	 *
+	 * @param typeInfo The S-Object type
+	 * @param relationshipName The relationship name of the field to return
+	 *
+	 * @return A Schema.DescribeFieldResult object or null if the field was not found
+	 */
+	private static Schema.DescribeFieldResult getFieldByRelationshipName(
+		Schema.DescribeSObjectResult typeInfo,
+		String relationshipName
+	) {
+		Map<String, Schema.SObjectField> fieldTokens = typeInfo.fields.getMap();
+		for (String fieldName : fieldTokens.keySet()) {
+			Schema.SObjectField fieldToken = fieldTokens.get(fieldName);
+			Schema.DescribeFieldResult fieldInfo = fieldToken.getDescribe();
+
+			if (relationshipName.equalsIgnoreCase(fieldInfo.getRelationshipName())) {
+				return fieldInfo;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the specified field. This method supports reference fields using dot notation (e.g.,
 	 * "Account.Owner.Name")
 	 *
@@ -364,17 +410,14 @@ global with sharing class LtngInputLookupController {
 		List<String> names,
 		List<String> labels
 	) {
-		Map<String, Schema.SObjectField> fieldTokens = typeInfo.fields.getMap();
-		Schema.SObjectField fieldToken;
 		Schema.DescribeFieldResult fieldInfo;
 
 		// A dot indicates a foreign key field. For example, "Account.OwnerId"
 		Integer indexOfDot = fieldName.indexOf('.');
 		if (indexOfDot == -1) {
 			// If the name does not contain a dot then the field is on the specified object
-			fieldToken = fieldTokens.get(fieldName);
-			if (fieldToken != null) {
-				fieldInfo = fieldToken.getDescribe();
+			fieldInfo = getFieldByName(typeInfo, fieldName);
+			if (fieldInfo != null) {
 				names.add(fieldInfo.getName());
 				labels.add(fieldInfo.getLabel());
 			}
@@ -385,29 +428,26 @@ global with sharing class LtngInputLookupController {
 			String l = fieldName.substring(0, indexOfDot);
 			String r = fieldName.substring(indexOfDot + 1);
 
-			for (String fname : fieldTokens.keySet()) {
-				fieldToken = fieldTokens.get(fname);
-				fieldInfo = fieldToken.getDescribe();
-
-				// Instead of field name we need to find the field by relationship name
-				String relationshipName = fieldInfo.getRelationshipName();
-				if (!l.equalsIgnoreCase(relationshipName)) {
-					continue;
-				}
-
+			fieldInfo = getFieldByRelationshipName(typeInfo, l);
+			if (fieldInfo != null) {
 				// Add name and label
-				names.add(relationshipName);
+				names.add(fieldInfo.getRelationshipName());
 				labels.add(stripIdSuffix(fieldInfo.getLabel()));
 
 				// Call getField() recursively
 				if (fieldInfo.isNamePointing()) {
-					typeInfo = Schema.SObjectType.Name;
+					// Reference to the Name object
+					fieldInfo = getField(Schema.SObjectType.Name, r, names, labels);
 				} else {
+					// Get the referenced types. If the list does not contain exactly 1 referenced
+					// type then we cannot know the type to use so return null
 					List<Schema.SObjectType> referenceTo = fieldInfo.getReferenceTo();
-					typeInfo = referenceTo[0].getDescribe();
+					if (referenceTo.size() == 1) {
+						fieldInfo = getField(referenceTo[0].getDescribe(), r, names, labels);
+					} else {
+						fieldInfo = null;
+					}
 				}
-				fieldInfo = getField(typeInfo, r, names, labels);
-				break;
 			}
 		}
 
@@ -617,7 +657,7 @@ global with sharing class LtngInputLookupController {
 			List<String> labelPath = new List<String>();
 			Schema.DescribeFieldResult fieldInfo = getField(typeInfo, name, namePath, labelPath);
 			if (fieldInfo == null) {
-				// Invali field name
+				// Invalid field
 				continue;
 			} else if (!important && !fieldInfo.isAccessible()) {
 				// Field is not accessible and is not marked as important so skip it
