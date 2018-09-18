@@ -129,24 +129,6 @@
 	},
 
 	/**
-	 * Handles change to the searchText attribute
-	 */
-	searchTextChange: function(component, event, helper) {
-		helper.handleComponentAttributeChange(component, 'searchText', function(searchText) {
-			if (helper.mobileEnabled(component)) {
-				return;
-			}
-
-			helper.cancelSearch(component);
-
-			helper.setSearchTextInputValue(component, searchText);
-			if (searchText) {
-				helper.startSearchAfterDelay(component, searchText, true);
-			}
-		});
-	},
-
-	/**
 	 * Sets the hasInputFocus flag when the component receives focus
 	 */
 	containerFocusIn: function(component, event, helper) {

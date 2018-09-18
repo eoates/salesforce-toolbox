@@ -61,11 +61,11 @@
 	<aura:attribute access="GLOBAL" name="multiple" type="Boolean" default="false"
 	                description="If set to true the user will be able to select more than one S-Object." />
 
-	<aura:attribute access="GLOBAL" name="searchText" type="String"
-	                description="The text to search for." />
-
 	<aura:attribute access="GLOBAL" name="placeholder" type="String"
 	                description="Text that is displayed when the field is empty, to prompt the user for a valid entry." />
+
+	<aura:attribute access="PRIVATE" name="searchText" type="String"
+	                description="Internal use only! The text to search for." />
 
 	<aura:attribute access="PRIVATE" name="hasInputFocus" type="Boolean" default="false"
 	                description="Internal use only! Indicates whether the component has input focus." />
@@ -101,7 +101,6 @@
 	<aura:handler value="{!v.types}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.typeName}" name="change" action="{!c.typeNameChange}" />
 	<aura:handler value="{!v.multiple}" name="change" action="{!c.multipleChange}" />
-	<aura:handler value="{!v.searchText}" name="change" action="{!c.searchTextChange}" />
 	<aura:handler event="aura:locationChange" action="{!c.locationChange}" />
 	<!-- /handlers -->
 
