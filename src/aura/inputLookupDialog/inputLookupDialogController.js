@@ -134,7 +134,7 @@
 	columnHeaderClick: function(component, event, helper) {
 		event.preventDefault();
 
-		var element = event.target;
+		var element = event.currentTarget;
 		while (element && !helper.utils.matchesSelector(element, 'th[data-column]')) {
 			element = element.parentElement;
 		}
@@ -151,22 +151,15 @@
 	itemNameClick: function(component, event, helper) {
 		event.preventDefault();
 
-		var element = event.target;
-		while (element && !helper.utils.matchesSelector(element, 'a[data-item]')) {
-			element = element.parentElement;
-		}
-
-		if (element) {
-			var itemId = element.getAttribute('data-item');
-			var items = helper.getItems(component);
-			var item = helper.findItemById(items, itemId);
-			if (item) {
-				var type = helper.getType(component);
-				helper.fireEvent(component, 'onselect', {
-					item: item
-				});
-				component.find('dialog').close();
-			}
+		var element = event.currentTarget;
+		var itemId = element.getAttribute('data-item');
+		var items = helper.getItems(component);
+		var item = helper.findItemById(items, itemId);
+		if (item) {
+			helper.fireEvent(component, 'onselect', {
+				item: item
+			});
+			component.find('dialog').close();
 		}
 	}
 }) // eslint-disable-line semi

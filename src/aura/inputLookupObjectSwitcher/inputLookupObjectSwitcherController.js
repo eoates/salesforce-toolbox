@@ -91,16 +91,10 @@
 	 * Handles mouse down events for individual object switcher menu items
 	 */
 	objectSwitcherItemMouseDown: function(component, event, helper) {
-		var item = event.target;
-		while (item && !helper.utils.matchesSelector(item, '.object-switcher-item')) {
-			item = item.parentElement;
-		}
-
-		if (item) {
-			if (helper.handleObjectSwitcherItemClick(component, item)) {
-				event.preventDefault();
-				helper.closeObjectSwitcher(component);
-			}
+		var item = event.currentTarget;
+		if (helper.handleObjectSwitcherItemClick(component, item)) {
+			event.preventDefault();
+			helper.closeObjectSwitcher(component);
 		}
 	}
 }) // eslint-disable-line semi
