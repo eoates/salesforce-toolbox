@@ -496,7 +496,7 @@
 		var pattern, matches, m, d, y;
 
 		if (this.isUndefinedOrNull(value)) {
-			return undefined;
+			return null;
 		}
 
 		if (this.isDate(value)) {
@@ -523,29 +523,29 @@
 			try {
 				value = $A.localizationService.parseDateTime(value);
 				if (this.isNull(value)) {
-					value = undefined;
+					value = null;
 				}
 			} catch (e) {
-				value = undefined;
+				value = null;
 			}
 			return value;
 		}
 
-		return undefined;
+		return null;
 	},
 
 	/**
 	 * Returns a 15 character Salesforce identifier. 15 character identifiers are case-sensitive.
 	 * If the value is a string with 15 characters it is unchanged. If the value is a string with 18
 	 * characters then it is converted to a 15 character identifier. If the value is anything other
-	 * than a 15 or 18 character string then undefined is returned
+	 * than a 15 or 18 character string then null is returned
 	 *
 	 * @param {*} value - The value to be converted
 	 *
 	 * @return {string} A 15 character identifier
 	 */
 	asID15: function(value) {
-		var id;
+		var id = null;
 
 		value = this.trim(value);
 		if (this.isID18(value)) {
@@ -561,14 +561,14 @@
 	 * Returns a 18 character Salesforce identifier. 18 character identifiers are case-insensitive.
 	 * If the value is a string with 15 characters then is converted to a 18 character identifier.
 	 * If the value is a string with 18 characters then it is unchanged. If the value is anything
-	 * other than a 15 or 18 character string then undefined is returned
+	 * other than a 15 or 18 character string then null is returned
 	 *
 	 * @param {*} value - The value to be converted
 	 *
 	 * @return {string} A 18 character identifier
 	 */
 	asID18: function(value) {
-		var id;
+		var id = null;
 		var i, j, f, c, s;
 
 		value = this.trim(value);
@@ -997,8 +997,8 @@
 	 * returned. If value is greater than max then max is returned. Otherwise, value is returned.
 	 *
 	 * @param {number} value - The value
-	 * @param {number} min   - The minimimum value or undefined if there is no minimum
-	 * @param {number} max   - The maximium value or undefined if there is no maximum
+	 * @param {number} [min] - The minimimum value
+	 * @param {number} [max] - The maximium value
 	 *
 	 * @return {number} The value
 	 */
@@ -1297,13 +1297,13 @@
 	 */
 	firstDayOfMonth: function(year, month) {
 		if (!this.isNumber(year) || !this.isNumber(month)) {
-			return undefined;
+			return null;
 		}
 
 		year = this.asInteger(year);
 		month = this.asInteger(month);
 		if ((year < 0) || (month < 0) || (month > 11)) {
-			return undefined;
+			return null;
 		}
 
 		return new Date(year, month, 1);
@@ -1319,13 +1319,13 @@
 	 */
 	lastDayOfMonth: function(year, month) {
 		if (!this.isNumber(year) || !this.isNumber(month)) {
-			return undefined;
+			return null;
 		}
 
 		year = this.asInteger(year);
 		month = this.asInteger(month);
 		if ((year < 0) || (month < 0) || (month > 11)) {
-			return undefined;
+			return null;
 		}
 
 		month++;
@@ -1349,7 +1349,7 @@
 	 */
 	addDays: function(date, count) {
 		if (!this.isDate(date)) {
-			return undefined;
+			return null;
 		}
 
 		if (!this.isNumber(count)) {
@@ -1377,7 +1377,7 @@
 	 */
 	addMonths: function(date, count) {
 		if (!this.isDate(date)) {
-			return undefined;
+			return null;
 		}
 
 		if (!this.isNumber(count)) {
@@ -1425,7 +1425,7 @@
 	 */
 	addYears: function(date, count) {
 		if (!this.isDate(date)) {
-			return undefined;
+			return null;
 		}
 
 		if (!this.isNumber(count)) {
@@ -1535,20 +1535,20 @@
 
 	/**
 	 * The find() method returns the value of the first element in the array that satisfies the
-	 * provided testing function. Otherwise undefined is returned
+	 * provided testing function. Otherwise null is returned
 	 *
 	 * @param {Array}    array     - The array to search
 	 * @param {Function} predicate - Function to execute on each value in the array
 	 * @param {*}        thisArg   - Object to use as this when executing predicate
 	 *
-	 * @return {*} A value in the array if an element passes the test; otherwise, undefined
+	 * @return {*} A value in the array if an element passes the test; otherwise, null
 	 */
 	find: function(array, predicate, thisArg) {
 		var index = this.findIndex(array, predicate, thisArg);
 		if (index !== -1) {
 			return array[index];
 		}
-		return undefined;
+		return null;
 	},
 
 	/**

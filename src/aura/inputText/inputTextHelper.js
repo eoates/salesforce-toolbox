@@ -77,10 +77,7 @@
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
-		if (input) {
-			return input.getElement();
-		}
-		return undefined;
+		return input ? input.getElement() : null;
 	},
 
 	/**

@@ -58,7 +58,7 @@
 		if (input) {
 			return input.getElement();
 		}
-		return undefined;
+		return null;
 	},
 
 	/**

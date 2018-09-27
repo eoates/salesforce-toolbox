@@ -77,10 +77,7 @@
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
-		if (input) {
-			return input.getElement();
-		}
-		return undefined;
+		return input ? input.getElement() : null;
 	},
 
 	/**
@@ -92,10 +89,7 @@
 	 */
 	getCounterElement: function(component) {
 		var counter = component.find('counter');
-		if (counter) {
-			return counter.getElement();
-		}
-		return undefined;
+		return counter ? counter.getElement() : null;
 	},
 
 	/**

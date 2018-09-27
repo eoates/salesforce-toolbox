@@ -29,7 +29,7 @@
 				return toaster;
 			}
 		}
-		return undefined;
+		return null;
 	},
 
 	/**

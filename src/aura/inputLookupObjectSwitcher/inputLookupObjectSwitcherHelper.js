@@ -49,11 +49,11 @@
 	 *
 	 * @param {Aura.Component} component - The inputLookupObjectSwitcher component
 	 *
-	 * @return {string} The name of the selected type or undefined if no type is selected
+	 * @return {string} The name of the selected type or null if no type is selected
 	 */
 	getSelectedTypeName: function(component) {
 		var selectedType = this.getSelectedType(component);
-		return selectedType && selectedType.name;
+		return selectedType ? selectedType.name : null;
 	},
 
 	/**
@@ -62,7 +62,7 @@
 	 * @param {Object[]} types - The list of available types
 	 * @param {string}   name  - The name of the type to find
 	 *
-	 * @return {Object} The type with the specified name or undefined if there is no match
+	 * @return {Object} The type with the specified name or null if there is no match
 	 */
 	findTypeByName: function(types, name) {
 		return this.utils.find(types, function(type) {
@@ -130,7 +130,7 @@
 			return false;
 		}
 
-		this.setSelectedObjectSwitcherItem(component, undefined);
+		this.setSelectedObjectSwitcherItem(component, null);
 
 		this.utils.removeClass(objectSwitcher, 'slds-is-open');
 		return true;
@@ -193,16 +193,16 @@
 	 * @param {Aura.Component} component - The inputLookupObjectSwitcher component
 	 * @param {string}         name      - The name of the menu item to find
 	 *
-	 * @return {HTMLElement} The menu item with the specified name or undefined if no match
+	 * @return {HTMLElement} The menu item with the specified name or null if no match
 	 */
 	getObjectSwitcherItemByName: function(component, name) {
 		var objectSwitcher = this.getObjectSwitcherElement(component);
 		if (!objectSwitcher) {
-			return undefined;
+			return null;
 		}
 
 		var a = objectSwitcher.querySelector('.object-switcher-item a[data-name="' + name + '"]');
-		return a && a.parentElement;
+		return a ? a.parentElement : null;
 	},
 
 	/**
@@ -210,12 +210,12 @@
 	 *
 	 * @param {Aura.Component} component - The inputLookupObjectSwitcher component
 	 *
-	 * @return {HTMLElement} The selected item or undefined if no item is selected
+	 * @return {HTMLElement} The selected item or null if no item is selected
 	 */
 	getSelectedObjectSwitcherItem: function(component) {
 		var objectSwitcher = this.getObjectSwitcherElement(component);
 		if (!objectSwitcher) {
-			return undefined;
+			return null;
 		}
 
 		var item = objectSwitcher.querySelector('.object-switcher-item.slds-has-focus');

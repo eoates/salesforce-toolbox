@@ -613,10 +613,7 @@
 	 */
 	getContainerElement: function(component) {
 		var container = component.find('container');
-		if (container) {
-			return container.getElement();
-		}
-		return undefined;
+		return container ? container.getElement() : null;
 	},
 
 	/**
@@ -628,10 +625,7 @@
 	 */
 	getInputElement: function(component) {
 		var input = component.find('input');
-		if (input) {
-			return input.getElement();
-		}
-		return undefined;
+		return input ? input.getElement() : null;
 	},
 
 	/**
@@ -644,10 +638,7 @@
 	getSelectElement: function(component) {
 		var editable = component.get('v.editable');
 		var select = component.find(editable ? 'editableSelect' : 'select');
-		if (select) {
-			return select.getElement();
-		}
-		return undefined;
+		return select ? select.getElement() : null;
 	},
 
 	/**
@@ -662,7 +653,7 @@
 	performNumberInputBehaviorAction: function(component, event, name) {
 		var editable = component.get('v.editable');
 		if (!editable) {
-			return undefined;
+			return null;
 		}
 
 		var inputElement = this.getInputElement(component);

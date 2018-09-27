@@ -81,7 +81,7 @@
 			return;
 		}
 		window.removeEventListener('resize', this.windowResizeListener);
-		this.windowResizeListener = undefined;
+		this.windowResizeListener = null;
 	},
 
 	/**
@@ -669,7 +669,7 @@
 	 * @param {Object[]} items - The array of items to search
 	 * @param {string}   id    - The ID of the item to find
 	 *
-	 * @return {Object} The item with the specified ID or undefined if no match
+	 * @return {Object} The item with the specified ID or null if no match
 	 */
 	findItemById: function(items, id) {
 		id = this.utils.trim(id).toLowerCase();
@@ -685,7 +685,7 @@
 	 * @param {Object[]} sortFieldOptions - The array of options to search
 	 * @param {string}   name             - The name of the option to find
 	 *
-	 * @return {Object} The option with the specified name or undefined if no match
+	 * @return {Object} The option with the specified name or null if no match
 	 */
 	findSortFieldOptionByName: function(sortFieldOptions, name) {
 		return this.utils.find(sortFieldOptions, function(sortFieldOption) {
@@ -699,7 +699,7 @@
 	 * @param {Object[]} sortFieldOptions - The array of options to search
 	 * @param {string}   label            - The label of the option to find
 	 *
-	 * @return {Object} The option with the specified label or undefined if no match
+	 * @return {Object} The option with the specified label or null if no match
 	 */
 	findSortFieldOptionByLabel: function(sortFieldOptions, label) {
 		return this.utils.find(sortFieldOptions, function(sortFieldOption) {

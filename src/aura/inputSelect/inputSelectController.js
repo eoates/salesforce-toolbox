@@ -132,7 +132,7 @@
 		// just clear the timeout and exit
 		if (component.blurTimeoutId) {
 			clearTimeout(component.blurTimeoutId);
-			component.blurTimeoutId = undefined;
+			component.blurTimeoutId = null;
 			return;
 		}
 
@@ -184,7 +184,7 @@
 		// another element within this container then the focusin event will fire and clear the
 		// timeout
 		component.blurTimeoutId = setTimeout($A.getCallback(function() {
-			component.blurTimeoutId = undefined;
+			component.blurTimeoutId = null;
 
 			var container = helper.getContainerElement(component);
 			helper.utils.removeClass(container, 'has-focus');

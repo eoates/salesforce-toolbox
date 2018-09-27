@@ -78,7 +78,7 @@
 		// value then we are getting focus from some element outside of the datepicker
 		if (component.blurTimeoutId) {
 			clearTimeout(component.blurTimeoutId);
-			component.blurTimeoutId = undefined;
+			component.blurTimeoutId = null;
 			return;
 		}
 
@@ -95,7 +95,7 @@
 		// second to see if another element within the container gains focus. If so then we will
 		// clear the timeout and do nothing. If not, however, then we will fire our own onblur event
 		component.blurTimeoutId = setTimeout($A.getCallback(function() {
-			component.blurTimeoutId = undefined;
+			component.blurTimeoutId = null;
 			helper.fireEvent(component, 'onblur');
 		}), 0);
 	},

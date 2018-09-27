@@ -95,8 +95,8 @@
 	reinit: function(component, opts) {
 		if (component.reinitTimeout) {
 			clearTimeout(component.reinitTimeout);
-			component.reinitOpts = undefined;
-			component.reinitTimeout = undefined;
+			component.reinitOpts = null;
+			component.reinitTimeout = null;
 		}
 
 		if (!opts) {
@@ -157,8 +157,8 @@
 
 		var self = this;
 		component.reinitTimeout = setTimeout($A.getCallback(function() {
-			component.reinitOpts = undefined;
-			component.reinitTimeout = undefined;
+			component.reinitOpts = null;
+			component.reinitTimeout = null;
 			return self.reinit(component, reinitOpts);
 		}), 10);
 	},
@@ -547,7 +547,7 @@
 	setValueFromValues: function(component) {
 		var values = this.getValues(component);
 		if (this.utils.isEmpty(values)) {
-			this.setValue(component, undefined);
+			this.setValue(component, null);
 		} else if (this.utils.isArray(values)) {
 			this.setValue(component, values[0]);
 		} else {
@@ -582,7 +582,7 @@
 	 */
 	getSelectedSearchObjectName: function(component) {
 		var selectedSearchObject = this.getSelectedSearchObject(component);
-		return selectedSearchObject ? selectedSearchObject.name : undefined;
+		return selectedSearchObject ? selectedSearchObject.name : null;
 	},
 
 	/**
@@ -598,7 +598,7 @@
 
 		searchObjects = this.getSearchObjects(component);
 		if (this.utils.isEmpty(searchObjects)) {
-			this.setSelectedSearchObject(component, undefined);
+			this.setSelectedSearchObject(component, null);
 			return;
 		}
 
@@ -826,7 +826,7 @@
 	/**
 	 * Returns information about the icon. If the icon is a SLDS icon then an object is returned
 	 * which contains the type and name of the icon. If the icon is not a SLDS icon, however, then
-	 * undefined is returned
+	 * null is returned
 	 *
 	 * @param {string} iconUrl - The URL of the icon
 	 *
@@ -845,7 +845,7 @@
 
 			// If still no match then exit
 			if (!match) {
-				return undefined;
+				return null;
 			}
 		}
 
@@ -913,7 +913,7 @@
 			failure: function(error) {
 				console.error('Unable to load S-Object type information: ' + error.message);
 				this.setSearchObjects(component, []);
-				this.setSelectedSearchObject(component, undefined);
+				this.setSelectedSearchObject(component, null);
 				this.setRecentItems(component, []);
 				this.setLookupItems(component, []);
 			},
@@ -1090,7 +1090,7 @@
 	cancelSearch: function(component) {
 		if (component.searchTimeout) {
 			clearTimeout(component.searchTimeout);
-			component.searchTimeout = undefined;
+			component.searchTimeout = null;
 		}
 	},
 
@@ -1130,7 +1130,7 @@
 
 	/**
 	 * Returns the HTML input element. Note that if an item is selected and the multiple attribute
-	 * is false this returns undefined because the input element is not rendered
+	 * is false this returns null because the input element is not rendered
 	 *
 	 * @param {Aura.Component} component - The inputLookup component
 	 *
@@ -1138,7 +1138,7 @@
 	 */
 	getSearchTextInputElement: function(component) {
 		var searchTextInput = component.find('searchTextInput');
-		return searchTextInput && searchTextInput.getElement();
+		return searchTextInput ? searchTextInput.getElement() : null;
 	},
 
 	/**
@@ -1276,17 +1276,17 @@
 	},
 
 	/**
-	 * Returns the currently selected menu item element. If no menu item is selected then undefined
+	 * Returns the currently selected menu item element. If no menu item is selected then null
 	 * is returned
 	 *
 	 * @param {Aura.Component} component - The inputLookup component
 	 *
-	 * @return {HTMLElement} The selected menu item element or undefined if no item is selected
+	 * @return {HTMLElement} The selected menu item element or null if no item is selected
 	 */
 	getSelectedMenuItem: function(component) {
 		var menu = this.getMenuElement(component);
 		if (!menu) {
-			return undefined;
+			return null;
 		}
 
 		var item = menu.querySelector('.lookup-menu-item.slds-has-focus');
@@ -1346,7 +1346,7 @@
 			return false;
 		}
 
-		this.setSelectedMenuItem(component, undefined);
+		this.setSelectedMenuItem(component, null);
 
 		this.utils.addClass(combobox, 'slds-is-open');
 		combobox.setAttribute('aria-expanded', 'true');
@@ -1367,7 +1367,7 @@
 			return false;
 		}
 
-		this.setSelectedMenuItem(component, undefined);
+		this.setSelectedMenuItem(component, null);
 
 		this.utils.removeClass(combobox, 'slds-is-open');
 		combobox.setAttribute('aria-expanded', 'false');
@@ -1713,14 +1713,14 @@
 		});
 
 		if (multiple) {
-			this.setValue(component, values.length > 0 ? values[0] : undefined);
+			this.setValue(component, values.length > 0 ? values[0] : null);
 			this.setValues(component, values);
 			this.fireEvent(component, 'onchange');
 		} else {
 			this.waitForRender(function() {
 				component.focus();
 
-				this.setValue(component, values.length > 0 ? values[0] : undefined);
+				this.setValue(component, values.length > 0 ? values[0] : null);
 				this.setValues(component, values);
 				this.fireEvent(component, 'onchange');
 			});
@@ -1961,7 +1961,7 @@
 	 * @param {Object[]} items - The array of items to search
 	 * @param {string}   id    - The ID of the item to find
 	 *
-	 * @return {Object} The item with the given ID or undefined if no match
+	 * @return {Object} The item with the given ID or null if no match
 	 */
 	findItemById: function(items, id) {
 		id = this.utils.trim(id).toLowerCase();
@@ -2006,7 +2006,7 @@
 	 * @param {Object[]} searchObjects - The array of objects to search
 	 * @param {string}   keyPrefix     - The key prefix of the object to find
 	 *
-	 * @return {Object} The object with the given key prefix or undefined if no match
+	 * @return {Object} The object with the given key prefix or null if no match
 	 */
 	findSearchObjectByKeyPrefix: function(searchObjects, keyPrefix) {
 		return this.utils.find(searchObjects, function(searchObject) {
@@ -2020,7 +2020,7 @@
 	 * @param {Object[]} searchObjects - The array of objects to search
 	 * @param {string}   name          - The name of the object to find
 	 *
-	 * @return {Object} The object with the given name or undefined if no match
+	 * @return {Object} The object with the given name or null if no match
 	 */
 	findSearchObjectByName: function(searchObjects, name) {
 		name = this.utils.trim(name).toLowerCase();
@@ -2035,7 +2035,7 @@
 	 *
 	 * @param {string} name - The name of the standard object
 	 *
-	 * @return {Object} The defaults for the named object or undefined if no match
+	 * @return {Object} The defaults for the named object or null if no match
 	 */
 	findStandardObjectByName: function(name) {
 		name = this.utils.trim(name).toLowerCase();
@@ -2134,7 +2134,7 @@
 			this.openMenuIfNotEmpty(component);
 			this.closeMenuIfEmpty(component);
 
-			this.setValue(component, undefined);
+			this.setValue(component, null);
 			this.setValues(component, []);
 			this.fireEvent(component, 'onchange');
 		});
@@ -2161,7 +2161,7 @@
 			return selectedItem.id;
 		});
 
-		this.setValue(component, values.length > 0 ? values[0] : undefined);
+		this.setValue(component, values.length > 0 ? values[0] : null);
 		this.setValues(component, values);
 		this.fireEvent(component, 'onchange');
 

@@ -400,7 +400,7 @@
 			helper.mobileFocus(component);
 		} else {
 			helper.setSelectedItems(component, []);
-			helper.setValue(component, undefined);
+			helper.setValue(component, null);
 			helper.setValues(component, []);
 			helper.mobileFocus(component);
 

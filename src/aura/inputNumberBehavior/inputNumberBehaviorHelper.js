@@ -36,7 +36,7 @@
 	destroy: function(component) {
 		var componentId = component.getGlobalId();
 		if (this.INSTANCES[componentId]) {
-			this.INSTANCES[componentId] = undefined;
+			this.INSTANCES[componentId] = null;
 		}
 	},
 
@@ -209,7 +209,7 @@
 
 				if (this.formatTimeout) {
 					clearTimeout(this.formatTimeout);
-					this.formatTimeout = undefined;
+					this.formatTimeout = null;
 				}
 
 				var format = self.getFormat(component);
@@ -637,7 +637,7 @@
 	 *                          string will be converted to a string before parsing
 	 * @param {Object} format - An object that contains formatting information and constraints
 	 *
-	 * @return {number} The parsed number or undefined if the value could not be parsed
+	 * @return {number} The parsed number or null if the value could not be parsed
 	 */
 	parseNumber: function(value, format) {
 		value = this.utils.asNumber(value);
@@ -648,7 +648,7 @@
 		} else if (!format.nillable) {
 			value = this.utils.minmax(0, format.min, format.max);
 		} else {
-			value = undefined;
+			value = null;
 		}
 
 		return value;

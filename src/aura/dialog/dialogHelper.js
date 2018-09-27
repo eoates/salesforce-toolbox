@@ -514,10 +514,10 @@
 	 * Returns a reference to the active dialog. The active dialog is the dialog that was opened
 	 * most recently
 	 *
-	 * @return {Aura.Component} The active dialog or undefined if there are no open dialogs
+	 * @return {Aura.Component} The active dialog or null if there are no open dialogs
 	 */
 	getActiveDialog: function() {
-		var activeDialog;
+		var activeDialog = null;
 		if (this.openDialogs.length > 0) {
 			activeDialog = this.openDialogs[this.openDialogs.length - 1];
 		}

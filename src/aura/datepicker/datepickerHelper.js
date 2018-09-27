@@ -92,7 +92,7 @@
 	 * @param {Function} predicate - A function that will be called for each day in the calendar
 	 *
 	 * @return {Object} The first day that matched the specified predicate. If there was no match
-	 *                  then undefined is returned
+	 *                  then null is returned
 	 */
 	getDay: function(calendar, predicate) {
 		var days = calendar.days;
@@ -103,7 +103,7 @@
 				return day;
 			}
 		}
-		return undefined;
+		return null;
 	},
 
 	/**
@@ -220,12 +220,12 @@
 		this.utils.toggleClass(cell, 'slds-is-selected', !day.disabled && day.selected);
 		this.utils.toggleClass(cell, 'slds-is-today', !day.disabled && !day.selected && day.today);
 
-		this.setElementAttribute(cell, 'aria-disabled', day.disabled ? true : undefined);
+		this.setElementAttribute(cell, 'aria-disabled', day.disabled ? true : null);
 		this.setElementAttribute(cell, 'aria-selected', !day.disabled && day.selected);
 		this.setElementAttribute(
 			cell,
 			'aria-current',
-			(!day.disabled && day.today) ? 'date' : undefined
+			(!day.disabled && day.today) ? 'date' : null
 		);
 
 		this.setElementAttribute(cell, 'data-index', day.index);
@@ -330,7 +330,7 @@
 			var index = parseInt(cell.getAttribute('data-index'), 10);
 			if (index !== activeIndex) {
 				this.utils.toggleClass(cell, 'is-active', false);
-				this.setElementAttribute(cell, 'tabindex', undefined);
+				this.setElementAttribute(cell, 'tabindex', null);
 			}
 		}
 	},
@@ -469,7 +469,7 @@
 		if (value) {
 			value = this.utils.formatDate(value, this.VALUE_FORMAT);
 		} else {
-			value = undefined;
+			value = null;
 		}
 
 		component.ignoreValueChange = true;

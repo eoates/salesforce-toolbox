@@ -14,7 +14,7 @@
                 description="Allows the user to enter a date value.">
 	<!-- attributes -->
 	<aura:attribute access="GLOBAL" name="value" type="String"
-	                description="The value of the component. If a date has been entered it will always be in the format YYYY-MM-DD regardless of how it is formatted in the UI. If no date is selected this will be undefined." />
+	                description="The value of the component. If a date has been entered it will always be in the format YYYY-MM-DD regardless of how it is formatted in the UI. If no date is selected this will be null." />
 
 	<aura:attribute access="GLOBAL" name="format" type="String" default="MM/dd/yyyy"
 	                description="Controls how the date is formatted in the UI. This format will only be applied to the displayed date, not to the actual component's value attribute." />
