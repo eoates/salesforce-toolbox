@@ -67,6 +67,103 @@
 	},
 
 	/**
+	 * Returns the default reinit() options to be used when no options are specified
+	 *
+	 * @return {Object} An object containing the default options for the reinit method
+	 */
+	getDefaultReinitOpts: function() {
+		return {
+			searchObjects: true,
+			recentItems: true,
+			selectedItems: true
+		};
+	},
+
+	/**
+	 * Reloads the search objects, recent items and selected items. If search text is entered it is
+	 * cleared. You can specify which items to reload using the opts parameter. If no options are
+	 * specified then everything is reloaded
+	 *
+	 * @param {Aura.Component} component            - The inputLookup component
+	 * @param {Object}         [opts]               - An object that specifies which items to reload
+	 * @param {boolean}        [opts.searchObjects] - Set to true to reload search objects
+	 * @param {boolean}        [opts.recentItems]   - Set to true to reload recent items
+	 * @param {boolean}        [opts.selectedItems] - Set to true to reload selected items
+	 *
+	 * @return {void}
+	 */
+	reinit: function(component, opts) {
+		if (component.reinitTimeout) {
+			clearTimeout(component.reinitTimeout);
+			component.reinitOpts = undefined;
+			component.reinitTimeout = undefined;
+		}
+
+		if (!opts) {
+			opts = this.getDefaultReinitOpts();
+		}
+
+		this.cancelSearch(component);
+		this.setSearchText(component, '');
+		this.setSearchTextInputValue(component, '');
+		this.setLookupItems(component, []);
+
+		if (opts.searchObjects) {
+			this.setRecentItems(component, []);
+			this.setSearchObjectsFromTypes(component);
+			this.loadSearchObjects(component);
+		}
+
+		if (opts.recentItems) {
+			this.setRecentItems(component, []);
+			this.loadRecentItems(component);
+		}
+
+		if (opts.selectedItems) {
+			this.setSelectedItemsFromValues(component);
+			this.loadSelectedItems(component);
+		}
+	},
+
+	/**
+	 * Calls reinit after a very short delay. Use reinitAfterDelay instead of reinit in attribute
+	 * change handlers to prevent reinit from being called multiple times in the case when 2 or more
+	 * attributes are changed at once
+	 *
+	 * @param {Aura.Component} component            - The inputLookup component
+	 * @param {Object}         [opts]               - An object that specifies which items to reload
+	 * @param {boolean}        [opts.searchObjects] - Set to true to reload search objects
+	 * @param {boolean}        [opts.recentItems]   - Set to true to reload recent items
+	 * @param {boolean}        [opts.selectedItems] - Set to true to reload selected items
+	 *
+	 * @return {void}
+	 */
+	reinitAfterDelay: function(component, opts) {
+		if (!opts) {
+			opts = this.getDefaultReinitOpts();
+		}
+
+		var reinitOpts = component.reinitOpts;
+		if (!reinitOpts) {
+			reinitOpts = component.reinitOpts = {};
+		}
+		reinitOpts.searchObjects = reinitOpts.searchObjects || opts.searchObjects;
+		reinitOpts.recentItems = reinitOpts.recentItems || opts.recentItems;
+		reinitOpts.selectedItems = reinitOpts.selectedItems || opts.selectedItems;
+
+		if (component.reinitTimeout) {
+			clearTimeout(component.reinitTimeout);
+		}
+
+		var self = this;
+		component.reinitTimeout = setTimeout($A.getCallback(function() {
+			component.reinitOpts = undefined;
+			component.reinitTimeout = undefined;
+			return self.reinit(component, reinitOpts);
+		}), 10);
+	},
+
+	/**
 	 * Returns the value of the value attribute
 	 *
 	 * @param {Aura.Component} component - The inputLookup component

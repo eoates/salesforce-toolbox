@@ -99,7 +99,18 @@
 	<aura:handler value="{!v.value}" name="change" action="{!c.valueChange}" />
 	<aura:handler value="{!v.values}" name="change" action="{!c.valuesChange}" />
 	<aura:handler value="{!v.types}" name="change" action="{!c.typesChange}" />
-	<aura:handler value="{!v.typeName}" name="change" action="{!c.typeNameChange}" />
+	<aura:handler value="{!v.typeName}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.typeLabel}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.typeLabelPlural}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.iconName}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.iconUrl}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.iconClass}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.fieldNames}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.filter}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.withoutSharing}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.allowAdd}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.allowSearch}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.providerName}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.multiple}" name="change" action="{!c.multipleChange}" />
 	<aura:handler event="aura:locationChange" action="{!c.locationChange}" />
 	<!-- /handlers -->

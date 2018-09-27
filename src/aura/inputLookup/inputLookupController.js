@@ -56,13 +56,7 @@
 		helper.importModules(component);
 
 		helper.initValueAndValues(component);
-
-		helper.setSearchObjectsFromTypes(component);
-		helper.setSelectedItemsFromValues(component);
-
-		helper.loadSearchObjects(component);
-		helper.loadRecentItems(component);
-		helper.loadSelectedItems(component);
+		helper.reinit(component);
 	},
 
 	/**
@@ -71,9 +65,9 @@
 	valueChange: function(component, event, helper) {
 		helper.handleComponentAttributeChange(component, 'value', function(value) {
 			helper.setValuesFromValue(component);
-			helper.setSelectedItemsFromValues(component);
-
-			helper.loadSelectedItems(component);
+			helper.reinitAfterDelay(component, {
+				selectedItems: true
+			});
 		});
 	},
 
@@ -83,9 +77,9 @@
 	valuesChange: function(component, event, helper) {
 		helper.handleComponentAttributeChange(component, 'values', function(values) {
 			helper.setValueFromValues(component);
-			helper.setSelectedItemsFromValues(component);
-
-			helper.loadSelectedItems(component);
+			helper.reinitAfterDelay(component, {
+				selectedItems: true
+			});
 		});
 	},
 
@@ -94,28 +88,7 @@
 	 */
 	typesChange: function(component, event, helper) {
 		helper.handleComponentAttributeChange(component, 'types', function(types) {
-			helper.cancelSearch(component);
-
-			helper.setSearchObjectsFromTypes(component);
-
-			helper.loadSearchObjects(component);
-			helper.loadRecentItems(component);
-			helper.loadSelectedItems(component);
-		});
-	},
-
-	/**
-	 * Handles change to the typeName attribute
-	 */
-	typeNameChange: function(component, event, helper) {
-		helper.handleComponentAttributeChange(component, 'typeName', function(typeName) {
-			helper.cancelSearch(component);
-
-			helper.setSearchObjectsFromTypes(component);
-
-			helper.loadSearchObjects(component);
-			helper.loadRecentItems(component);
-			helper.loadSelectedItems(component);
+			helper.reinitAfterDelay(component);
 		});
 	},
 
@@ -157,15 +130,11 @@
 			return;
 		}
 
-		helper.cancelSearch(component);
-		helper.setSearchText(component, '');
-		helper.setSearchTextInputValue(component, '');
-
 		helper.setSelectedSearchObjectByName(component, name);
-		helper.setRecentItems(component, []);
-		helper.setLookupItems(component, []);
 
-		helper.loadRecentItems(component);
+		helper.reinit(component, {
+			recentItems: true
+		});
 	},
 
 	/**
@@ -329,16 +298,10 @@
 	 * Handles the mousedown event of an individual menu item
 	 */
 	menuItemMouseDown: function(component, event, helper) {
-		var item = event.target;
-		while (item && !helper.utils.matchesSelector(item, '.lookup-menu-item')) {
-			item = item.parentElement;
-		}
-
-		if (item) {
-			if (helper.handleMenuItemClick(component, item)) {
-				event.preventDefault();
-				helper.closeMenu(component);
-			}
+		var item = event.currentTarget;
+		if (helper.handleMenuItemClick(component, item)) {
+			event.preventDefault();
+			helper.closeMenu(component);
 		}
 	},
 
