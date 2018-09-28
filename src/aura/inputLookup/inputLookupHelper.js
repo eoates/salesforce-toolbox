@@ -690,6 +690,7 @@
 		var searchObjects = [];
 		var i, n, type;
 		var name, labelOverride, labelPluralOverride, keyPrefix;
+		var displayOrder;
 		var iconNameOverride, iconUrl, iconClass;
 		var fieldNames, filter;
 		var withoutSharing, allowSearch, allowAdd, providerName;
@@ -734,6 +735,7 @@
 			labelOverride = this.utils.trim(type.label);
 			labelPluralOverride = this.utils.trim(type.labelPlural);
 			keyPrefix = this.utils.trim(type.keyPrefix);
+			displayOrder = this.utils.asNumber(type.displayOrder);
 			iconNameOverride = this.utils.trim(type.iconName);
 			iconUrl = this.utils.trim(type.iconUrl);
 			iconClass = this.utils.trim(type.iconClass);
@@ -751,6 +753,7 @@
 				labelPlural: labelPluralOverride || labelOverride || name,
 				labelPluralOverride: labelPluralOverride,
 				keyPrefix: keyPrefix,
+				displayOrder: displayOrder,
 				iconName: iconNameOverride || this.defaultIconName,
 				iconNameOverride: iconNameOverride,
 				iconUrl: iconUrl,
@@ -764,7 +767,7 @@
 			});
 		}
 
-		this.sortSearchObjects(searchObjects, 'labelPlural');
+		this.sortSearchObjects(searchObjects);
 		this.setSearchObjects(component, searchObjects);
 	},
 
@@ -900,7 +903,7 @@
 					searchObject.createable = sobject.createable;
 				}
 
-				this.sortSearchObjects(searchObjects, 'labelPlural');
+				this.sortSearchObjects(searchObjects);
 				this.setSearchObjects(component, searchObjects);
 				this.setSelectedSearchObject(component, searchObjects[0]);
 				this.updateAllItemIconNames(component);
@@ -1975,28 +1978,36 @@
 	 * Sorts an array of search objects
 	 *
 	 * @param {Object[]} searchObjects - The array of objects to sort
-	 * @param {string}   [sortKey]     - The name of the property to use for sorting. If no value is
-	 *                                   provided then the objects will be sorted by label
 	 *
 	 * @return {void}
 	 */
-	sortSearchObjects: function(searchObjects, sortKey) {
+	sortSearchObjects: function(searchObjects) {
 		var utils = this.utils;
 
-		if (!sortKey) {
-			sortKey = 'label';
-		}
-
 		searchObjects.sort(function(a, b) {
-			var valueA = utils.trim(a[sortKey]).toLowerCase();
-			var valueB = utils.trim(b[sortKey]).toLowerCase();
-			if (valueA < valueB) {
-				return -1;
-			} else if (valueA > valueB) {
-				return 1;
-			} else {
-				return 0;
+			var result = 0;
+
+			var displayOrderA = a.displayOrder;
+			var displayOrderB = b.displayOrder;
+			if (utils.isNumber(displayOrderA) && utils.isNumber(displayOrderB)) {
+				result = displayOrderA - displayOrderB;
+			} else if (utils.isNumber(displayOrderA)) {
+				result = -1;
+			} else if (utils.isNumber(displayOrderB)) {
+				result = 1;
 			}
+
+			if (result === 0) {
+				var labelPluralA = utils.trim(a.labelPlural).toLowerCase();
+				var labelPluralB = utils.trim(b.labelPlural).toLowerCase();
+				if (labelPluralA < labelPluralB) {
+					result = -1;
+				} else if (labelPluralA > labelPluralB) {
+					result = 1;
+				}
+			}
+
+			return result;
 		});
 	},
 
