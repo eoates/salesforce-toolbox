@@ -76,13 +76,17 @@ global virtual class LtngInputLookupDefaultProvider implements LtngInputLookupPr
 	 * @return The recently viewed record IDs
 	 */
 	protected virtual List<Id> getRecentlyViewedRecordIds(String sObjectName) {
-		List<RecentlyViewed> records = [
-			SELECT Id
-			FROM RecentlyViewed
-			WHERE Type = :sObjectName
-			AND LastViewedDate != NULL
-			ORDER BY LastViewedDate DESC
-		];
+		List<RecentlyViewed> records = new List<RecentlyViewed>();
+		try {
+			records = [
+				SELECT Id
+				FROM RecentlyViewed
+				WHERE Type = :sObjectName
+				AND LastViewedDate != NULL
+				ORDER BY LastViewedDate DESC
+			];
+		} catch (QueryException e) {
+		}
 
 		List<Id> recordIds = new List<Id>();
 		for (RecentlyViewed record : records) {
