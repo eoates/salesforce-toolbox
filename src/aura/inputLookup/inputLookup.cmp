@@ -49,6 +49,9 @@
 	<aura:attribute access="GLOBAL" name="withoutSharing" type="Boolean" default="false"
 	                description="If true sharing rules will be ignored and all records will be searchable." />
 
+	<aura:attribute access="GLOBAL" name="showRecentItems" type="Boolean" default="true"
+	                description="If true then recently viewed items will be displayed when no search text has been entered." />
+
 	<aura:attribute access="GLOBAL" name="allowAdd" type="Boolean" default="false"
 	                description="If true a menu item will be displayed to allow the user to add a new record. You must handle the component's onadd event." />
 
@@ -108,6 +111,7 @@
 	<aura:handler value="{!v.fieldNames}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.filter}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.withoutSharing}" name="change" action="{!c.typesChange}" />
+	<aura:handler value="{!v.showRecentItems}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.allowAdd}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.allowSearch}" name="change" action="{!c.typesChange}" />
 	<aura:handler value="{!v.providerName}" name="change" action="{!c.typesChange}" />

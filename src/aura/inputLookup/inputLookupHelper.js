@@ -693,7 +693,7 @@
 		var displayOrder;
 		var iconNameOverride, iconUrl, iconClass;
 		var fieldNames, filter;
-		var withoutSharing, allowSearch, allowAdd, providerName;
+		var withoutSharing, showRecentItems, allowSearch, allowAdd, providerName;
 		var standardObject;
 		var defaults = this.getSearchObjectDefaults(component);
 
@@ -742,6 +742,7 @@
 			fieldNames = this.utils.trim(type.fieldNames);
 			filter = this.utils.trim(type.filter);
 			withoutSharing = this.utils.asBoolean(type.withoutSharing);
+			showRecentItems = this.utils.asBoolean(type.showRecentItems);
 			allowSearch = this.utils.asBoolean(type.allowSearch);
 			allowAdd = this.utils.asBoolean(type.allowAdd);
 			providerName = this.utils.trim(type.providerName);
@@ -761,6 +762,7 @@
 				fieldNames: fieldNames,
 				filter: filter,
 				withoutSharing: withoutSharing,
+				showRecentItems: showRecentItems,
 				allowSearch: allowSearch,
 				allowAdd: allowAdd,
 				providerName: providerName
@@ -789,6 +791,7 @@
 			fieldNames = utils.trim(component.get('v.fieldNames')),
 			filter = utils.trim(component.get('v.filter')),
 			withoutSharing = utils.asBoolean(component.get('v.withoutSharing')),
+			showRecentItems = utils.asBoolean(component.get('v.showRecentItems')),
 			allowAdd = utils.asBoolean(component.get('v.allowAdd')),
 			allowSearch = utils.asBoolean(component.get('v.allowSearch')),
 			providerName = utils.trim(component.get('v.providerName')),
@@ -819,6 +822,7 @@
 		setDefault('fieldNames', fieldNames);
 		setDefault('filter', filter);
 		setDefault('withoutSharing', withoutSharing);
+		setDefault('showRecentItems', showRecentItems);
 		setDefault('allowAdd', allowAdd);
 		setDefault('allowSearch', allowSearch);
 		setDefault('providerName', providerName);
@@ -937,7 +941,7 @@
 	 */
 	loadRecentItems: function(component, callback) {
 		var selectedSearchObject = this.getSelectedSearchObject(component);
-		if (!selectedSearchObject) {
+		if (!selectedSearchObject || !selectedSearchObject.showRecentItems) {
 			this.setRecentItems(component, []);
 			if (callback) {
 				callback.call(this);
