@@ -26,10 +26,10 @@
 			the following attributes: <code>typeName</code>, <code>typeLabel</code>,
 			<code>typeLabelPlural</code>, <code>iconName</code>, <code>iconUrl</code>,
 			<code>iconClass</code>, <code>fieldNames</code>, <code>filter</code>,
-			<code>withoutSharing</code>, <code>allowAdd</code>, <code>allowSearch</code>, and
-			<code>providerName</code>. The only required attribute is <code>typeName</code> which
-			should contain the API name of the S-Object type. All of the other attributes will use
-			reasonable defaults or information retrieved from metadata.
+			<code>withoutSharing</code>, <code>showRecentItems</code>, <code>allowAdd</code>,
+			<code>allowSearch</code>, and <code>providerName</code>. The only required attribute is
+			<code>typeName</code> which should contain the API name of the S-Object type. All of the
+			other attributes will use reasonable defaults or information retrieved from metadata.
 		</p>
 
 <pre><![CDATA[<!-- MyComponent.cmp -->
@@ -52,9 +52,9 @@
 			Object values, however, can contain the following properties: <code>name</code>,
 			<code>label</code>, <code>labelPlural</code>, <code>iconName</code>,
 			<code>iconUrl</code>, <code>iconClass</code>, <code>fieldNames</code>,
-			<code>filter</code>, <code>withoutSharing</code>, <code>allowAdd</code>,
-			<code>allowSearch</code>, and <code>providerName</code>. Only the <code>name</code>
-			property is required. All other properties are optional.
+			<code>filter</code>, <code>withoutSharing</code>, <code>showRecentItems</code>,
+			<code>allowAdd</code>, <code>allowSearch</code>, and <code>providerName</code>. Only the
+			<code>name</code> property is required. All other properties are optional.
 		</p>
 
 		<p>
