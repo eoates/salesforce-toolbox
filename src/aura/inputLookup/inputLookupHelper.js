@@ -875,6 +875,16 @@
 	 * @return {void}
 	 */
 	loadSearchObjects: function(component) {
+		var task = component.loadSearchObjectsTask;
+		if (task && !task.complete) {
+			task.abort = true;
+		}
+
+		task = component.loadSearchObjectsTask = {
+			abort: false,
+			complete: false
+		};
+
 		var searchObjects = this.getSearchObjects(component);
 		var names = searchObjects.map(function(searchObject) {
 			return searchObject.name;
@@ -890,6 +900,13 @@
 				names: names
 			},
 			success: function(sobjects) {
+				component.loadSearchObjectsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				var i, n, sobject;
 				var searchObject;
 
@@ -918,6 +935,13 @@
 				}
 			},
 			failure: function(error) {
+				component.loadSearchObjectsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				console.error('Unable to load S-Object type information: ' + error.message);
 				this.setSearchObjects(component, []);
 				this.setSelectedSearchObject(component, null);
@@ -940,8 +964,21 @@
 	 * @return {void}
 	 */
 	loadRecentItems: function(component, callback) {
+		var task = component.loadRecentItemsTask;
+		if (task && !task.complete) {
+			task.abort = true;
+		}
+
+		task = component.loadRecentItemsTask = {
+			abort: false,
+			complete: false
+		};
+
 		var selectedSearchObject = this.getSelectedSearchObject(component);
 		if (!selectedSearchObject || !selectedSearchObject.showRecentItems) {
+			component.loadRecentItemsTask = null;
+			task.complete = true;
+
 			this.setRecentItems(component, []);
 			if (callback) {
 				callback.call(this);
@@ -968,6 +1005,13 @@
 				providerName: selectedSearchObject.providerName
 			},
 			success: function(items) {
+				component.loadRecentItemsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				var searchObjects = this.getSearchObjects(component);
 
 				this.removeItemsWithInvalidSObjectType(items, searchObjects);
@@ -976,12 +1020,22 @@
 				this.setRecentItems(component, items);
 			},
 			failure: function(error) {
+				component.loadRecentItemsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				console.error('Unable to load recent items: ' + error.message);
 				this.setRecentItems(component, []);
 			},
 			complete: function() {
 				this.decrementWorkCounter(component);
-				this.waitForRender(callback);
+
+				if (!task.abort) {
+					this.waitForRender(callback);
+				}
 			}
 		});
 	},
@@ -998,14 +1052,30 @@
 	 * @return {void}
 	 */
 	loadLookupItems: function(component, searchText, callback) {
+		var task = component.loadLookupItemsTask;
+		if (task && !task.complete) {
+			task.abort = true;
+		}
+
+		task = component.loadLookupItemsTask = {
+			abort: false,
+			complete: false
+		};
+
 		var selectedSearchObject = this.getSelectedSearchObject(component);
 		if (!selectedSearchObject) {
+			component.loadLookupItemsTask = null;
+			task.complete = true;
+
 			this.setLookupItems(component, []);
 			return;
 		}
 
 		var simplifiedSearchText = this.stripSpecialChars(searchText);
 		if (simplifiedSearchText.length < this.minSearchTextLength) {
+			component.loadLookupItemsTask = null;
+			task.complete = true;
+
 			this.setLookupItems(component, []);
 			if (callback) {
 				callback.call(this);
@@ -1033,6 +1103,13 @@
 				providerName: selectedSearchObject.providerName
 			},
 			success: function(items) {
+				component.loadLookupItemsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				var searchObjects = this.getSearchObjects(component);
 
 				this.updateItemHighlightFields(items);
@@ -1040,12 +1117,22 @@
 				this.setLookupItems(component, items);
 			},
 			failure: function(error) {
+				component.loadLookupItemsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				console.error('Unable to load lookup items: ' + error.message);
 				this.setLookupItems(component, []);
 			},
 			complete: function() {
 				this.decrementWorkCounter(component);
-				this.waitForRender(callback);
+
+				if (!task.abort) {
+					this.waitForRender(callback);
+				}
 			}
 		});
 	},
@@ -1060,6 +1147,16 @@
 	 * @return {void}
 	 */
 	loadSelectedItems: function(component) {
+		var task = component.loadSelectedItemsTask;
+		if (task && !task.complete) {
+			task.abort = true;
+		}
+
+		task = component.loadSelectedItemsTask = {
+			abort: false,
+			complete: false
+		};
+
 		var selectedItems = this.getSelectedItems(component);
 		var recordIds = selectedItems.map(function(item) {
 			return item.id;
@@ -1074,12 +1171,29 @@
 				recordIds: recordIds
 			},
 			success: function(items) {
+				component.loadSelectedItemsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
 				var searchObjects = this.getSearchObjects(component);
 
 				this.sortItems(items);
 				this.removeItemsWithInvalidSObjectType(items, searchObjects);
 				this.updateItemIconNames(items, searchObjects);
 				this.setSelectedItems(component, items);
+			},
+			failure: function(error) {
+				component.loadSelectedItemsTask = null;
+
+				task.complete = true;
+				if (task.abort) {
+					return;
+				}
+
+				console.error('Unable to load selected items: ' + error.message);
 			},
 			complete: function() {
 				this.decrementWorkCounter(component);
