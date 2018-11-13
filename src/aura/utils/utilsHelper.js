@@ -389,6 +389,19 @@
 	},
 
 	/**
+	 * Returns true if the specified value is a valid email address
+	 *
+	 * @param {*} value - The value to check
+	 *
+	 * @return {boolean} true if the value is a valid email address; otherwise, false
+	 */
+	isEmail: function(value) {
+		/* eslint-disable-next-line max-len */
+		var pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return pattern.test(value);
+	},
+
+	/**
 	 * Returns the value as a boolean. This method contains special logic for converting strings.
 	 * The following strings are converted to true: "y", "yes", "t", "true" - case does not matter
 	 *
