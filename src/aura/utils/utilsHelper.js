@@ -1655,6 +1655,129 @@
 	},
 
 	/**
+	 * Accepts the path to a potentially deep object property and returns the individual property
+	 * names that make up that path. For example, the string "foo[2].bar['baz']" would be converted
+	 * to an array with the values "foo", "2", "bar", and "baz". This method is used
+	 * in getDeepObjectValue() and setDeepObjectValue()
+	 *
+	 * @param {*} s - The object property path
+	 *
+	 * @return {string[]} The individual property names that make up the speciied path
+	 */
+	getPath: function(s) {
+		var self = this;
+		var pattern = new RegExp(
+			'(\\[\\s*(?:\\d+|\'(?:[^\'\\\\]|\\\\.)*\'|"(?:[^"\\\\]|\\\\.)*")\\s*\\])', 'g');
+
+		s = this.trim(s);
+		s = s.replace(pattern, function(match, p1, offset) {
+			p1 = self.trim(p1.substring(1, p1.length - 1));
+
+			var firstChar = p1.substring(0, 1);
+			if ((firstChar === '\'') || (firstChar === '"')) {
+				p1 = p1.substring(1, p1.length - 1);
+				p1 = p1.replace(/\\(.)/g, '$1');
+				p1 = p1.replace(/\./g, '\\x2E');
+				p1 = p1.replace(/`/g, '\\x60');
+				p1 = '`' + p1 + '`';
+			}
+
+			if (offset > 0) {
+				p1 = '.' + p1;
+			}
+
+			return p1;
+		});
+
+		return s.split('.').map(function(value) {
+			if (value.substring(0, 1) === '`') {
+				value = value.substring(1, value.length - 1);
+				value = value.replace(/\\x2E/g, '.');
+				value = value.replace(/\\x60/g, '`');
+			}
+			return value;
+		});
+	},
+
+	/**
+	 * Returns the value of a property from the given object. You may specify a nested (aka deep)
+	 * property such as "foo.bar.baz"
+	 *
+	 * @param {*}      obj            - The object from which to read the property value
+	 * @param {string} path           - The name of the property to read
+	 * @param {*}      [defaultValue] - A default value to return if the specified property does not
+	 *                                  exist
+	 *
+	 * @return {*} The value of the specified property
+	 */
+	getDeepObjectValue: function(obj, path, defaultValue) {
+		if (!this.isObject(obj) && !this.isArray(obj)) {
+			return defaultValue;
+		}
+
+		var keys = this.getPath(path);
+		if (keys.length === 0) {
+			return defaultValue;
+		}
+
+		var value = obj;
+		for (var i = 0, n = keys.length; i < n; i++) {
+			if (!this.isObject(value) && !this.isArray(value)) {
+				return defaultValue;
+			}
+
+			var key = keys[i];
+			value = value[key];
+
+			if (this.isUndefined(value)) {
+				return defaultValue;
+			}
+		}
+		return value;
+	},
+
+	/**
+	 * Updates the value of a property on the given object. You may specify a nested (aka deep)
+	 * property such as "foo.bar.baz"
+	 *
+	 * @param {*}      obj   - The object which has the property to be updated
+	 * @param {string} path  - The name of the property to update
+	 * @param {*}      value - The new value of the property
+	 *
+	 * @return {*} The previous value of the property before it was updated
+	 */
+	setDeepObjectValue: function(obj, path, value) {
+		var previousValue;
+
+		if (!this.isObject(obj) && !this.isArray(obj)) {
+			return previousValue;
+		}
+
+		var keys = this.getPath(path);
+		if (keys.length === 0) {
+			return previousValue;
+		}
+
+		var lastKey = keys.pop();
+		for (var i = 0, n = keys.length; i < n; i++) {
+			if (!this.isObject(obj) && !this.isArray(obj)) {
+				return previousValue;
+			}
+
+			var key = keys[i];
+			if (this.isUndefinedOrNull(obj[key])) {
+				obj = obj[key] = {};
+			} else {
+				obj = obj[key];
+			}
+		}
+
+		previousValue = obj[lastKey];
+		obj[lastKey] = value;
+		return previousValue;
+	},
+
+	/**
 	 * Returns true if the value is a HTMLElement; otherwise, false
 	 *
 	 * @param {*} value - The value to check
