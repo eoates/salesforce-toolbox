@@ -1301,6 +1301,48 @@
 	},
 
 	/**
+	 * Returns true if the specified date falls within a leap year
+	 *
+	 * @param {Date} date - The date
+	 *
+	 * @return {boolean} true if the date falls within a leap year; otherwise, false
+	 */
+	isLeapYear: function(date) {
+		if (!this.isDate(date)) {
+			return false;
+		}
+
+		var year = date.getFullYear();
+		if ((year & 3) !== 0) {
+			return false;
+		} else {
+			return (((year % 100) !== 0) || ((year % 400) === 0));
+		}
+	},
+
+	/**
+	 * Returns the day of the year (1-366)
+	 *
+	 * @param {Date} date - The date
+	 *
+	 * @return {number} The day of the year
+	 */
+	dayOfYear: function(date) {
+		if (!this.isDate(date)) {
+			return null;
+		}
+
+		var dayCount = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
+		var mn = date.getMonth();
+		var dn = date.getDate();
+		var dayOfYear = dayCount[mn] + dn;
+		if ((mn > 1) && this.isLeapYear(date)) {
+			dayOfYear++;
+		}
+		return dayOfYear;
+	},
+
+	/**
 	 * Returns the first day of the specified month
 	 *
 	 * @param {number} year  - The year
