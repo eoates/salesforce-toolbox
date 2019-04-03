@@ -34,6 +34,7 @@
         <members>inputText</members>
         <members>inputTextarea</members>
         <members>message</members>
+        <members>section</members>
         <members>showToast</members>
         <members>spinnerPanel</members>
         <members>testApplication</members>

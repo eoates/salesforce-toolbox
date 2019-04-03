@@ -1,0 +1,64 @@
+<!--
+****************************************************************************************************
+* section.cmp
+****************************************************************************************************
+* This is a shared component. Do not make modifications to this component without carefully
+* considering the impact this may have on existing applications/components/pages/etc. that use this
+* component.
+*
+* @author Eugene Oates
+*
+****************************************************************************************************
+-->
+<aura:component access="GLOBAL"
+                implements="flexipage:availableForAllPageTypes"
+                description="A panel with a title which can be collapsible or static.">
+	<!-- attributes -->
+	<aura:attribute access="GLOBAL" name="class" type="String"
+	                description="A CSS style to apply to the section in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="titleClass" type="String"
+	                description="A CSS style to apply to the section title in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="contentClass" type="String"
+	                description="A CSS style to apply to the section content in addition to the default styles." />
+
+	<aura:attribute access="GLOBAL" name="title" type="String" required="true"
+	                description="The section title." />
+
+	<aura:attribute access="GLOBAL" name="collapsible" type="Boolean" default="true"
+	                description="Specifies whether the section should be collapsible." />
+
+	<aura:attribute access="GLOBAL" name="collapsed" type="Boolean" default="false"
+	                description="Specifies whether the section is collapsed. If collapsible is false this attribute is ignored and the section will be expanded." />
+	<!-- /attributes -->
+
+	<!-- component -->
+	<div class="{!'slds-section' + if(and(v.collapsible, v.collapsed), '', ' slds-is-open')}">
+		<h3 class="{!v.titleClass + ' slds-section__title' + if(v.collapsible, '', ' slds-theme_shade')}">
+			<aura:if isTrue="{!v.collapsible}">
+				<button class="slds-button slds-section__title-action"
+				        aria-controls="{#globalId + '_content'}"
+				        aria-expanded="{!if(v.collapsed, 'false', 'true')}"
+				        onclick="{!c.titleClick}">
+					<lightning:icon iconName="utility:switch"
+					                class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+					                size="xx-small"
+					                alternativeText="{!if(v.collapsed, 'Expand', 'Collapse')}" />
+
+					<span class="slds-truncate" title="{!v.title}">{!v.title}</span>
+				</button>
+				<aura:set attribute="else">
+					<span class="slds-truncate slds-p-horizontal_small" title="{!v.title}">{!v.title}</span>
+				</aura:set>
+			</aura:if>
+		</h3>
+
+		<div id="{#globalId + '_content'}"
+		     class="{!v.contentClass + ' slds-section__content'}"
+		     aria-hidden="{!if(and(v.collapsible, v.collapsed), 'true', 'false')}">
+			{!v.body}
+		</div>
+	</div>
+	<!-- /component -->
+</aura:component>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <description>Groups content into a panel with a title bar and can be configured to be expandable or static.</description>
+</AuraDefinitionBundle>

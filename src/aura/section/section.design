@@ -1,0 +1,22 @@
+<design:component label="Section">
+	<design:attribute name="class" label="Class"
+	                  description="A CSS class name to add to the component." />
+
+	<design:attribute name="titleClass" label="Title Class"
+	                  description="A CSS class name to add to the title." />
+
+	<design:attribute name="contentClass" label="Content Class"
+	                  description="A CSS class name to add to the content." />
+
+	<design:attribute name="title" label="Title"
+	                  default="New Section" required="true"
+	                  description="The text displayed above the content." />
+
+	<design:attribute name="collapsible" label="Collapsible"
+	                  default="true" required="true"
+	                  description="Controls whether the section can be collapsed by the user." />
+
+	<design:attribute name="collapsed" label="Collapsed"
+	                  default="false" required="true"
+	                  description="Controls whether the section is collapsed. If Collapsible is false the section will always be expanded." />
+</design:component>

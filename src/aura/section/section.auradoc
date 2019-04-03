@@ -1,0 +1,42 @@
+<aura:documentation>
+	<aura:description>
+		<!-- description -->
+		<p>
+			The <code>c:section</code> component displays a block of content with a title. The
+			<code>c:section</code> can be configured to be collapsible or static. If the
+			<code>c:section</code> is collapsible then the user will be able to click on the title
+			to toggle the visibility of the content.
+		</p>
+		<!-- /description -->
+
+		<!-- example -->
+		<h4>Usage Example</h4>
+
+		<p>This example will demonstrate basic usage of the <code>c:section</code> component.</p>
+
+		<h5>Component Markup</h5>
+<pre><![CDATA[<!-- MyComponent.cmp -->
+<aura:component>
+  <div class="slds-form slds-form_stacked">
+    <!-- A non-collapsible section -->
+    <c:section title="Name" collapsible="false">
+      <c:inputText label="First Name" />
+      <c:inputText label="Last Name" />
+    </c:section>
+
+    <!-- A collapsible section -->
+    <c:section title="Contact Information">
+      <c:inputText label="Phone" />
+      <c:inputText label="Email" />
+    </c:section>
+
+    <!-- A collapsible section that is collapsed -->
+    <c:section title="Additional Information" collapsed="true">
+      <c:inputTextarea label="Notes" />
+    </c:section>
+  </div>
+</aura:component>
+]]></pre>
+		<!-- /example -->
+	</aura:description>
+</aura:documentation>
