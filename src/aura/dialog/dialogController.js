@@ -79,6 +79,40 @@
 	},
 
 	/**
+	 * When the user presses the mouse button outside of the container we want to prevent the
+	 * .slds-modal element from receiving focus. This keeps the user from being able to click
+	 * outside the dialog and then press the TAB key to navigate to elements behind the dialog
+	 */
+	dialogMouseDown: function(component, event, helper) {
+		event.stopPropagation();
+		event.preventDefault();
+	},
+
+	/**
+	 * When the user presses the mouse button inside of the slds-modal__header element we stop
+	 * propagation of the event so it does not get suppressed by the parent .slds-modal element
+	 */
+	headerMouseDown: function(component, event, helper) {
+		event.stopPropagation();
+	},
+
+	/**
+	 * When the user presses the mouse button inside of the slds-modal__content element we stop
+	 * propagation of the event so it does not get suppressed by the parent .slds-modal element
+	 */
+	contentMouseDown: function(component, event, helper) {
+		event.stopPropagation();
+	},
+
+	/**
+	 * When the user presses the mouse button inside of the slds-modal__footer element we stop
+	 * propagation of the event so it does not get suppressed by the parent .slds-modal element
+	 */
+	footerMouseDown: function(component, event, helper) {
+		event.stopPropagation();
+	},
+
+	/**
 	 * Fire the onclosebutton event when the close button is clicked
 	 */
 	closeButtonClick: function(component, event, helper) {

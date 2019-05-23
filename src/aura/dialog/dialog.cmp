@@ -106,7 +106,8 @@
 		         aria-labelledby="{!if(empty(v.title), '', globalId + '_title')}"
 		         aria-describedby="{#globalId + '_content'}"
 		         class="{!v.dialogClass + ' slds-modal' + if(v.prompt, ' slds-modal_prompt', '') + if(v.large, ' slds-modal_large', '') + if(v.visible, ' slds-fade-in-open', '')}"
-		         onkeydown="{!c.dialogKeyDown}">
+		         onkeydown="{!c.dialogKeyDown}"
+		         onmousedown="{!c.dialogMouseDown}">
 
 			<!-- top focus trap -->
 			<button id="{#globalId + '_top'}"
@@ -120,7 +121,8 @@
 			<div class="{!v.containerClass + ' slds-modal__container'}">
 
 				<!-- header -->
-				<header class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}">
+				<header class="{!v.headerClass + ' slds-modal__header' + if(and(empty(v.title), empty(v.header)), ' slds-modal__header_empty', '')}"
+				        onmousedown="{!c.headerMouseDown}">
 					<aura:if isTrue="{!and(v.closeButton, not(v.prompt))}">
 						<lightning:buttonIcon aura:id="closeButton"
 						                      class="slds-modal__close"
@@ -140,6 +142,7 @@
 				<!-- content -->
 				<form id="{#globalId + '_content'}"
 				      class="{!v.contentClass + ' slds-modal__content'}"
+				      onmousedown="{!c.contentMouseDown}"
 				      onsubmit="{!c.formSubmit}">
 					<!-- this hidden submit input is needed for the ENTER key to submit the form -->
 					<input type="submit" value="Submit" tabindex="-1" class="slds-hide" />
@@ -150,7 +153,8 @@
 
 				<!-- footer -->
 				<aura:if isTrue="{!not(empty(v.footer))}">
-					<footer class="{!v.footerClass + ' slds-modal__footer' + if(v.directional, ' slds-modal__footer_directional', '')}">
+					<footer class="{!v.footerClass + ' slds-modal__footer' + if(v.directional, ' slds-modal__footer_directional', '')}"
+					        onmousedown="{!c.footerMouseDown}">
 						{!v.footer}
 					</footer>
 				</aura:if>

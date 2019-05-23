@@ -360,6 +360,51 @@
 	},
 
 	/**
+	 * Dynamically injects a style tag when the first dialog is opened. This style tag is used
+	 * to apply styles (such as hiding the scrollbar on the body element) while a dialog is
+	 * open
+	 *
+	 * @return {void}
+	 */
+	addStyleOverrides: function() {
+		var body = this.getBodyElement();
+		var styleTag = this.styleTag;
+		if (body && !styleTag) {
+			try {
+				styleTag = document.createElement('style');
+				styleTag.innerHTML = 'body { overflow: hidden !important; }';
+
+				body.appendChild(styleTag);
+				this.styleTag = styleTag;
+			} catch (e) {
+				// Ignore exceptions. Hopefully this will never occur, but it is always possible
+				// that Salesforce could introduce restrictions in the future that may prevent the
+				// ability to add dynamic style elements
+			}
+		}
+	},
+
+	/**
+	 * Removes the dynamically injected style tag when the last dialog is closed
+	 *
+	 * @return {void}
+	 */
+	removeStyleOverrides: function() {
+		var body = this.getBodyElement();
+		var styleTag = this.styleTag;
+		if (body && styleTag) {
+			try {
+				body.removeChild(styleTag);
+				this.styleTag = null;
+			} catch (e) {
+				// Ignore exceptions. This should never occur because we only try to remove the
+				// style tag if it exists. It is difficult to imagine a scenario where we would be
+				// able to create the style tag and add it to the body, but not remove it
+			}
+		}
+	},
+
+	/**
 	 * Displays the dialog backdrop. This is displayed when the first dialog is opened and remains
 	 * visible until the last dialog is closed
 	 *
@@ -373,6 +418,7 @@
 
 			this.showTopFocusTrap();
 			this.showBottomFocusTrap();
+			this.addStyleOverrides();
 		}
 	},
 
@@ -389,6 +435,7 @@
 
 			this.hideTopFocusTrap();
 			this.hideBottomFocusTrap();
+			this.removeStyleOverrides();
 		}
 	},
 
